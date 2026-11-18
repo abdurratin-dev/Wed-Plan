@@ -1,18 +1,12 @@
-
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import {
-  Heart,
-  ChevronDown,
-  Sun,
-  Moon,
-  Menu,
-  X,
-} from "lucide-react";
+import { Heart, ChevronDown, Sun, Moon, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import ProfileDropDwoun from "../pofile/profileDropDwoun";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -20,7 +14,9 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
-   const pathname = usePathname()
+  const pathname = usePathname();
+  const { data: session, error } = authClient.useSession();
+  const user = session?.user;
 
   useEffect(() => {
     setMounted(true);
@@ -32,7 +28,6 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95">
-
       {/* Background Decoration */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -right-10 -top-20 h-48 w-48 rounded-full bg-pink-200/40 blur-3xl dark:bg-rose-950/40" />
@@ -40,7 +35,6 @@ export default function Navbar() {
       </div>
 
       <nav className="mx-auto flex min-h-[76px] max-w-[1600px] items-center justify-between gap-5 px-4 py-3 sm:px-8 lg:px-10">
-
         {/* Logo */}
         <Link
           href="/"
@@ -59,15 +53,17 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-8 lg:flex relative">
-
           <Link
             href="/"
-            className={`relative py-2 text-base font-semibold ${pathname === "/" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}>
+            className={`relative py-2 text-base font-semibold ${pathname === "/" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
+          >
             Home
           </Link>
 
           <div className="group relative">
-            <button className={`flex items-center gap-1 py-2 text-base font-semibold ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}>
+            <button
+              className={`flex items-center gap-1 py-2 text-base font-semibold ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
+            >
               Browse Services
               <ChevronDown
                 size={17}
@@ -117,37 +113,39 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="hidden shrink-0 items-center gap-3 sm:flex">
-
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
             className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9]"
           >
-            {mounted && (
-              theme === "dark" ? (
-                <Sun size={21} />
-              ) : (
-                <Moon size={21} />
-              )
-            )}
+            {mounted &&
+              (theme === "dark" ? <Sun size={21} /> : <Moon size={21} />)}
           </button>
 
           {/* Sign In */}
-          <Link
-            href="/login"
-            className="rounded-xl border border-[#720e32]/40 bg-white px-7 py-3 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <>
+              <ProfileDropDwoun />
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="rounded-xl border border-[#720e32]/40 bg-white px-7 py-3 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
+              >
+                Sign In
+              </Link>
 
-          {/* Sign Up */}
-          <Link
-            href="/sign-up"
-            className="rounded-xl bg-[#720e32] px-7 py-3 text-base font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
-          >
-            Sign Up
-          </Link>
+              {/* Sign Up */}
+              <Link
+                href="/sign-up"
+                className="rounded-xl bg-[#720e32] px-7 py-3 text-base font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -157,9 +155,8 @@ export default function Navbar() {
             aria-label="Toggle theme"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 dark:border-white/10 dark:bg-[#281b24] dark:text-white"
           >
-            {mounted && (
-              theme === "dark" ? <Sun size={19} /> : <Moon size={19} />
-            )}
+            {mounted &&
+              (theme === "dark" ? <Sun size={19} /> : <Moon size={19} />)}
           </button>
 
           <button
@@ -175,9 +172,7 @@ export default function Navbar() {
       {/* Mobile Navigation */}
       {mobileMenu && (
         <div className="border-t border-gray-200 bg-[#fffaf7] px-5 py-5 dark:border-white/10 dark:bg-[#160e13] sm:hidden">
-
           <div className="flex flex-col gap-4">
-
             <Link
               href="/"
               onClick={() => setMobileMenu(false)}

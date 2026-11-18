@@ -13,6 +13,22 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: ["customer", "vendor", "admin"],
+        input: true,
+        defaultValue: "customer",
+      },
+      // Set by the payment flow (direct Mongo update); declared here so
+      // `listUsers` includes it in the admin Users page output.
+      premium: {
+        type: "boolean",
+        input: false,
+        defaultValue: false,
+      },
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),

@@ -5,16 +5,29 @@ import Link from "next/link";
 import { useState } from "react";
 import { Eye, EyeOff, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
-const roles = ["Customer", "Vendor"] as const;
-type Role = (typeof roles)[number];
+const roles = [
+  {
+    label: "Customer",
+    value: "customer",
+  },
+  {
+    label: "Vendor",
+    value: "vendor",
+  },
+] as const;
+type Role = "customer" | "vendor";
 
-type Errors = Partial<Record<"name" | "email" | "password" | "confirmPassword", string>>;
+type Errors = Partial<
+  Record<"name" | "email" | "password" | "confirmPassword", string>
+>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function SignUpForm() {
-  const [role, setRole] = useState<Role>("Customer");
+  const [role, setRole] = useState<Role>("customer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +36,9 @@ export default function SignUpForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const router = useRouter();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const next: Errors = {};
@@ -36,7 +51,16 @@ export default function SignUpForm() {
       next.confirmPassword = "Passwords do not match";
 
     setErrors(next);
-    setSubmitted(Object.keys(next).length === 0);
+    const { data, error } = await authClient.signUp.email({
+      email,
+      password,
+      name,
+      role,
+    });
+    if(data){
+      setSubmitted(true);
+      router.push(`/dashboard/${role}`);
+    }
   }
 
   const fieldClass = (invalid?: string) =>
@@ -118,19 +142,19 @@ export default function SignUpForm() {
             >
               {roles.map((item) => (
                 <button
-                  key={item}
+                  key={item.value}
                   type="button"
                   role="tab"
-                  aria-selected={role === item}
-                  onClick={() => setRole(item)}
+                  aria-selected={role === item.value}
+                  onClick={() => setRole(item.value)}
                   className={cn(
                     "rounded-xl px-2 py-2.5 text-sm font-semibold transition sm:px-3",
-                    role === item
+                    role === item.value
                       ? "border border-[#e3c3bd] bg-white text-[#720e32] shadow-sm dark:border-[#a52b50]/50 dark:bg-[#2f1e28] dark:text-[#ff9bb9]"
                       : "border border-transparent text-[#8a7a80] hover:text-[#720e32] dark:text-[#9b8792] dark:hover:text-[#ff9bb9]",
                   )}
                 >
-                  {item}
+                  {item.label}
                 </button>
               ))}
             </div>
@@ -210,16 +234,10 @@ export default function SignUpForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  aria-label={
-                    showPassword ? "Hide password" : "Show password"
-                  }
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
                 >
-                  {showPassword ? (
-                    <EyeOff size={18} />
-                  ) : (
-                    <Eye size={18} />
-                  )}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {errors.password && (
@@ -242,7 +260,10 @@ export default function SignUpForm() {
                   value={confirmPassword}
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
-                    setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: undefined,
+                    }));
                   }}
                   aria-invalid={!!errors.confirmPassword}
                   className={cn(fieldClass(errors.confirmPassword), "pr-12")}
@@ -250,21 +271,15 @@ export default function SignUpForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  aria-label={
-                    showPassword ? "Hide password" : "Show password"
-                  }
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
                 >
-                  {showPassword ? (
-                    <EyeOff size={18} />
-                  ) : (
-                    <Eye size={18} />
-                  )}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {errors.password && (
+              {errors.confirmPassword && (
                 <p className="mt-1.5 text-xs font-medium text-[#d6455f]">
-                  {errors.password}
+                  {errors.confirmPassword}
                 </p>
               )}
             </div>

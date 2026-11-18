@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Eye, EyeOff, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 type Errors = Partial<Record<"email" | "password", string>>;
 
@@ -17,7 +19,9 @@ export default function SignInForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const router = useRouter();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const next: Errors = {};
@@ -26,7 +30,15 @@ export default function SignInForm() {
     if (!password) next.password = "Please enter your password";
 
     setErrors(next);
-    setSubmitted(Object.keys(next).length === 0);
+    const {data,error} = await authClient.signIn.email({
+      email,
+      password
+    })
+
+    if(data){
+      setSubmitted(true);
+      router.push(`/dashboard/${data.user.role}`);
+    }
   }
 
   const fieldClass = (invalid?: string) =>
@@ -48,7 +60,7 @@ export default function SignInForm() {
       {/* Photo — desktop: left half */}
       <div className="relative hidden lg:block">
         <Image
-          src="/auth-bg.jpg"
+          src="https://img.magnific.com/premium-photo/wedding-ceremony-newlyweds-pier_419896-19746.jpg?semt=ais_hybrid&w=740&q=80"
           alt="Blush pink wedding roses"
           fill
           priority
