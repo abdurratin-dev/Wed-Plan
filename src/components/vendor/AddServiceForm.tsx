@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, CloudUpload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createService } from "@/lib/actions/api/service";
 
 const categories = [
   "Photography",
@@ -110,11 +111,10 @@ export default function AddServiceForm() {
     setPrice("");
     setLocation("");
     setErrors({});
-    setSubmitted(false);
     removeImage();
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const next: Errors = {};
@@ -135,7 +135,22 @@ export default function AddServiceForm() {
     }
 
     // UI-only for now — nothing is persisted until the backend is wired up.
-    setSubmitted(true);
+    const data = {
+      name,
+      category,
+      description,
+      price,
+      location,
+      imageUrl
+    }
+    try{
+      await createService(data)
+      setSubmitted(true);
+      handleReset()
+    }
+    catch{
+      setSubmitted(false);
+    }
   }
 
   const errorText = (message?: string) =>
@@ -331,19 +346,11 @@ export default function AddServiceForm() {
                   >
                     Add Service
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="inline-flex items-center justify-center rounded-xl border border-[#e3c3bd] bg-white px-8 py-3.5 text-sm font-bold text-[#720e32] transition hover:bg-[#fdf1eb] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:border-white/15 dark:bg-transparent dark:text-[#ff9bb9] dark:hover:bg-white/5 dark:focus-visible:ring-[#ff9bb9]/30"
-                  >
-                    Reset
-                  </button>
                 </div>
 
                 {submitted && (
                   <p className="mt-4 rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]">
-                    Looks good — the service backend isn&apos;t connected yet,
-                    so nothing was saved.
+                    Looks good — Your service assed.
                   </p>
                 )}
               </div>
