@@ -27,26 +27,21 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95">
+    <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95 h-15">
       {/* Background Decoration */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -right-10 -top-20 h-48 w-48 rounded-full bg-pink-200/40 blur-3xl dark:bg-rose-950/40" />
-        <div className="absolute left-1/3 top-0 h-32 w-40 rounded-full bg-rose-100/50 blur-3xl dark:bg-rose-900/20" />
-      </div>
-
-      <nav className="mx-auto flex min-h-[76px] max-w-[1600px] items-center justify-between gap-5 px-4 py-3 sm:px-8 lg:px-10">
+      <nav className="mx-auto flex items-center justify-between gap-5 px-4 py-3 sm:px-8 lg:px-10">
         {/* Logo */}
         <Link
           href="/"
           className="flex shrink-0 items-center gap-1 text-[#720e32] dark:text-[#ff9bb9]"
         >
           <Heart
-            size={40}
+          size={30}
             strokeWidth={2.5}
             className="fill-[#720e32]/5 dark:fill-[#ff9bb9]/10"
           />
 
-          <span className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+          <span className="text-xl font-bold tracking-tight sm:text-3xl">
             WedPlan
           </span>
         </Link>
@@ -117,10 +112,10 @@ export default function Navbar() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9]"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9]"
           >
             {mounted &&
-              (theme === "dark" ? <Sun size={21} /> : <Moon size={21} />)}
+              (theme === "dark" ? <Sun size={20} /> : <Moon size={21} />)}
           </button>
 
           {/* Sign In */}

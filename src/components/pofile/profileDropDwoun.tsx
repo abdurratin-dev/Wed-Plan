@@ -21,10 +21,10 @@ export default function ProfileDropDwoun() {
     <Popover>
       <PopoverTrigger
         render={
-          <Button className={`w-12 h-12 rounded-full`} variant="ghost">
+          <Button className={`w-9 h-9 rounded-full`} variant="ghost">
             <Avatar
               className={
-                "w-12 h-12 border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9]"
+                "w-9 h-9 border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9]"
               }
             >
               <AvatarImage

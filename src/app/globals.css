@@ -73,14 +73,25 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* WedPlan dashboard sidebar — wine theme (matches the dashboard design) */
+  --sidebar: #5c0f28;
+  --sidebar-foreground: #fff7fa;
+  --sidebar-primary: #ff9bb9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #8e2249;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 12%);
+  --sidebar-ring: rgb(255 255 255 / 35%);
+}
+
+/* Subtle top-to-bottom sheen on the desktop sidebar panel */
+[data-slot="sidebar-inner"] {
+  background-image: linear-gradient(
+    to bottom,
+    #6d1333 0%,
+    #5c0f28 45%,
+    #45091c 100%
+  );
 }
 
 .dark {
@@ -107,14 +118,14 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: #4d0c22;
+  --sidebar-foreground: #fff7fa;
+  --sidebar-primary: #ff9bb9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #8e2249;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 12%);
+  --sidebar-ring: rgb(255 255 255 / 35%);
 }
 
 @layer base {
