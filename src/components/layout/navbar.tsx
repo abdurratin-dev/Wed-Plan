@@ -127,7 +127,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="rounded-xl border border-[#720e32]/40 bg-white px-7 py-3 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
+                className="rounded-xl border border-[#720e32]/40 bg-white px-5 py-1 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
               >
                 Sign In
               </Link>
@@ -135,7 +135,7 @@ export default function Navbar() {
               {/* Sign Up */}
               <Link
                 href="/sign-up"
-                className="rounded-xl bg-[#720e32] px-7 py-3 text-base font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+                className="rounded-xl bg-[#720e32] px-5 py-1 text-base font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
               >
                 Sign Up
               </Link>

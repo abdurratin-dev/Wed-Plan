@@ -8,7 +8,8 @@ import {
   CreditCard,
   Heart,
   LayoutDashboard,
-  LayoutList
+  LayoutList,
+  User,
 } from "lucide-react";
 import {
   Sidebar,
@@ -48,7 +49,20 @@ export function DashboardSidebar() {
       ? `/dashboard/${pathnameRole}`
       : "/dashboard";
 
-  const navItems: NavItem[] = [
+  const customerNav: NavItem[] = [
+    { label: "Overview", href: base, icon: LayoutDashboard },
+    {
+      label: "My Bookings",
+      href: `${base}/bookings`,
+      icon: CalendarDays,
+    },
+    {
+      label: "Profile And Settings",
+      href: `/profile`,
+      icon: User,
+    },
+  ];
+  const vendorNav: NavItem[] = [
     {
       label: "Overview",
       href: base,
@@ -64,6 +78,8 @@ export function DashboardSidebar() {
     { label: "Subscription", href: `${base}/subscription`, icon: CreditCard },
   ];
 
+  const adminNav: NavItem[] = []
+  const navItems: NavItem[] = role === 'vendor' ? vendorNav : role === 'customer' ? customerNav : adminNav;
   // The most specific match wins (.../services/new -> Add Service). When no
   // section claims the route, Overview stays lit for the dashboard landing.
   const matchedHref = navItems
@@ -90,9 +106,7 @@ export function DashboardSidebar() {
             strokeWidth={2.5}
             className="fill-white/10 text-white"
           />
-          <span className="text-xl font-extrabold tracking-tight">
-            WedPlan
-          </span>
+          <span className="text-xl font-extrabold tracking-tight">WedPlan</span>
         </Link>
       </SidebarHeader>
 

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, CloudUpload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createService } from "@/lib/actions/api/service";
+import { ServiceData } from "@/types/apidata";
 
 const categories = [
   "Photography",
@@ -135,7 +136,7 @@ export default function AddServiceForm() {
     }
 
     // UI-only for now — nothing is persisted until the backend is wired up.
-    const data = {
+    const data: ServiceData = {
       name,
       category,
       description,

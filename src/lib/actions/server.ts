@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
+import { ServiceData } from "@/types/apidata";
 
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 const user = async () => {
@@ -9,7 +10,7 @@ const user = async () => {
   return session?.session.token;
 };
 
-export const creatApi = async (api: string, data) => {
+export const creatApi = async (api: string, data:ServiceData) => {
   const token = await user();
   const res = await fetch(`${SERVER_URL}${api}`, {
     method: "POST",
