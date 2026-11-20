@@ -65,7 +65,10 @@ export default function VendorServiceCard({service,isActive}:{service : ServiceD
                     {/* {service.rating.toFixed(1)} */}
                   </span>{" "}
                   <span className="text-[#8a7a80] dark:text-[#9b8792]">
-                    ({service.reviews} Reviews)
+                    ({Array.isArray(service.reviews)
+                      ? service.reviews.length
+                      : service.reviews}{" "}
+                    Reviews)
                   </span>
                 </span>
                 <span className="inline-flex items-center gap-1.5">

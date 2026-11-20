@@ -2,6 +2,14 @@ import { ServiceData } from "@/types/apidata";
 import { ArrowRight, Heart, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+
+/** `reviews` has been a number and a list of review objects over time. */
+const reviewCount = (reviews: ServiceData["reviews"]) =>
+  Array.isArray(reviews)
+    ? reviews.length
+    : typeof reviews === "number"
+      ? reviews
+      : 0;
 import Link from "next/link";
 
 export default function ServiceCard({ service }: { service: ServiceData }) {
@@ -73,9 +81,9 @@ export default function ServiceCard({ service }: { service: ServiceData }) {
                 {service.rating.toFixed(1)}
               </span>
             ) : null}
-            {typeof service.reviews === "number" && service.reviews > 0 ? (
+            {reviewCount(service.reviews) > 0 ? (
               <span className="text-[#8a7a80] dark:text-[#9b8792]">
-                ({service.reviews} reviews)
+                ({reviewCount(service.reviews)} reviews)
               </span>
             ) : (
               <span className="text-[#8a7a80] dark:text-[#9b8792]">

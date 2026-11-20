@@ -1,305 +1,519 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import {
+  ArrowRight,
+  BadgeCheck,
   CalendarDays,
-  Clock3,
+  Camera,
+  ChartColumn,
+  ChevronRight,
+  Clock,
+  Heart,
+  LifeBuoy,
   MapPin,
   Search,
-  Heart,
-  BarChart3,
-  Headphones,
   Star,
-  ChevronRight,
   X,
-  CheckCircle2,
-  CircleX,
-  Camera,
 } from "lucide-react";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { BookingsData } from "@/types/apidata";
-import { useRouter } from "next/navigation";
 
-type BookingStatus = "Upcoming" | "Confirmed" | "Completed" | "Cancelled";
+type TabKey = "all" | "upcoming" | "completed" | "cancelled";
+type StatusKey = "upcoming" | "confirmed" | "completed" | "cancelled";
 
-const filters = ["All Bookings", "Upcoming", "Completed", "Cancelled"] as const;
+const TABS: { key: TabKey; label: string; icon: typeof CalendarDays }[] = [
+  { key: "all", label: "All Bookings", icon: CalendarDays },
+  { key: "upcoming", label: "Upcoming", icon: Clock },
+  { key: "completed", label: "Completed", icon: BadgeCheck },
+  { key: "cancelled", label: "Cancelled", icon: X },
+];
 
-type FilterType = (typeof filters)[number];
-
-const statusStyles: Record<BookingStatus, string> = {
-  Upcoming: "bg-green-100 text-green-700",
-  Confirmed: "bg-blue-100 text-blue-700",
-  Completed: "bg-purple-100 text-purple-700",
-  Cancelled: "bg-rose-100 text-rose-600",
+const STATUS_STYLE: Record<StatusKey, string> = {
+  upcoming:
+    "bg-[#dcfce7] text-[#15803d] dark:bg-[#15803d]/20 dark:text-[#4ade80]",
+  confirmed:
+    "bg-[#dbeafe] text-[#1d4ed8] dark:bg-[#1d4ed8]/25 dark:text-[#93c5fd]",
+  completed:
+    "bg-[#ede9fe] text-[#6d28d9] dark:bg-[#6d28d9]/25 dark:text-[#c4b5fd]",
+  cancelled: "bg-[#fee2e2] text-[#d6455f] dark:bg-[#d6455f]/20 dark:text-[#ff8fa3]",
 };
+
+const STATUS_LABEL: Record<StatusKey, string> = {
+  upcoming: "Upcoming",
+  confirmed: "Confirmed",
+  completed: "Completed",
+  cancelled: "Cancelled",
+};
+
+/** "Upcoming" covers confirmed slots too — both are still in the future. */
+const matchesTab = (status: StatusKey, tab: TabKey) =>
+  tab === "all" ||
+  status === tab ||
+  (tab === "upcoming" && status === "confirmed");
+
+const capitalize = (value: string) =>
+  value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+
+/** "2026-11-28" -> "Nov 28, 2026" */
+const formatDate = (value: string) => {
+  const [y, m, d] = (value || "").split("-").map(Number);
+  if (!y || !m || !d) return value || "Date to be confirmed";
+  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+/** "15:08" -> "03:08 PM" */
+const formatTime = (value: string) => {
+  const [rawHours, rawMinutes] = (value || "").split(":").map(Number);
+  if (Number.isNaN(rawHours) || Number.isNaN(rawMinutes)) {
+    return value || "Time to be confirmed";
+  }
+  const period = rawHours >= 12 ? "PM" : "AM";
+  const hours = rawHours % 12 || 12;
+  return `${String(hours).padStart(2, "0")}:${String(rawMinutes).padStart(2, "0")} ${period}`;
+};
+
+/** The API sends `bookingStatus`; fall back to the date for older records. */
+const resolveStatus = (booking: BookingsData): StatusKey => {
+  const explicit = (booking.bookingStatus || "").toLowerCase();
+  if (explicit === "upcoming" || explicit === "confirmed") return explicit;
+  if (explicit === "completed" || explicit === "cancelled") return explicit;
+
+  const [year, month, day] = (booking.bookingsDate || "").split("-").map(Number);
+  if (!year || !month || !day) return "upcoming";
+  const bookingDay = new Date(year, month - 1, day);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return bookingDay < today ? "completed" : "upcoming";
+};
+
+type Row = { booking: BookingsData; status: StatusKey };
 
 export default function CustomerBookings({
   bookings,
 }: {
   bookings: BookingsData[];
 }) {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("All Bookings");
-  const router = useRouter()
-  const params = new URLSearchParams();
-  const [search, setSearch] = useState("");
-  const hendleFilter = (filter : FilterType) => {
-    if(filter === 'All Bookings'){
-      router.push('/dashboard/customer/bookings')
-      return
-    }
-    params.set("status", filter);
-    router.push(`?${params.toString()}`)
-  };
-  const upcomingCount = bookings.filter(
-    (b) => b.bookingStatus === "Upcoming" || b.bookingStatus === "Confirmed",
-  ).length;
+  const [activeTab, setActiveTab] = useState<TabKey>("all");
+  const [query, setQuery] = useState("");
 
-  const completedCount = bookings.filter(
-    (b) => b.bookingStatus === "Completed",
-  ).length;
+  // The API answers with an error object when the session/token is invalid.
+  const loadError = !Array.isArray(bookings);
 
-  const cancelledCount = bookings.filter(
-    (b) => b.bookingStatus === "Cancelled",
-  ).length;
+  const rows = useMemo<Row[]>(() => {
+    if (!Array.isArray(bookings)) return [];
+    return bookings
+      .map((booking) => ({ booking, status: resolveStatus(booking) }))
+      .sort((a, b) =>
+        (b.booking.bookingsDate || "").localeCompare(
+          a.booking.bookingsDate || "",
+        ),
+      );
+  }, [bookings]);
 
-  const filterCounts: Record<FilterType, number> = {
-    "All Bookings": bookings.length,
-    Upcoming: upcomingCount,
-    Completed: completedCount,
-    Cancelled: cancelledCount,
-  };
+  const counts = useMemo(
+    () => ({
+      all: rows.length,
+      upcoming: rows.filter((row) => matchesTab(row.status, "upcoming")).length,
+      completed: rows.filter((row) => row.status === "completed").length,
+      cancelled: rows.filter((row) => row.status === "cancelled").length,
+    }),
+    [rows],
+  );
+
+  const visible = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return rows.filter((row) => {
+      if (!matchesTab(row.status, activeTab)) return false;
+      if (!needle) return true;
+      const { booking } = row;
+      const haystack = [
+        booking.bookingTitle,
+        booking.bookingsCategory,
+        booking.bookingsLocation,
+        booking.bookingsUnit,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(needle);
+    });
+  }, [rows, activeTab, query]);
 
   return (
-    <main className="min-h-screen bg-[#fff9f8] text-[#38172a]">
-      {/* Hero Section */}
-      <section
-        className="relative overflow-hidden bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "linear-gradient(90deg, rgba(255,235,232,.96), rgba(255,235,232,.45)), url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600')",
-        }}
-      >
-        <div className="mx-auto max-w-[1440px] px-5 py-10 md:px-8 md:py-12">
-          <div className="max-w-xl">
-            <div className="mb-4 flex items-center gap-2 text-xs font-medium text-[#873a59]">
-              <Link href="/">Home</Link>
-              <ChevronRight size={13} />
-              <span>My Bookings</span>
-            </div>
+    <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
+      {/* ---------- Hero banner ---------- */}
+      <div className="relative isolate overflow-hidden">
+        <Image
+          src="/services-banner.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#fffaf7] via-[#fffaf7]/85 to-[#fffaf7]/25 dark:from-[#160e13] dark:via-[#160e13]/85 dark:to-[#160e13]/45" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#fffaf7]/60 via-transparent to-[#fffaf7]/70 dark:from-[#160e13]/60 dark:to-[#160e13]/70" />
 
-            <h1 className="font-serif text-4xl font-bold tracking-tight text-[#6e183c] md:text-5xl">
+        <div className="mx-auto w-full max-w-7xl px-4 pt-9 pb-9 sm:px-6 lg:px-10 lg:pt-14 lg:pb-12">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-2 text-xs font-medium text-[#8a7a80] dark:text-[#9b8792]"
+          >
+            <Link
+              href="/"
+              className="transition hover:text-[#720e32] dark:hover:text-[#ff9bb9]"
+            >
+              Home
+            </Link>
+            <ChevronRight size={13} className="text-[#c4b4ba] dark:text-[#6f5c66]" />
+            <span aria-current="page" className="text-[#4a3a41] dark:text-[#d5c1ca]">
               My Bookings
-            </h1>
+            </span>
+          </nav>
 
-            <p className="mt-3 text-sm text-[#624351]">
-              Track and manage all your bookings in one place.
-            </p>
+          <h1 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#2b0713] sm:text-5xl dark:text-[#ffeaf1]">
+            My Bookings
+          </h1>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#6b5a61] sm:text-[0.95rem] dark:text-[#c8b3bd]">
+            Track and manage all your bookings in one place.
+          </p>
 
-            <div className="mt-4 flex items-center gap-2 pl-12 text-[#a32b5a]">
-              <span className="h-px w-9 bg-[#d77b9c]" />
-              <Heart size={15} />
-              <span className="h-px w-9 bg-[#d77b9c]" />
-            </div>
+          <div className="mt-5 flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="h-px w-16 bg-[#a52b50]/40 sm:w-24 dark:bg-[#ff9bb9]/40"
+            />
+            <Heart
+              size={14}
+              aria-hidden="true"
+              className="text-[#a52b50] dark:text-[#ff9bb9]"
+            />
+            <span
+              aria-hidden="true"
+              className="h-px w-16 bg-[#a52b50]/40 sm:w-24 dark:bg-[#ff9bb9]/40"
+            />
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Main Content */}
-      <section className="mx-auto max-w-[1440px] px-4 py-6 md:px-8">
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_300px]">
-          {/* Left Content */}
-          <div className="min-w-0">
-            {/* Filters and Search */}
-            <div className="mb-4 flex flex-col justify-between gap-3 xl:flex-row xl:items-center">
-              <div className="flex flex-wrap items-center gap-2">
-                {filters.map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => {
-                      setActiveFilter(filter)
-                      hendleFilter(filter)
-                    }}
-                    className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition ${
-                      activeFilter === filter
-                        ? "bg-[#861b46] text-white shadow-md shadow-pink-200"
-                        : "border border-[#f3dce3] bg-white text-[#87405b] hover:bg-[#fff0f4]"
-                    }`}
+      {/* ---------- Toolbar: tabs + search ---------- */}
+      <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-10">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div
+            role="tablist"
+            aria-label="Filter bookings"
+            className="flex flex-wrap gap-2"
+          >
+            {TABS.map(({ key, label, icon: Icon }) => {
+              const active = activeTab === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setActiveTab(key)}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[0.78rem] font-bold transition focus-visible:ring-2 focus-visible:outline-none",
+                    active
+                      ? "bg-[#720e32] text-white shadow-md focus-visible:ring-[#720e32]/40 dark:bg-[#a52b50] dark:focus-visible:ring-[#ff9bb9]/40"
+                      : "border border-[#f1ded7] bg-white text-[#6b5a61] hover:border-[#e3c3bd] hover:text-[#720e32] focus-visible:ring-[#720e32]/30 dark:border-white/10 dark:bg-[#1e131a] dark:text-[#c8b3bd] dark:hover:border-white/20 dark:hover:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/30",
+                  )}
+                >
+                  <Icon size={14} />
+                  {label}
+                  <span
+                    className={cn(
+                      "rounded-full px-1.5 py-0.5 text-[0.65rem] tabular-nums",
+                      active
+                        ? "bg-white/20 text-white"
+                        : "bg-[#fdeef2] text-[#a52b50] dark:bg-[#a52b50]/20 dark:text-[#ff9bb9]",
+                    )}
                   >
-                    {filter === "Upcoming" && <Clock3 size={13} />}
-                    {filter === "Completed" && <CheckCircle2 size={13} />}
-                    {filter === "Cancelled" && <CircleX size={13} />}
-                    {filter === "All Bookings" && <CalendarDays size={13} />}
-                    {filter} ({filterCounts[filter]})
-                  </button>
-                ))}
-              </div>
+                    {counts[key]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-              <div className="relative w-full xl:max-w-[260px]">
-                <Search
-                  size={15}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a77c8d]"
-                />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search your bookings..."
-                  className="w-full rounded-xl border border-[#f0dce3] bg-white py-2.5 pl-9 pr-4 text-xs outline-none transition placeholder:text-[#b89aa7] focus:border-[#b94d78] focus:ring-2 focus:ring-pink-100"
-                />
-              </div>
+          <div className="relative w-full lg:w-72">
+            <Search
+              size={16}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#a89a9f] dark:text-[#8d7a84]"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search your bookings..."
+              aria-label="Search your bookings"
+              className="w-full rounded-xl border border-[#eee2dd] bg-white py-3 pr-9 pl-10 text-sm text-[#2b0713] shadow-sm outline-none transition placeholder:text-[#a89a9f] focus:border-[#720e32] focus:ring-2 focus:ring-[#720e32]/15 dark:border-white/10 dark:bg-[#241720] dark:text-white dark:placeholder:text-[#8d7a84] dark:focus:border-[#ff9bb9] dark:focus:ring-[#ff9bb9]/15"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ---------- Bookings + sidebar ---------- */}
+      <div className="mx-auto mt-5 grid w-full max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-10">
+        <section className="min-w-0 space-y-4">
+          {loadError && (
+            <div className="rounded-2xl border border-dashed border-[#e3c3bd] bg-white px-6 py-12 text-center dark:border-white/15 dark:bg-[#1e131a]">
+              <LifeBuoy
+                size={28}
+                aria-hidden="true"
+                className="mx-auto text-[#c4b4ba] dark:text-[#6f5c66]"
+              />
+              <h2 className="font-heading mt-3 text-xl font-semibold text-[#2b0713] dark:text-[#ffeaf1]">
+                We couldn&apos;t load your bookings
+              </h2>
+              <p className="mt-2 text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
+                Please sign in again and refresh the page.
+              </p>
+              <Link
+                href="/sign-in"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#720e32] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                Sign In
+                <ArrowRight size={15} />
+              </Link>
             </div>
+          )}
 
-            {/* Booking Cards */}
-            <div className="space-y-3">
-              {bookings.length > 0 ? (
-                bookings.map((booking) => (
-                  <div
-                    key={booking._id}
-                    className="group grid grid-cols-1 gap-3 rounded-2xl border border-[#f4e4e7] bg-white p-3 shadow-[0_3px_15px_rgba(105,30,61,0.04)] transition hover:border-[#e8b5c8] hover:shadow-md sm:grid-cols-[105px_1fr] md:grid-cols-[115px_1fr_125px_105px] md:items-center"
-                  >
-                    {/* Image */}
-                    <div className="h-36 overflow-hidden rounded-xl sm:h-[105px]">
-                      <img
-                        src={booking.bookingsImage}
-                        alt={booking.bookingTitle}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    </div>
-
-                    {/* Booking Information */}
-                    <div className="min-w-0">
-                      <h3 className="font-serif text-lg font-bold text-[#852747]">
-                        {booking.bookingTitle}
-                      </h3>
-
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#826b77]">
-                        <Camera size={12} />
-                        {booking.bookingsCategory}
-                      </p>
-
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#826b77]">
-                        <MapPin size={12} />
-                        {booking.bookingsLocation}
-                      </p>
-
-                      <p className="mt-2 flex items-center gap-1 text-xs text-[#816b78]">
-                        <Star
-                          size={13}
-                          fill="#f4aa23"
-                          className="text-[#f4aa23]"
-                        />
-                        <span className="font-semibold text-[#5b3a4b]">
-                          {booking.bookingsRating}
-                        </span>
-                        {/* ({booking.reviews} reviews) */}
-                      </p>
-                    </div>
-
-                    {/* Date */}
-                    <div className="border-t border-[#f5e9ec] pt-3 md:border-l md:border-t-0 md:pl-3 md:pt-0">
-                      <p className="flex items-center gap-1.5 text-[11px] text-[#977b88]">
-                        <CalendarDays size={13} className="text-[#a62e60]" />
-                        Booking Date
-                      </p>
-                      <p className="mt-1 text-xs font-semibold text-[#563246]">
-                        {booking.bookingsDate}
-                      </p>
-                      <p className="mt-1 text-xs text-[#856e7b]">
-                        {booking.bookingsTime}
-                      </p>
-                    </div>
-
-                    {/* Price and Status */}
-                    <div className="flex items-center justify-between border-t border-[#f5e9ec] pt-3 md:flex-col md:items-start md:border-0 md:pt-0">
-                      <div>
-                        <span
-                          className={`inline-block rounded-full px-2 py-1 text-[10px] font-bold ${statusStyles[booking.bookingStatus]}`}
-                        >
-                          {booking.bookingStatus}
-                        </span>
-
-                        <p className="mt-2 font-serif text-xl font-bold text-[#551b38]">
-                          ৳{booking.bookingsPrice}
-                        </p>
+          {!loadError && visible.length > 0 ? (
+            visible.map(({ booking, status }) => {
+              const rating =
+                typeof booking.bookingsRating === "number" &&
+                booking.bookingsRating > 0
+                  ? booking.bookingsRating
+                  : null;
+              return (
+                <article
+                  key={booking._id}
+                  className="rounded-2xl border border-[#f1ded7] bg-white p-4 shadow-[0_24px_50px_-40px_rgba(114,14,50,0.6)] transition hover:border-[#e3c3bd] dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none dark:hover:border-white/20"
+                >
+                  <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
+                    {/* Image + service info */}
+                    <div className="flex min-w-0 flex-1 items-center gap-4">
+                      <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-[#f6ece8] sm:size-24 dark:bg-[#241720]">
+                        {booking.bookingsImage ? (
+                          <Image
+                            src={booking.bookingsImage}
+                            alt={booking.bookingTitle}
+                            fill
+                            sizes="96px"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <span className="flex size-full items-center justify-center text-[#c4b4ba] dark:text-[#6f5c66]">
+                            <Camera size={22} />
+                          </span>
+                        )}
                       </div>
 
-                      <button
-                        // onClick={() => setSelectedBooking(booking)}
-                        className="flex items-center gap-1 rounded-full border border-[#c34c79] px-3 py-1.5 text-[11px] font-semibold text-[#9a2855] transition hover:bg-[#8b1e49] hover:text-white md:mt-1"
-                      >
-                        View Details
-                        <ChevronRight size={13} />
-                      </button>
+                      <div className="min-w-0">
+                        <h2 className="font-heading truncate text-lg leading-snug font-semibold text-[#2b0713] dark:text-[#ffeaf1]">
+                          {booking.bookingTitle}
+                        </h2>
+
+                        <p className="mt-1.5 flex items-center gap-1.5 truncate text-xs font-medium text-[#6b5a61] dark:text-[#c8b3bd]">
+                          <Camera
+                            size={13}
+                            className="shrink-0 text-[#a52b50] dark:text-[#ff9bb9]"
+                          />
+                          {booking.bookingsCategory
+                            ? capitalize(booking.bookingsCategory)
+                            : "Service"}
+                        </p>
+
+                        <p className="mt-1 flex items-center gap-1.5 truncate text-xs font-medium text-[#6b5a61] dark:text-[#c8b3bd]">
+                          <MapPin
+                            size={13}
+                            className="shrink-0 text-[#a52b50] dark:text-[#ff9bb9]"
+                          />
+                          {booking.bookingsLocation || "Location to be confirmed"}
+                        </p>
+
+                        {rating !== null && (
+                          <p className="mt-1 flex items-center gap-1.5 text-xs text-[#6b5a61] dark:text-[#c8b3bd]">
+                            <Star
+                              size={13}
+                              className="fill-[#f5b301] text-[#f5b301]"
+                            />
+                            <span className="font-bold text-[#2b0713] dark:text-[#ffeaf1]">
+                              {rating.toFixed(1)}
+                            </span>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Date · price · status */}
+                    <div className="flex flex-wrap items-center gap-x-7 gap-y-4 xl:justify-end">
+                      <div>
+                        <p className="flex items-center gap-1.5 text-[0.66rem] font-bold tracking-wide text-[#a52b50] uppercase dark:text-[#ff9bb9]">
+                          <CalendarDays size={13} />
+                          Booking Date
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-[#2b0713] dark:text-[#ffeaf1]">
+                          {formatDate(booking.bookingsDate)}
+                        </p>
+                        <p className="flex items-center gap-1.5 text-xs text-[#8a7a80] dark:text-[#9b8792]">
+                          <Clock size={12} />
+                          {formatTime(booking.bookingsTime)}
+                        </p>
+                        {booking.bookingsUnit && (
+                          <p className="mt-0.5 text-[0.68rem] text-[#a89a9f] dark:text-[#8d7a84]">
+                            Unit: {booking.bookingsUnit}
+                          </p>
+                        )}
+                      </div>
+
+                      {booking.bookingsPrice && (
+                        <p className="text-lg font-extrabold text-[#720e32] dark:text-[#ff9bb9]">
+                          ৳ {booking.bookingsPrice}
+                        </p>
+                      )}
+
+                      <div className="flex flex-col items-start gap-2.5 xl:items-end">
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.7rem] font-bold",
+                            STATUS_STYLE[status],
+                          )}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="size-1.5 rounded-full bg-current"
+                          />
+                          {STATUS_LABEL[status]}
+                        </span>
+                        <Link
+                          href={`/services/${booking.bookingsId}`}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-[#e3c3bd] bg-white px-3.5 py-2 text-[0.72rem] font-bold text-[#720e32] transition hover:border-[#720e32] hover:bg-[#fdf1eb] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:border-white/15 dark:bg-transparent dark:text-[#ff9bb9] dark:hover:border-[#ff9bb9] dark:hover:bg-white/5 dark:focus-visible:ring-[#ff9bb9]/30"
+                        >
+                          View Details
+                          <ArrowRight size={13} />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="rounded-2xl border border-dashed border-[#e8b8c9] bg-white py-16 text-center">
-                  <CalendarDays size={35} className="mx-auto text-[#d28ba7]" />
-                  <h3 className="mt-3 font-serif text-lg font-bold text-[#792b4b]">
-                    No bookings found
-                  </h3>
-                  <p className="mt-1 text-xs text-[#987888]">
-                    Try changing your search or filter.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <aside className="space-y-4">
-            {/* Booking Summary */}
-            <div className="rounded-2xl border border-[#f2dfe5] bg-white p-5 shadow-[0_4px_20px_rgba(105,30,61,0.04)]">
-              <h3 className="flex items-center gap-2 font-serif text-lg font-bold text-[#742441]">
-                <BarChart3 size={19} className="text-[#9d2855]" />
-                Booking Summary
-              </h3>
-
-              <div className="mt-5 grid grid-cols-2 gap-y-5">
-                <SummaryItem value={bookings.length} label="Total Bookings" />
-                <SummaryItem value={upcomingCount} label="Upcoming" />
-                <SummaryItem value={completedCount} label="Completed" />
-                <SummaryItem value={cancelledCount} label="Cancelled" />
+                </article>
+              );
+            })
+          ) : (
+            !loadError && (
+              <div className="rounded-2xl border border-dashed border-[#e3c3bd] bg-white px-6 py-14 text-center dark:border-white/15 dark:bg-[#1e131a]">
+                <CalendarDays
+                  size={30}
+                  aria-hidden="true"
+                  className="mx-auto text-[#c4b4ba] dark:text-[#6f5c66]"
+                />
+                <h2 className="font-heading mt-3 text-xl font-semibold text-[#2b0713] dark:text-[#ffeaf1]">
+                  {rows.length === 0 ? "No bookings yet" : "No bookings found"}
+                </h2>
+                <p className="mt-2 text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
+                  {rows.length === 0
+                    ? "Once you book a service, it will show up here."
+                    : "Try a different search term or switch tabs."}
+                </p>
+                {rows.length === 0 && (
+                  <Link
+                    href="/services"
+                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#720e32] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+                  >
+                    Browse Services
+                    <ArrowRight size={15} />
+                  </Link>
+                )}
               </div>
-            </div>
+            )
+          )}
+        </section>
 
-            {/* Help Card */}
-            <div className="relative min-h-[270px] overflow-hidden rounded-2xl border border-[#f4dce3] bg-gradient-to-b from-[#fff0f0] via-[#ffe9eb] to-[#f8d9de] p-5 text-center">
-              <Heart size={23} className="mx-auto text-[#8f204d]" />
+        {/* ---------- Sidebar ---------- */}
+        <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+          {/* Booking summary */}
+          <section className="rounded-2xl border border-[#f1ded7] bg-white p-5 shadow-[0_24px_50px_-40px_rgba(114,14,50,0.6)] dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none">
+            <h2 className="flex items-center gap-2 text-[0.95rem] font-bold text-[#2b0713] dark:text-[#ffeaf1]">
+              <span className="flex size-8 items-center justify-center rounded-lg bg-[#fdeef2] dark:bg-[#a52b50]/15">
+                <ChartColumn
+                  size={16}
+                  className="text-[#a52b50] dark:text-[#ff9bb9]"
+                />
+              </span>
+              Booking Summary
+            </h2>
 
-              <h3 className="mt-3 font-serif text-xl font-bold text-[#76213f]">
-                Need Help?
-              </h3>
+            <dl className="mt-4 grid grid-cols-2 gap-3">
+              {[
+                { label: "Total Bookings", value: counts.all },
+                { label: "Upcoming", value: counts.upcoming },
+                { label: "Completed", value: counts.completed },
+                { label: "Cancelled", value: counts.cancelled },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl bg-[#fdfbfa] px-3 py-3.5 text-center dark:bg-[#241720]"
+                >
+                  <dd className="text-xl leading-none font-extrabold tabular-nums text-[#720e32] dark:text-[#ff9bb9]">
+                    {item.value}
+                  </dd>
+                  <dt className="mt-1.5 text-[0.68rem] font-medium text-[#8a7a80] dark:text-[#9b8792]">
+                    {item.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+          </section>
 
-              <p className="mx-auto mt-2 max-w-[190px] text-xs leading-5 text-[#826271]">
-                Our support team is here to assist you anytime.
-              </p>
-
-              <button className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#851d48] px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-[#a52e5e]">
-                <Headphones size={14} />
-                Contact Support
-                <ChevronRight size={13} />
-              </button>
-
-              <img
-                src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600"
-                alt="Beautiful pink flowers"
-                className="absolute bottom-0 left-0 h-[105px] w-full object-cover object-center opacity-90"
-              />
-            </div>
-          </aside>
-        </div>
-      </section>
-    </main>
-  );
-}
-
-function SummaryItem({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="text-center">
-      <p className="font-serif text-2xl font-bold text-[#54213b]">{value}</p>
-      <p className="mt-1 text-[11px] text-[#947a87]">{label}</p>
+          {/* Need help */}
+          <section className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-[#ffe4ec] via-[#fff4f7] to-[#ffd9e6] p-6 text-center dark:from-[#2a1620] dark:via-[#241720] dark:to-[#2f1a25]">
+            <Heart
+              aria-hidden="true"
+              size={80}
+              className="absolute -top-5 -right-5 rotate-12 text-white/50 dark:text-white/5"
+            />
+            <Heart
+              size={26}
+              aria-hidden="true"
+              className="relative mx-auto fill-[#a52b50] text-[#a52b50] dark:fill-[#ff9bb9] dark:text-[#ff9bb9]"
+            />
+            <h2 className="font-heading relative mt-2 text-xl font-semibold text-[#720e32] dark:text-[#ff9bb9]">
+              Need Help?
+            </h2>
+            <p className="relative mt-2 text-xs leading-relaxed font-medium text-[#a52b50] dark:text-[#c8b3bd]">
+              Our support team is here to assist you anytime.
+            </p>
+            <Link
+              href="/contact"
+              className="relative mt-4 inline-flex items-center gap-2 rounded-full bg-[#720e32] px-5 py-2.5 text-[0.75rem] font-bold text-white shadow-sm transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
+            >
+              <LifeBuoy size={14} />
+              Contact Support
+              <ArrowRight size={13} />
+            </Link>
+          </section>
+        </aside>
+      </div>
     </div>
   );
 }
