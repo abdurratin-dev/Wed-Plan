@@ -31,36 +31,40 @@ export interface CreateServicePayload {
 }
 
 export interface BookingsData {
-  _id: string;
-  bookingTitle: string;
-  bookingsId: string;
-  bookingsCategory: string;
-  bookingsLocation: string;
-  bookingsPrice: string;
-  bookingsRating: number;
-  bookingsImage : string
+  _id: string
+  bookingTitle: string
+  bookingsId: string
+  bookingsCategory: string
+  bookingsLocation: string
+  bookingsPrice: string
+  bookingsRating: number
+  bookingsImage: string
   bookingStatus: "Upcoming" | "Confirmed" | "Completed" | "Cancelled";
-  bookingsDate: string;
-  bookingsTime: string;
-  bookingsUnit: string;
-  customerName: string | undefined;
-  customerEmail: string | undefined;
-  customerId: string | undefined;
+  bookingsDate: string
+  bookingsTime: string
+  bookingsUnit: string
+  bookingsDuration: string
+  bookingsAction: string
+  customerName: string | undefined
+  customerEmail: string | undefined
+  customerId: string | undefined
 }
 
 export interface CreatBookingsPayload {
-  bookingTitle: string;
-  bookingsId: string;
-  bookingsCategory: string;
-  bookingsLocation: string;
-  bookingsPrice: string;
-  bookingsRating: number;
-  bookingsimage : string
+  bookingTitle: string
+  bookingsId: string
+  bookingsCategory: string
+  bookingsLocation: string
+  bookingsPrice: string
+  bookingsRating: number
+  bookingsImage: string
   bookingStatus: "Upcoming" | "Confirmed" | "Completed" | "Cancelled";
-  bookingsDate: string;
-  bookingsTime: string;
-  bookingsUnit: string;
-  customerName: string | undefined;
-  customerEmail: string | undefined;
-  customerId: string | undefined;
+  bookingsDate: string
+  bookingsTime: string
+  bookingsUnit: string
+  bookingsDuration: string
+  bookingsAction: string
+  customerName: string | undefined
+  customerEmail: string | undefined
+  customerId: string | undefined
 }
