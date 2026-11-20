@@ -23,7 +23,7 @@ export const creatApi = async (api: string, data: CreateServicePayload | CreatBo
   return res;
 };
 
-const getApi = async(api:string)=>{
+export const getApi = async(api:string)=>{
   const token = await user();
   const res = await fetch(`${SERVER_URL}${api}`,{
     headers :{

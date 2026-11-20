@@ -92,7 +92,7 @@ export default function ServiceDetails({
     typeof service.rating === "number" && service.rating > 0
       ? service.rating
       : null;
-  const reviews = service.reviews > 0 ? service.reviews : 0;
+  // const reviews = service.reviews > 0 ? service.reviews : 0;
   const bookings =
     typeof service.bookings === "number" && service.bookings > 0
       ? service.bookings
@@ -119,6 +119,12 @@ export default function ServiceDetails({
     const bookingsData : CreatBookingsPayload = {
       bookingTitle: service.name,
       bookingsId: service._id,
+      bookingsCategory : service.category,
+      bookingsLocation : service.location,
+      bookingsPrice : service.price,
+      bookingsRating : service.rating,
+      bookingsimage: service.imageUrl,
+      bookingStatus : 'Upcoming',
       bookingsDate: date,
       bookingsTime: time,
       bookingsUnit: units,
@@ -271,7 +277,7 @@ export default function ServiceDetails({
                           {rating.toFixed(1)}
                         </span>
                         <span className="text-[#8a7a80] dark:text-[#9b8792]">
-                          ({reviews} reviews)
+                          {/* ({reviews} reviews) */}
                         </span>
                       </span>
                     ) : (
@@ -355,7 +361,7 @@ export default function ServiceDetails({
                     >
                       <Icon size={13} />
                       {label}
-                      {key === "reviews" && reviews > 0 && ` (${reviews})`}
+                      {/* {key === "reviews" && reviews > 0 && ` (${reviews})`} */}
                     </button>
                   );
                 })}
@@ -399,9 +405,9 @@ export default function ServiceDetails({
                           ))}
                         </div>
                         <p className="mt-1 text-xs text-[#8a7a80] dark:text-[#9b8792]">
-                          {reviews > 0
+                          {/* {reviews > 0
                             ? `Based on ${reviews} reviews`
-                            : "No reviews yet"}
+                            : "No reviews yet"} */}
                         </p>
                       </div>
                     </div>
