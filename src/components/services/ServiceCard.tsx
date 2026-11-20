@@ -2,104 +2,113 @@ import { ServiceData } from "@/types/apidata";
 import { ArrowRight, Heart, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-export default function ServiceCard({service}:{service : ServiceData}) {
+export default function ServiceCard({ service }: { service: ServiceData }) {
   return (
-    <article
-      className="group overflow-hidden rounded-2xl border border-[#f1ded7] bg-white shadow-[0_24px_50px_-38px_rgba(114,14,50,0.6)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_34px_60px_-38px_rgba(114,14,50,0.65)] dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none dark:hover:border-white/20"
-    >
-      {/* Image + favorite */}
-      <div className="relative aspect-[16/10]">
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src={service.imageUrl}
-            alt={service.alt}
-            fill
-            sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 33vw"
-            className="object-cover transition duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/25 to-transparent" />
-        </div>
-
-        <button
-          type="button"
-          // onClick={() => toggleFavorite(service.id)}
-          // aria-pressed={favorite}
-          // aria-label={
-          //   favorite
-          //     ? `Remove ${service.title} from favorites`
-          //     : `Add ${service.title} to favorites`
-          // }
-          className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition hover:bg-white focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#1e131a]/90 dark:hover:bg-[#241720]"
-        >
-          <Heart
-            size={16}
-            className={cn(
-              "transition",
-              // favorite
-              //   ? "fill-[#720e32] text-[#720e32] dark:fill-[#ff9bb9] dark:text-[#ff9bb9]"
-              //   : "text-[#4a3a41] dark:text-[#d5c1ca]",
-            )}
-          />
-        </button>
-      </div>
-
-      {/* Body */}
-      <div className="p-4">
-        <h3 className="text-[1.02rem] leading-snug font-bold text-[#2b0713] dark:text-[#ffeaf1]">
-          {service.name}
-        </h3>
-
-        <p className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-[#6b5a61] dark:text-[#c8b3bd]">
-          {/* <Icon
-                            size={13}
-                            className="text-[#a52b50] dark:text-[#ff9bb9]"
-                          /> */}
-          {service.category}
-          <span
-            aria-hidden="true"
-            className="text-[#c4b4ba] dark:text-[#6f5c66]"
-          >
-            ·
-          </span>
-          <MapPin size={13} className="text-[#a52b50] dark:text-[#ff9bb9]" />
-          {service.location}
-        </p>
-
-        <p className="mt-2.5 flex items-center gap-1.5 text-xs text-[#6b5a61] dark:text-[#c8b3bd]">
-          <Star size={14} className="fill-[#f5b301] text-[#f5b301]" />
-          <span className="font-bold text-[#2b0713] dark:text-[#ffeaf1]">
-            {/* {service.rating.toFixed(1)} */}
-          </span>{" "}
-          <span className="text-[#8a7a80] dark:text-[#9b8792]">
-            ({service.reviews} reviews)
-          </span>
-        </p>
-
-        <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3 border-t border-[#f6ece8] pt-3.5 dark:border-white/10">
-          <p className="flex items-baseline gap-1.5">
-            <span className="text-xs font-medium text-[#8a7a80] dark:text-[#9b8792]">
-              From
-            </span>
-            <span className="text-lg font-extrabold text-[#2b0713] dark:text-[#ffeaf1]">
-              ৳ {service.price}
-            </span>
-          </p>
+    <article className="group overflow-hidden rounded-2xl border border-[#f1ded7] bg-white shadow-[0_24px_50px_-38px_rgba(114,14,50,0.6)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_34px_60px_-38px_rgba(114,14,50,0.65)] dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none dark:hover:border-white/20">
+      <Link href={`/services/${service._id}`}>
+        {/* Image + favorite */}
+        <div className="relative aspect-[16/10]">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src={service.imageUrl}
+              alt={service.alt || service.name}
+              fill
+              sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 33vw"
+              className="object-cover transition duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/25 to-transparent" />
+          </div>
 
           <button
             type="button"
-            // onClick={() =>
-            //   setNote(
-            //     `Booking “${service.name}” — the booking backend isn't connected yet, so no reservation was made.`,
-            //   )
+            // onClick={() => toggleFavorite(service.id)}
+            // aria-pressed={favorite}
+            // aria-label={
+            //   favorite
+            //     ? `Remove ${service.title} from favorites`
+            //     : `Add ${service.title} to favorites`
             // }
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#e3c3bd] bg-white px-4 py-2 text-[0.75rem] font-bold text-[#720e32] transition hover:border-[#720e32] hover:bg-[#720e32] hover:text-white focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:border-white/15 dark:bg-transparent dark:text-[#ff9bb9] dark:hover:border-[#ff9bb9] dark:hover:bg-[#ff9bb9] dark:hover:text-[#160e13] dark:focus-visible:ring-[#ff9bb9]/30"
+            className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition hover:bg-white focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#1e131a]/90 dark:hover:bg-[#241720]"
           >
-            Book Now
-            <ArrowRight size={13} />
+            <Heart
+              size={16}
+              className={cn(
+                "transition",
+                // favorite
+                //   ? "fill-[#720e32] text-[#720e32] dark:fill-[#ff9bb9] dark:text-[#ff9bb9]"
+                //   : "text-[#4a3a41] dark:text-[#d5c1ca]",
+              )}
+            />
           </button>
         </div>
-      </div>
+
+        {/* Body */}
+        <div className="p-4">
+          <h3 className="text-[1.02rem] leading-snug font-bold text-[#2b0713] dark:text-[#ffeaf1]">
+            {service.name}
+          </h3>
+
+          <p className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-[#6b5a61] dark:text-[#c8b3bd]">
+            {/* <Icon
+                            size={13}
+                            className="text-[#a52b50] dark:text-[#ff9bb9]"
+                            /> */}
+            {service.category}
+            <span
+              aria-hidden="true"
+              className="text-[#c4b4ba] dark:text-[#6f5c66]"
+            >
+              ·
+            </span>
+            <MapPin size={13} className="text-[#a52b50] dark:text-[#ff9bb9]" />
+            {service.location}
+          </p>
+
+          <p className="mt-2.5 flex items-center gap-1.5 text-xs text-[#6b5a61] dark:text-[#c8b3bd]">
+            <Star size={14} className="fill-[#f5b301] text-[#f5b301]" />
+            {typeof service.rating === "number" && service.rating > 0 ? (
+              <span className="font-bold text-[#2b0713] dark:text-[#ffeaf1]">
+                {service.rating.toFixed(1)}
+              </span>
+            ) : null}
+            {typeof service.reviews === "number" && service.reviews > 0 ? (
+              <span className="text-[#8a7a80] dark:text-[#9b8792]">
+                ({service.reviews} reviews)
+              </span>
+            ) : (
+              <span className="text-[#8a7a80] dark:text-[#9b8792]">
+                No ratings yet
+              </span>
+            )}
+          </p>
+
+          <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3 border-t border-[#f6ece8] pt-3.5 dark:border-white/10">
+            <p className="flex items-baseline gap-1.5">
+              <span className="text-xs font-medium text-[#8a7a80] dark:text-[#9b8792]">
+                From
+              </span>
+              <span className="text-lg font-extrabold text-[#2b0713] dark:text-[#ffeaf1]">
+                ৳ {service.price}
+              </span>
+            </p>
+
+            <button
+              type="button"
+              // onClick={() =>
+              //   setNote(
+              //     `Booking “${service.name}” — the booking backend isn't connected yet, so no reservation was made.`,
+              //   )
+              // }
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#e3c3bd] bg-white px-4 py-2 text-[0.75rem] font-bold text-[#720e32] transition hover:border-[#720e32] hover:bg-[#720e32] hover:text-white focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:border-white/15 dark:bg-transparent dark:text-[#ff9bb9] dark:hover:border-[#ff9bb9] dark:hover:bg-[#ff9bb9] dark:hover:text-[#160e13] dark:focus-visible:ring-[#ff9bb9]/30"
+            >
+              Book Now
+              <ArrowRight size={13} />
+            </button>
+          </div>
+        </div>
+      </Link>
     </article>
   );
 }

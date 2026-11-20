@@ -5,25 +5,19 @@ import { ChevronDown, CloudUpload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createService } from "@/lib/actions/api/service";
 import { CreateServicePayload } from "@/types/apidata";
-
-const categories = [
-  "Photography",
-  "Videography",
-  "Catering",
-  "Decoration & Florals",
-  "Entertainment",
-  "Makeup & Beauty",
-  "Bridal Attire",
-  "Venue",
-  "Cakes & Desserts",
-  "Transportation",
-] as const;
+import { CATEGORIES, LOCATIONS } from "../services/BrowseServices";
 
 const MAX_DESCRIPTION = 500;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-type FieldName = "name" | "category" | "description" | "price" | "location" | "image";
+type FieldName =
+  | "name"
+  | "category"
+  | "description"
+  | "price"
+  | "location"
+  | "image";
 type Errors = Partial<Record<FieldName, string>>;
 
 type PickedImage = File;
@@ -55,7 +49,7 @@ export default function AddServiceForm() {
   const [submitted, setSubmitted] = useState(false);
 
   const [image, setImage] = useState<string | null>(null);
-  const [imageUrl,setImageUrl] = useState<string>('')
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [imageError, setImageError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -84,15 +78,15 @@ export default function AddServiceForm() {
     setImage(URL.createObjectURL(file));
 
     const formData = new FormData();
-    formData.append('image',file)
-    const imageBB = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API}`
+    formData.append("image", file);
+    const imageBB = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API}`;
 
-    const uploadImge = await fetch(imageBB,{
-      method: 'POST',
+    const uploadImge = await fetch(imageBB, {
+      method: "POST",
       body: formData,
-    })
-    const result = await uploadImge.json()
-  
+    });
+    const result = await uploadImge.json();
+
     setImageUrl(result.data.url);
   }
 
@@ -125,9 +119,8 @@ export default function AddServiceForm() {
       next.description = "Please write at least 20 characters";
     if (!price.trim() || Number(price) <= 0)
       next.price = "Please enter a valid price";
-    if (location.trim().length < 2)
-      next.location = "Please enter a location";
-    if(!imageUrl.trim()) next.image = 'Please upload your service photo'
+    if (location.trim().length < 2) next.location = "Please enter a location";
+    if (!imageUrl.trim()) next.image = "Please upload your service photo";
 
     setErrors(next);
     if (Object.keys(next).length > 0) {
@@ -142,14 +135,14 @@ export default function AddServiceForm() {
       description,
       price,
       location,
-      imageUrl
-    }
-    try{
-      await createService(data)
+      imageUrl,
+      status: "Active"
+    };
+    try {
+      await createService(data);
       setSubmitted(true);
-      handleReset()
-    }
-    catch{
+      handleReset();
+    } catch {
       setSubmitted(false);
     }
   }
@@ -227,14 +220,13 @@ export default function AddServiceForm() {
                     className={cn(
                       fieldClass(errors.category),
                       "appearance-none pr-11",
-                      !category &&
-                        "text-[#a89a9f] dark:text-[#8d7a84]",
+                      !category && "text-[#a89a9f] dark:text-[#8d7a84]",
                     )}
                   >
                     <option value="">Select a category</option>
-                    {categories.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
+                    {CATEGORIES.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
                       </option>
                     ))}
                   </select>
@@ -320,20 +312,35 @@ export default function AddServiceForm() {
                   <label htmlFor="service-location" className={labelClass}>
                     Location
                   </label>
-                  <input
-                    id="service-location"
-                    name="location"
-                    type="text"
-                    autoComplete="off"
-                    placeholder="e.g. Dhaka, Bangladesh"
-                    value={location}
-                    onChange={(e) => {
-                      setLocation(e.target.value);
-                      clearError("location");
-                    }}
-                    aria-invalid={!!errors.location}
-                    className={cn(fieldClass(errors.location), "mt-1.5")}
-                  />
+                  <div className="relative mt-1.5">
+                    <select
+                      id="service-location"
+                      name="serviceLocation"
+                      value={location}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        clearError("location");
+                      }}
+                      aria-invalid={!!errors.location}
+                      className={cn(
+                        fieldClass(errors.location),
+                        "appearance-none pr-11",
+                        !category && "text-[#a89a9f] dark:text-[#8d7a84]",
+                      )}
+                    >
+                      <option value="">Select your location</option>
+                      {LOCATIONS.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      aria-hidden="true"
+                      size={18}
+                      className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#a89a9f] dark:text-[#8d7a84]"
+                    />
+                  </div>
                   {errorText(errors.location)}
                 </div>
               </div>

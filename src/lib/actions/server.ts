@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
-import { CreateServicePayload } from "@/types/apidata";
+import { CreatBookingsPayload, CreateServicePayload } from "@/types/apidata";
 
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 const user = async () => {
@@ -10,7 +10,7 @@ const user = async () => {
   return session?.session.token;
 };
 
-export const creatApi = async (api: string, data: CreateServicePayload) => {
+export const creatApi = async (api: string, data: CreateServicePayload | CreatBookingsPayload) => {
   const token = await user();
   const res = await fetch(`${SERVER_URL}${api}`, {
     method: "POST",
@@ -22,3 +22,13 @@ export const creatApi = async (api: string, data: CreateServicePayload) => {
   });
   return res;
 };
+
+const getApi = async(api:string)=>{
+  const token = await user();
+  const res = await fetch(`${SERVER_URL}${api}`,{
+    headers :{
+      authorization: `Brrer ${token}`,
+    }
+  })
+  return res
+}

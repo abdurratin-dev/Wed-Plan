@@ -27,7 +27,7 @@ import ServiceCard from "./ServiceCard";
 import { useRouter } from "next/navigation";
 import { Categorys } from "@/types/othersType";
 
-const CATEGORIES: Categorys[] = [
+export const CATEGORIES: Categorys[] = [
   { label: "Photography", value: "photography", isActive: false },
   { label: "Decoration & Styling", value: "decoration", isActive: false },
   { label: "Catering", value: "catering", isActive: false },
@@ -46,7 +46,7 @@ type Category =
   | "entertainment"
   | "others";
 
-const LOCATIONS = ["Dhaka", "Chattogram", "Sylhet", "Khulna", "Rajshahi"];
+export const LOCATIONS = ["Dhaka", "Chattogram", "Sylhet", "Khulna", "Rajshahi"];
 
 const SORTS = [
   { value: "popular", label: "Most Popular" },
@@ -72,7 +72,6 @@ type Criteria = {
 /** Shared predicate used by both the results grid and the summary counts. */
 
 export default function BrowseServices({results}:{results:ServiceData[]}) {
-  const [query, setQuery] = useState("");
   const [qsearch, setSearch] = useState("");
   const [picked, setPicked] = useState('');
   const [location, setLocation] = useState("All Locations");
@@ -93,6 +92,9 @@ export default function BrowseServices({results}:{results:ServiceData[]}) {
   const resetFilters = ()=>{
     setPicked('')
     setLocation('All Locations')
+  }
+  const AllresetFilters = ()=>{
+    router.push(`/services`)
   }
   const search = (event: React.FormEvent) => {
     event.preventDefault();
@@ -382,7 +384,7 @@ export default function BrowseServices({results}:{results:ServiceData[]}) {
                 </p>
                 <button
                   type="button"
-                  onClick={resetFilters}
+                  onClick={AllresetFilters}
                   className="mt-5 rounded-xl bg-[#720e32] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
                 >
                   Clear all filters

@@ -126,7 +126,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link
-                href="/login"
+                href="/sign-in"
                 className="rounded-xl border border-[#720e32]/40 bg-white px-5 py-1 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
               >
                 Sign In
@@ -202,7 +202,7 @@ export default function Navbar() {
 
             <div className="flex gap-3 border-t border-gray-200 pt-4 dark:border-white/10">
               <Link
-                href="/login"
+                href="/sign-in"
                 className="flex-1 rounded-lg border border-[#720e32] py-2.5 text-center font-semibold text-[#720e32] dark:border-[#ff9bb9] dark:text-[#ff9bb9]"
               >
                 Sign In
