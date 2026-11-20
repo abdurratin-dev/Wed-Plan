@@ -71,44 +71,34 @@ type Criteria = {
 
 /** Shared predicate used by both the results grid and the summary counts. */
 
-export default function BrowseServices() {
+export default function BrowseServices({results}:{results:ServiceData[]}) {
   const [query, setQuery] = useState("");
-  const [appliedQuery, setAppliedQuery] = useState("");
-  const [picked, setPicked] = useState<Category[]>([]);
-  const [appliedCategories, setAppliedCategories] = useState<Category[]>([]);
+  const [qsearch, setSearch] = useState("");
+  const [picked, setPicked] = useState('');
   const [location, setLocation] = useState("All Locations");
-  const [priceRange, setPriceRange] = useState("Any Price");
   const [sort, setSort] = useState<SortValue>("popular");
-  const [favorites, setFavorites] = useState<number[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(true);
-  const [note, setNote] = useState<string | null>(null);
-  const [results, setResults] = useState<ServiceData[]>([]);
   const router = useRouter();
-  const handleCategores = (value: Category) => {
-    for (let index = 0; index < CATEGORIES.length; index++) {
-      if(CATEGORIES[index].value !== value){
-        CATEGORIES[index].isActive = false
-        console.log(CATEGORIES);
-      }
-    }
-  };
   const params = new URLSearchParams();
   const applyFilters = () => {
-    picked.map((pick) => params.set("category", pick));
+    if(picked){
+      params.set("category", picked);
+    }
+    if(location !== 'All Locations'){
+      params.set('location',location);
+    }
     router.push(`?${params.toString()}`);
   };
+  const resetFilters = ()=>{
+    setPicked('')
+    setLocation('All Locations')
+  }
   const search = (event: React.FormEvent) => {
     event.preventDefault();
-    setAppliedQuery(query);
+    params.set('search',qsearch)
+    router.push(`?${params.toString()}`)
   };
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getServiceData();
-      setResults(res);
-    };
-    getData();
-  }, []);
   return (
     <div className="min-h-screen bg-[#fdfbfa] pb-20 dark:bg-[#160e13]">
       {/* ---------------- Hero banner ---------------- */}
@@ -172,8 +162,8 @@ export default function BrowseServices() {
               />
               <input
                 type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                value={qsearch}
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search services..."
                 aria-label="Search services"
                 className="w-full rounded-full border border-[#eee2dd] bg-white py-3.5 pr-4 pl-11 text-sm text-[#2b0713] shadow-[0_16px_36px_-30px_rgba(114,14,50,0.6)] outline-none transition placeholder:text-[#a89a9f] focus:border-[#720e32] focus:ring-2 focus:ring-[#720e32]/15 dark:border-white/10 dark:bg-[#241720] dark:text-white dark:placeholder:text-[#8d7a84] dark:focus:border-[#ff9bb9] dark:focus:ring-[#ff9bb9]/15"
@@ -211,7 +201,7 @@ export default function BrowseServices() {
                 </h2>
                 <button
                   type="button"
-                  // onClick={resetFilters}
+                  onClick={resetFilters}
                   className="text-[0.7rem] font-bold tracking-wide text-[#a52b50] uppercase transition hover:text-[#720e32] dark:text-[#ff9bb9] dark:hover:text-[#ffb0c5]"
                 >
                   Reset
@@ -247,10 +237,6 @@ export default function BrowseServices() {
                   )}
                 >
                   {CATEGORIES.map((category) => {
-                    if (picked.includes(category.value)) {
-                      category.isActive = true;
-                      handleCategores(category.value);
-                    }
                     return (
                       <label
                         key={category.value}
@@ -258,22 +244,26 @@ export default function BrowseServices() {
                       >
                         <input
                           type="radio"
-                          
+                          checked={picked === category.value}
                           onChange={() => {
-                            setPicked([...picked, category.value]);
+                            if(picked === category.value){
+                              setPicked('')
+                              console.log(picked);
+                            }
+                            setPicked(category.value);
                           }}
-                          className=""
+                          className="peer sr-only"
                         />
-                        {/* <span
+                        <span
                           aria-hidden="true"
                           className={cn(
                             "flex size-4.5 shrink-0 items-center justify-center rounded border transition peer-focus-visible:ring-2 peer-focus-visible:ring-[#720e32]/40",
-                            category.isActive
+                            picked === category.value
                               ? "border-[#720e32] bg-[#720e32] dark:border-[#ff9bb9] dark:bg-[#ff9bb9]"
                               : "border-[#d8c8cd] bg-white dark:border-white/20 dark:bg-[#241720]",
                           )}
                         >
-                          {category.isActive && (
+                          {picked === category.value && (
                             <svg
                               viewBox="0 0 12 12"
                               className="size-3 text-white dark:text-[#160e13]"
@@ -286,13 +276,13 @@ export default function BrowseServices() {
                               <path d="M2.5 6.2 5 8.7l4.5-5" />
                             </svg>
                           )}
-                        </span> */}
+                        </span>
                         <span
                           className={cn(
                             "flex-1 truncate font-medium",
-                            // category.isActive
-                            //   ? "text-[#720e32] dark:text-[#ff9bb9]"
-                            //   : "text-[#4a3a41] dark:text-[#d5c1ca]",
+                            picked === category.value
+                              ? "text-[#720e32] dark:text-[#ff9bb9]"
+                              : "text-[#4a3a41] dark:text-[#d5c1ca]",
                           )}
                         >
                           {category.label}
@@ -325,31 +315,6 @@ export default function BrowseServices() {
                   {LOCATIONS.map((city) => (
                     <option key={city}>{city}</option>
                   ))}
-                </select>
-              </div>
-
-              {/* Price Range */}
-              <div className="py-4">
-                <label
-                  htmlFor="filter-price"
-                  className="mb-2.5 flex items-center gap-2 text-sm font-bold text-[#2b0713] dark:text-[#ffeaf1]"
-                >
-                  <Star
-                    size={15}
-                    className="text-[#a52b50] dark:text-[#ff9bb9]"
-                  />
-                  Price Range
-                </label>
-                <select
-                  id="filter-price"
-                  value={priceRange}
-                  onChange={(event) => setPriceRange(event.target.value)}
-                  className={selectClass}
-                >
-                  <option>Any Price</option>
-                  <option>Under ৳5,000</option>
-                  <option>৳5,000 – ৳10,000</option>
-                  <option>Above ৳10,000</option>
                 </select>
               </div>
 
@@ -395,30 +360,10 @@ export default function BrowseServices() {
               </label>
             </div>
 
-            {note && (
-              <div
-                role="status"
-                className="mt-4 flex items-start justify-between gap-3 rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]"
-              >
-                <p>{note}</p>
-                <button
-                  type="button"
-                  onClick={() => setNote(null)}
-                  aria-label="Dismiss message"
-                  className="mt-0.5 shrink-0 text-[#720e32]/70 transition hover:text-[#720e32] dark:text-[#ffb0c5]/70 dark:hover:text-[#ffb0c5]"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            )}
-
             {/* Grid */}
             {results.length > 0 ? (
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {results.map((service) => {
-                  // const Icon = service.icon;
-                  // const favorite = favorites.includes(service.id);
-
                   return <ServiceCard key={service._id} service={service} />;
                 })}
               </div>
@@ -437,7 +382,7 @@ export default function BrowseServices() {
                 </p>
                 <button
                   type="button"
-                  // onClick={resetFilters}
+                  onClick={resetFilters}
                   className="mt-5 rounded-xl bg-[#720e32] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
                 >
                   Clear all filters

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display,Geist_Mono} from "next/font/google";
+import { Playfair_Display, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import ThemeProvider from "@/components/ui/ThemeProvider";
@@ -8,13 +8,13 @@ import Navbar from "@/components/layout/navbar";
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-})
+});
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "WedPlan",
@@ -31,13 +31,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geistMono.variable,
         playfairDisplay.variable,
         "font-sans",
-
       )}
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
           <Navbar />
-          {children}</ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

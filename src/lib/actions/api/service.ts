@@ -8,8 +8,8 @@ export const createService = async(data:CreateServicePayload)=>{
     return result
 }
 
-export const getServiceData = async():Promise<ServiceData[]>=>{
-    const res = await fetch(`${SERVER_URL}/service`);
+export const getServiceData = async(quary = ''):Promise<ServiceData[]>=>{
+    const res = await fetch(`${SERVER_URL}/service?${quary}`);
     const data = await res.json();
     return data
 }
