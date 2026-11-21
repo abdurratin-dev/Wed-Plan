@@ -1,17 +1,9 @@
 import Image from "next/image";
-import {
-  CalendarDays,
-  Check,
-  Clock,
-  Eye,
-  MessageCircle,
-  Star,
-  X,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
 import { getBookings } from "@/lib/actions/api/booking";
 import { BookingsData } from "@/types/apidata";
 import VendorBookingsCard from "@/components/vendor/VendorBookingsCard";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const metadata = {
   title: "Booking Requests | WedPlan",
@@ -19,8 +11,13 @@ export const metadata = {
 };
 
 export default async function VendorBookingsPage() {
-  const res: BookingsData[] = await getBookings();
-
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  const user = session?.user;
+  const res: BookingsData[] = await getBookings(
+    `role=${user?.role}&userId=${user?.id}`,
+  );
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
       {/* ---------- Hero banner ---------- */}
@@ -56,8 +53,7 @@ export default async function VendorBookingsPage() {
           </p>
         </div>
       </div>
-
-      <VendorBookingsCard request={res} />
+      {res[0].status !== 401 ? <VendorBookingsCard request={res} /> : <p>Customer not book your service</p>}
     </div>
   );
 }

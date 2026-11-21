@@ -15,6 +15,7 @@ import { BookingsData } from "@/types/apidata";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { getBookings, updateBookingsAction } from "@/lib/actions/api/booking";
+import { authClient } from "@/lib/auth-client";
 
 const STATUS = [
   {
@@ -53,6 +54,9 @@ export default function VendorBookingsCard({
 }) {
   const [bookingsData, setBookingsData] = useState<BookingsData[]>(request);
   const [activeTabs,setActiveTabs] = useState('All Requests');
+  const {data:session,error} = authClient.useSession()
+  const user = session?.user
+
   const upcomingFilter = request.filter(
     (response) => response.bookingStatus === "Upcoming",
   );
@@ -81,11 +85,11 @@ export default function VendorBookingsCard({
     const tabs = request.filter((filter) => filter.bookingStatus === action);
     setBookingsData(tabs);
   };
-  const hendleActionButton = async(data : {}) =>{
+  const hendleActionButton = async(data : {},bookingsId : string) =>{
     // setStatusBar(data)
     const res = await updateBookingsAction(data)
     if(res.modifiedCount > 0){
-      const res: BookingsData[] = await getBookings();
+      const res: BookingsData[] = await getBookings(`role=${user?.role}&bookingsId=${bookingsId}&userId=${user?.id}`);
       setBookingsData(res)
     }
   }
@@ -143,14 +147,15 @@ export default function VendorBookingsCard({
                 <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-5">
                   {/* Client */}
                   <div className="flex shrink-0 items-center gap-3 xl:w-44">
-                    <div className="relative size-12 shrink-0 overflow-hidden rounded-full bg-[#f6ece8] dark:bg-[#241720]">
-                      {/* <Image
-                      src={request.avatar}
-                      alt={request.name}
+                    <div className={`relative size-12 shrink-0 overflow-hidden rounded-full bg-[#f6ece8] dark:bg-[#241720] ${!reques.customerImg && "flex justify-center items-center"}`}>
+                      {reques.customerImg ? <Image
+                      src={reques.customerImg}
+                      alt={reques.customerName || ""}
                       fill
                       sizes="48px"
                       className="object-cover"
-                    /> */}
+                    /> : <p className="object-cover text-xl">{reques.customerName?.slice(0,1)}</p>}
+                      
                     </div>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-[#2b0713] dark:text-[#ffeaf1]">
@@ -169,7 +174,7 @@ export default function VendorBookingsCard({
                     <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-[#f6ece8] dark:bg-[#241720]">
                       <Image
                         src={reques.bookingsImage || "/"}
-                        alt={reques.bookingTitle}
+                        alt={reques.bookingTitle || ""}
                         fill
                         sizes="56px"
                         className="object-cover"
@@ -246,7 +251,7 @@ export default function VendorBookingsCard({
                         
                           <select className={ACTION_STYLE} value={reques.bookingStatus} onChange={(e)=> {hendleActionButton({
                             id : reques._id,
-                            bookingStatus : e.target.value})}}>
+                            bookingStatus : e.target.value},reques.bookingsId)}}>
                             <option value="">Select Action</option>
                             <option value="Confirmed">Confirm</option>
                             <option value="Completed">Complete</option>

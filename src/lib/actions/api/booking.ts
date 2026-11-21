@@ -12,7 +12,7 @@ export const getBookings = async(quary = "")=>{
     return res.json();
 }
 
-export const updateBookingsAction = async(data)=>{
+export const updateBookingsAction = async(data:{})=>{
     const res = await updateApi('/bookings',data);
     return res.json()
 }

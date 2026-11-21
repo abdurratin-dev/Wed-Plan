@@ -14,9 +14,10 @@ export interface ServiceData {
   imageUrl: string;
   alt: string;
   location: string;
-  userName: string;
+  vendorName: string;
   email: string;
   description?: string;
+  vendorId : string
 }
 
 /** Body sent to POST /service — a ServiceData record before the API fills it in. */
@@ -28,6 +29,9 @@ export interface CreateServicePayload {
   location: string;
   imageUrl: string;
   status: "Active";
+  vendorId : string | undefined
+  vendorName: string | undefined
+  email: string | undefined
 }
 
 export interface BookingsData {
@@ -44,10 +48,11 @@ export interface BookingsData {
   bookingsTime: string
   bookingsUnit: string
   bookingsDuration: string
-  bookingsAction: string
   customerName: string | undefined
   customerEmail: string | undefined
   customerId: string | undefined
+  customerImg: string | undefined | null
+  status? : number
 }
 
 export interface CreatBookingsPayload {
@@ -63,8 +68,8 @@ export interface CreatBookingsPayload {
   bookingsTime: string
   bookingsUnit: string
   bookingsDuration: string
-  bookingsAction: string
   customerName: string | undefined
   customerEmail: string | undefined
   customerId: string | undefined
+  customerImg: string | undefined | null
 }

@@ -36,6 +36,8 @@ const Units = [
   { label: "Par week", value: "parweek" },
   { label: "Par Month", value: "parmonth" },
 ];
+
+const Durations = [{ label: "1 Hr" }, { label: "5 Hr" }, { label: "10 Hr" }];
 type TabKey = "about" | "reviews" | "location";
 
 const TABS: { key: TabKey; label: string; icon: typeof Camera }[] = [
@@ -72,12 +74,13 @@ export default function ServiceDetails({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [units, setUnits] = useState("");
+  const [duration, setDuration] = useState("");
   const [note, setNote] = useState<string | null>(null);
 
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
 
-  const router = useRouter()
+  const router = useRouter();
 
   const HIGHLIGHTS = [
     "Professional Team",
@@ -103,33 +106,44 @@ export default function ServiceDetails({
     if (!date || !time) {
       toast.add({
         type: "error",
-        description: "Pick a date and a time to reserve your slot first."
-      })
+        description: "Pick a date and a time to reserve your slot first.",
+      });
       return;
     }
     if (!units) {
       toast.add({
         type: "error",
-        description: "Pick a unit to your slot first."
-      })
+        description: "Pick a unit to your slot first.",
+      });
       return;
     }
+    if (units === "parday") {
+        if (!duration) {
+          toast.add({
+            type: "error",
+            description: "Pick a duration to your slot first.",
+          });
+          return
+        }
+      }
     const submitdate = new Date(date).getTime();
     const newDate = new Date().getTime();
-    const bookingsData : CreatBookingsPayload = {
+    const bookingsData: CreatBookingsPayload = {
       bookingTitle: service.name,
       bookingsId: service._id,
-      bookingsCategory : service.category,
-      bookingsLocation : service.location,
-      bookingsPrice : service.price,
-      bookingsRating : service.rating,
+      bookingsCategory: service.category,
+      bookingsLocation: service.location,
+      bookingsPrice: service.price,
+      bookingsRating: service.rating,
       bookingsImage: service.imageUrl,
-      bookingStatus : 'Upcoming',
+      bookingStatus: "Upcoming",
       bookingsDate: date,
       bookingsTime: time,
       bookingsUnit: units,
+      bookingsDuration: duration,
       customerName: user?.name,
       customerEmail: user?.email,
+      customerImg: user?.image,
       customerId: user?.id,
     };
     if (submitdate < newDate) {
@@ -137,29 +151,36 @@ export default function ServiceDetails({
         const res = await creatBookings(bookingsData);
         if (res.insertedId) {
           toast.add({
-            type : 'success',
+            type: "success",
             title: `${service.name} Booking succsfull`,
             description: "Sunday, December 3 at 9:00 AM",
           });
         }
-        router.push('/customer/bookings')
+        router.push("/customer/bookings");
         return;
       }
       toast.add({
         type: "error",
-        description: "Your date to old please pick new date"
-      })
+        description: "Your date to old please pick new date",
+      });
       return;
     }
     const res = await creatBookings(bookingsData as CreatBookingsPayload);
+    if(res.massage){
+      toast.add({
+        type: "error",
+        description: res.massage,
+      });
+      return
+    }
     if (res.insertedId) {
       toast.add({
-        type: 'success',
+        type: "success",
         title: `${service.name} Booking succsfull`,
         description: "Sunday, December 3 at 9:00 AM",
       });
     }
-    router.push('/customer/bookings')
+    router.push("/customer/bookings");
     return;
   };
 
@@ -524,6 +545,29 @@ export default function ServiceDetails({
                     <option value="">Select unit</option>
                     {Units.map((unit) => (
                       <option key={unit.value} value={unit.value}>
+                        {unit.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative">
+                  <SquaresUnite
+                    size={15}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#a52b50] dark:text-[#ff9bb9]"
+                  />
+                  <select
+                    value={duration}
+                    onChange={(event) => {
+                      setDuration(event.target.value);
+                      setNote(null);
+                    }}
+                    aria-label="Select unit"
+                    className={cn(inputClass)}
+                  >
+                    <option value="">Select duration</option>
+                    {Durations.map((unit) => (
+                      <option key={unit.label} value={unit.label}>
                         {unit.label}
                       </option>
                     ))}

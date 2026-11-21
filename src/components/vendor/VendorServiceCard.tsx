@@ -18,7 +18,7 @@ export default function VendorServiceCard({service,isActive}:{service : ServiceD
                     service?.imageUrl ||
                     "https://avatars.githubusercontent.com/u/297331273?v=4&size=64"
                   }
-                  alt={service.alt}
+                  alt={service.name}
                   fill
                   sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 33vw"
                   className="object-cover transition duration-500 group-hover:scale-105"
@@ -86,7 +86,7 @@ export default function VendorServiceCard({service,isActive}:{service : ServiceD
                     ৳ {service.price}
                   </span>{" "}
                   <span className="text-[0.7rem] font-medium text-[#8a7a80] dark:text-[#9b8792]">
-                    / {service.unit}
+                    / per day
                   </span>
                 </p>
 

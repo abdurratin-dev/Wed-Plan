@@ -9,15 +9,25 @@ import {
   Star,
   TrendingUp,
 } from "lucide-react";
-import { ServiceData } from "@/types/apidata";
+import { BookingsData, ServiceData } from "@/types/apidata";
 import { getServiceData } from "@/lib/actions/api/service";
 import VendorServiceCard from "./VendorServiceCard";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { getBookings } from "@/lib/actions/api/booking";
 
 export default async function MyServicesView() {
-  const services: ServiceData[] = await getServiceData();
+  const session = await auth.api.getSession({
+      headers: await headers(), // you need to pass the headers object.
+    });
+    const user = session?.user;
+    const bookings: BookingsData[] = await getBookings(
+      `role=${user?.role}&userId=${user?.id}`,
+    );
+  const services: ServiceData[] = await getServiceData(`role=${user?.role}&userId=${user?.id}`);
   const stats = [
     { label: "Total Services", value: services.length , icon: Camera },
-    { label: "Total Bookings", value: "48", icon: CalendarDays },
+    { label: "Total Bookings", value: bookings.length, icon: CalendarDays },
     { label: "Average Rating", value: "4.8", icon: Star },
     { label: "Growth This Month", value: "+12%", icon: TrendingUp },
   ] as const;

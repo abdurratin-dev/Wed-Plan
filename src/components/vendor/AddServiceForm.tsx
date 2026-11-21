@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { createService } from "@/lib/actions/api/service";
 import { CreateServicePayload } from "@/types/apidata";
 import { CATEGORIES, LOCATIONS } from "../services/BrowseServices";
+import { authClient } from "@/lib/auth-client";
+import { email } from "better-auth";
 
 const MAX_DESCRIPTION = 500;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -54,6 +56,9 @@ export default function AddServiceForm() {
   const [dragging, setDragging] = useState(false);
 
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const { data: session, error } = authClient.useSession();
+  const user = session?.user;
 
   // Release the object URL when the preview is swapped out or the page unmounts.
   useEffect(() => {
@@ -136,7 +141,10 @@ export default function AddServiceForm() {
       price,
       location,
       imageUrl,
-      status: "Active"
+      status: "Active",
+      vendorId : user?.id,
+      vendorName : user?.name,
+      email: user?.email
     };
     try {
       await createService(data);
