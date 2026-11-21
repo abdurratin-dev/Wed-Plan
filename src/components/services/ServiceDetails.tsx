@@ -123,7 +123,7 @@ export default function ServiceDetails({
       bookingsLocation : service.location,
       bookingsPrice : service.price,
       bookingsRating : service.rating,
-      bookingsimage: service.imageUrl,
+      bookingsImage: service.imageUrl,
       bookingStatus : 'Upcoming',
       bookingsDate: date,
       bookingsTime: time,

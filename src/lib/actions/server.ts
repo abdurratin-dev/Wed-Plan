@@ -32,3 +32,16 @@ export const getApi = async(api:string)=>{
   })
   return res
 }
+
+export const updateApi = async(api:string,data)=>{
+  const token = await user()
+  const res = await fetch(`${SERVER_URL}${api}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Brrer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return res
+}

@@ -18,16 +18,9 @@ export const metadata = {
   description: "View and manage all booking requests from clients.",
 };
 
-const TABS: { label: string; count: number; active?: boolean }[] = [
-  { label: "All Requests", count: 5, active: true },
-  { label: "Pending", count: 3 },
-  { label: "Confirmed", count: 1 },
-  { label: "Completed", count: 1 },
-  { label: "Cancelled", count: 0 },
-];
-
 export default async function VendorBookingsPage() {
   const res: BookingsData[] = await getBookings();
+
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
       {/* ---------- Hero banner ---------- */}
@@ -64,51 +57,7 @@ export default async function VendorBookingsPage() {
         </div>
       </div>
 
-      {/* ---------- Status tabs ---------- */}
-      <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-10">
-        <div
-          role="tablist"
-          aria-label="Filter booking requests"
-          className="flex flex-wrap gap-2 sm:gap-2.5"
-        >
-          {TABS.map((tab) => (
-            <button
-              key={tab.label}
-              type="button"
-              role="tab"
-              aria-selected={Boolean(tab.active)}
-              className={cn(
-                "inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[0.78rem] font-bold transition focus-visible:ring-2 focus-visible:outline-none",
-                tab.active
-                  ? "bg-[#720e32] text-white shadow-md focus-visible:ring-[#720e32]/40 dark:bg-[#a52b50] dark:focus-visible:ring-[#ff9bb9]/40"
-                  : "border border-[#f1ded7] bg-white text-[#6b5a61] hover:border-[#e3c3bd] hover:text-[#720e32] focus-visible:ring-[#720e32]/30 dark:border-white/10 dark:bg-[#1e131a] dark:text-[#c8b3bd] dark:hover:border-white/20 dark:hover:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/30",
-              )}
-            >
-              {tab.label}
-              <span
-                className={cn(
-                  "rounded-full px-1.5 py-0.5 text-[0.65rem] tabular-nums",
-                  tab.active
-                    ? "bg-white/20 text-white"
-                    : "bg-[#fdeef2] text-[#a52b50] dark:bg-[#a52b50]/20 dark:text-[#ff9bb9]",
-                )}
-              >
-                {tab.count}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ---------- Request rows ---------- */}
-      <div className="mx-auto mt-5 w-full max-w-7xl space-y-4 px-4 sm:px-6 lg:px-10">
-        {res.map((request) => {
-          //   const StatusIcon = STATUS_ICON[request.bookingStatus];
-          return (
-            <VendorBookingsCard key={request._id} request={request}/>
-          );
-        })}
-      </div>
+      <VendorBookingsCard request={res} />
     </div>
   );
 }
