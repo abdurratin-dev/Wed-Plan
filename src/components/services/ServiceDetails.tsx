@@ -80,7 +80,7 @@ export default function ServiceDetails({
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const HIGHLIGHTS = [
     "Professional Team",
@@ -145,6 +145,7 @@ export default function ServiceDetails({
       customerEmail: user?.email,
       customerImg: user?.image,
       customerId: user?.id,
+      paymentStatus : 'unpaid'
     };
     if (submitdate < newDate) {
       if (date === new Date().toISOString().slice(0, 10)) {
@@ -156,7 +157,6 @@ export default function ServiceDetails({
             description: "Sunday, December 3 at 9:00 AM",
           });
         }
-        router.push("/customer/bookings");
         return;
       }
       toast.add({
@@ -166,6 +166,7 @@ export default function ServiceDetails({
       return;
     }
     const res = await creatBookings(bookingsData as CreatBookingsPayload);
+    console.log(res);
     if(res.massage){
       toast.add({
         type: "error",
@@ -173,14 +174,7 @@ export default function ServiceDetails({
       });
       return
     }
-    if (res.insertedId) {
-      toast.add({
-        type: "success",
-        title: `${service.name} Booking succsfull`,
-        description: "Sunday, December 3 at 9:00 AM",
-      });
-    }
-    router.push("/customer/bookings");
+    window.location.href = res.data.redirectUrl
     return;
   };
 

@@ -9,7 +9,10 @@ import {
   Heart,
   LayoutDashboard,
   LayoutList,
+  Package,
+  Store,
   User,
+  Users,
 } from "lucide-react";
 import {
   Sidebar,
@@ -49,6 +52,11 @@ export function DashboardSidebar() {
       ? `/dashboard/${pathnameRole}`
       : "/dashboard";
 
+  // Prefer the resolved session role, falling back to the URL so the correct
+  // menu renders before the session loads (and no other role flashes first).
+  const effectiveRole = role ?? pathnameRole;
+  const isAdmin = effectiveRole === "admin";
+
   const customerNav: NavItem[] = [
     { label: "Overview", href: base, icon: LayoutDashboard },
     {
@@ -78,8 +86,19 @@ export function DashboardSidebar() {
     { label: "Subscription", href: `${base}/subscription`, icon: CreditCard },
   ];
 
-  const adminNav: NavItem[] = []
-  const navItems: NavItem[] = role === 'vendor' ? vendorNav : role === 'customer' ? customerNav : adminNav;
+  const adminNav: NavItem[] = [
+    { label: "Overview", href: base, icon: LayoutDashboard },
+    { label: "Users", href: `${base}/users`, icon: Users },
+    { label: "Vendors", href: `${base}/vendors`, icon: Store },
+    { label: "Services", href: `${base}/services`, icon: Package },
+    { label: "Transactions", href: `${base}/transactions`, icon: CreditCard },
+  ];
+  const navItems: NavItem[] =
+    effectiveRole === "vendor"
+      ? vendorNav
+      : effectiveRole === "customer"
+        ? customerNav
+        : adminNav;
   // The most specific match wins (.../services/new -> Add Service). When no
   // section claims the route, Overview stays lit for the dashboard landing.
   const matchedHref = navItems
@@ -94,17 +113,41 @@ export function DashboardSidebar() {
       pathname.startsWith("/dashboard"));
 
   return (
-    <Sidebar className="border-r border-white/10 bg-[#5c0f28]">
+    <Sidebar
+      className={cn(
+        "border-r",
+        isAdmin
+          ? "border-[#8e2249]/15 bg-[#fbe9ef]"
+          : "border-white/10 bg-[#5c0f28]",
+      )}
+      style={
+        isAdmin
+          ? ({
+              "--sidebar": "#fbe9ef",
+              "--sidebar-foreground": "#8e2249",
+              "--sidebar-accent": "#7d1436",
+              "--sidebar-accent-foreground": "#ffffff",
+              "--sidebar-border": "rgb(142 34 73 / 15%)",
+              "--sidebar-ring": "rgb(142 34 73 / 35%)",
+            } as React.CSSProperties)
+          : undefined
+      }
+    >
       {/* Brand */}
       <SidebarHeader className="px-3 pt-5 pb-3">
         <Link
           href="/"
-          className="flex items-center gap-1.5 text-white transition-opacity hover:opacity-90"
+          className={cn(
+            "flex items-center gap-1.5 transition-opacity hover:opacity-90",
+            isAdmin ? "text-[#7d1436]" : "text-white",
+          )}
         >
           <Heart
             size={30}
             strokeWidth={2.5}
-            className="fill-white/10 text-white"
+            className={
+              isAdmin ? "fill-[#7d1436]/10 text-[#7d1436]" : "fill-white/10 text-white"
+            }
           />
           <span className="text-xl font-extrabold tracking-tight">WedPlan</span>
         </Link>
@@ -126,9 +169,17 @@ export function DashboardSidebar() {
                       isActive={active}
                       className={cn(
                         "h-11 gap-3 rounded-xl px-2.5 py-2 text-[0.95rem] font-medium",
-                        "text-white/85",
-                        "hover:bg-[#8e2249] hover:text-white",
-                        "data-active:bg-[#8e2249] data-active:text-white",
+                        isAdmin
+                          ? [
+                              "text-[#8e2249]",
+                              "hover:bg-[#7d1436] hover:text-white",
+                              "data-active:bg-[#7d1436] data-active:text-white",
+                            ]
+                          : [
+                              "text-white/85",
+                              "hover:bg-[#8e2249] hover:text-white",
+                              "data-active:bg-[#8e2249] data-active:text-white",
+                            ],
                       )}
                     >
                       <span
@@ -136,7 +187,9 @@ export function DashboardSidebar() {
                           "flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors",
                           active
                             ? "border-white/50 bg-white/10"
-                            : "border-white/25",
+                            : isAdmin
+                              ? "border-transparent"
+                              : "border-white/25",
                         )}
                       >
                         <Icon className="size-4" />

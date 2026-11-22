@@ -55,41 +55,13 @@ export default function Navbar() {
             Home
           </Link>
 
-          <div className="group relative">
-            <button
+          
+            <Link
+            href="/services"
               className={`flex items-center gap-1 py-2 text-base font-semibold ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
             >
               Browse Services
-              <ChevronDown
-                size={17}
-                className="transition group-hover:rotate-180"
-              />
-            </button>
-
-            {/* Dropdown */}
-            <div className="invisible absolute left-0 top-full mt-2 w-52 translate-y-2 rounded-xl border border-gray-100 bg-white p-2 opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-white/10 dark:bg-[#251720]">
-              <Link
-                href="/services"
-                className="block rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9]"
-              >
-                All Services
-              </Link>
-
-              <Link
-                href="/services/venues"
-                className="block rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9]"
-              >
-                Wedding Venues
-              </Link>
-
-              <Link
-                href="/services/photography"
-                className="block rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9]"
-              >
-                Photography
-              </Link>
-            </div>
-          </div>
+            </Link>
 
           <Link
             href="/about"
@@ -178,7 +150,6 @@ export default function Navbar() {
 
             <Link
               href="/services"
-              onClick={() => setMobileMenu(false)}
               className="font-medium text-gray-700 dark:text-gray-200"
             >
               Browse Services

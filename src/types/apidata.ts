@@ -53,6 +53,7 @@ export interface BookingsData {
   customerId: string | undefined
   customerImg: string | undefined | null
   status? : number
+  paymentStatus : string
 }
 
 export interface CreatBookingsPayload {
@@ -72,4 +73,23 @@ export interface CreatBookingsPayload {
   customerEmail: string | undefined
   customerId: string | undefined
   customerImg: string | undefined | null
+  paymentStatus : string
+}
+
+export interface ISubscriptionPlan {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  period: string;
+  popular: boolean;
+  features: string[];
+  buttonText: string;
+};
+
+export interface CreatChackoutPayload{
+  serviceID : string,
+  email : string | undefined,
+  name : string | undefined,
+  userId : string | undefined
 }

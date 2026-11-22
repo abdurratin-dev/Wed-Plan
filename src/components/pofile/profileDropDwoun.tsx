@@ -16,7 +16,7 @@ export default function ProfileDropDwoun() {
     } else {
       window.location.href = "/sign-in";
     }
-  }
+  };
   return (
     <Popover>
       <PopoverTrigger
@@ -64,17 +64,26 @@ export default function ProfileDropDwoun() {
         </div>
         <hr className="my-2 border-t border-gray-200 dark:border-gray-700" />
         <ul>
-          <li className="rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] flex items-center gap-2">
-          <LayoutDashboard />
-            <Link href={`/dashboard/${user?.role}`}>Dashboard</Link>
-          </li>
-          <li className="rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] flex items-center gap-2">
-          <User />
-            <Link href="/profile">Profile</Link>
-          </li>
-          <li className="rounded-lg px-4 py-3 text-sm text-gray-700 bg-red-500/10 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-red-500/10 dark:hover:text-[#ff9bb9] flex items-center gap-2">
-          <LogOut />
-            <button onClick={handleLogout}>Logout</button>
+          <Link href={`/dashboard/${user?.role}`}>
+            <li className="rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] flex items-center gap-2">
+              <LayoutDashboard />
+              Dashboard
+            </li>
+          </Link>
+          <Link href="/profile">
+            <li className="rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] flex items-center gap-2">
+              <User />
+              Profile
+            </li>
+          </Link>
+          <li className="w-full">
+            <button
+              onClick={handleLogout}
+              className="rounded-lg px-4 py-3 text-sm text-gray-700 bg-red-500/10 hover:text-[#720e32] dark:text-gray-200 dark:hover:bg-red-500/10 dark:hover:text-[#ff9bb9] flex items-center gap-2 w-full"
+            >
+              <LogOut />
+              Logout
+            </button>
           </li>
         </ul>
       </PopoverContent>

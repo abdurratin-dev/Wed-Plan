@@ -1,9 +1,8 @@
+import { cn } from "@/lib/utils";
+import "./globals.css";
 import type { Metadata } from "next";
 import { Playfair_Display, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { cn } from "@/lib/utils";
 import ThemeProvider from "@/components/ui/ThemeProvider";
-import Navbar from "@/components/layout/navbar";
 import { Toaster } from "@/components/ui/toast";
 
 const geistMono = Geist_Mono({
@@ -21,11 +20,13 @@ export const metadata: Metadata = {
   title: "WedPlan",
   description: "Wedding Planning Platform",
 };
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="en"
+    <html lang="en"
       suppressHydrationWarning
       className={cn(
         "h-full",
@@ -33,15 +34,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geistMono.variable,
         playfairDisplay.variable,
         "font-sans",
-      )}
-    >
-      <body className="min-h-full flex flex-col">
+      )}>
+      <body>
         <ThemeProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Toaster />
+        {children}
+        <Toaster/>
         </ThemeProvider>
-      </body>
+        </body>
     </html>
   );
 }
