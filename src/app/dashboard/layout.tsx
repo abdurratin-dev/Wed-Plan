@@ -14,9 +14,6 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <DashboardSidebar />
-      {/* The navbar lives inside <main>, which sits directly beside the
-          sidebar's width-reserving gap — so it stays flush against the
-          sidebar and re-flows whenever the sidebar is toggled. */}
       <main className="min-w-0 flex-1">
         <DashboardNavbar />
         {children}
