@@ -1,9 +1,17 @@
+"use client";
+
+import EditServiceDialog from "@/components/services/EditServiceDialog";
 import { ServiceData } from "@/types/apidata";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { CalendarDays, EllipsisVertical, Pencil, Star, Trash2 } from "lucide-react";
+import { CalendarDays, Pencil, Star, Trash2 } from "lucide-react";
 
 export default function VendorServiceCard({service,isActive}:{service : ServiceData,isActive : boolean}) {
+  const [editOpen, setEditOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <>
           <article
@@ -93,7 +101,7 @@ export default function VendorServiceCard({service,isActive}:{service : ServiceD
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    // onClick={() => act("Edit", service)}
+                    onClick={() => setEditOpen(true)}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-[#e3c3bd] bg-white px-3.5 py-2.5 text-[0.72rem] font-bold text-[#720e32] transition hover:bg-[#fdf1eb] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:border-white/15 dark:bg-transparent dark:text-[#ff9bb9] dark:hover:bg-white/5 dark:focus-visible:ring-[#ff9bb9]/30"
                   >
                     <Pencil size={12} />
@@ -111,6 +119,13 @@ export default function VendorServiceCard({service,isActive}:{service : ServiceD
               </div>
             </div>
           </article>
+
+          <EditServiceDialog
+            service={service}
+            open={editOpen}
+            onOpenChange={setEditOpen}
+            onSaved={() => router.refresh()}
+          />
     </>
   );
 }

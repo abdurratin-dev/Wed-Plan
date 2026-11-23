@@ -34,6 +34,18 @@ export interface CreateServicePayload {
   email: string | undefined
 }
 
+/** Body sent to PATCH /service — only the fields that should change. */
+export interface UpdateServicePayload {
+  id: string
+  name?: string
+  category?: string
+  description?: string
+  price?: string
+  location?: string
+  imageUrl?: string
+  status?: ServiceData["status"]
+}
+
 export interface BookingsData {
   _id: string
   bookingTitle: string
@@ -92,4 +104,17 @@ export interface CreatChackoutPayload{
   email : string | undefined,
   name : string | undefined,
   userId : string | undefined
+}
+
+export interface IUsers{
+  _id: string
+  name: string
+  email: string
+  emailVerified: boolean
+  createdAt: string
+  updatedAt: string
+  role: string
+  premium: boolean
+  status: string
+  image : string
 }

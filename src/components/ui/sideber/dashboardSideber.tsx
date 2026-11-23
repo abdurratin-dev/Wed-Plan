@@ -89,7 +89,7 @@ export function DashboardSidebar() {
   const adminNav: NavItem[] = [
     { label: "Overview", href: base, icon: LayoutDashboard },
     { label: "Users", href: `${base}/users`, icon: Users },
-    { label: "Vendors", href: `${base}/vendors`, icon: Store },
+    { label: "Bookings", href: `${base}/bookings`, icon: Store },
     { label: "Services", href: `${base}/services`, icon: Package },
     { label: "Transactions", href: `${base}/transactions`, icon: CreditCard },
   ];
