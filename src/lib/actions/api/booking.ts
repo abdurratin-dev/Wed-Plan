@@ -16,3 +16,8 @@ export const updateBookingsAction = async(data:{})=>{
     const res = await updateApi('/bookings',data);
     return res.json()
 }
+
+export const getBookingTransactions = async(quary = "")=>{
+    const res = await getApi(`/bookings/transactions?${quary}`,)
+    return res.json()
+}

@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Playfair_Display, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Google_Sans } from "next/font/google";
 import ThemeProvider from "@/components/ui/ThemeProvider";
 import { Toaster } from "@/components/ui/toast";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistMono = Google_Sans({
+  variable: "--font-googlesens",
   subsets: ["latin"],
 });
 
@@ -31,11 +31,10 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistMono.variable,
         playfairDisplay.variable,
         "font-sans",
       )}>
-      <body>
+      <body className={`${geistMono.className}`}>
         <ThemeProvider>
         {children}
         <Toaster/>

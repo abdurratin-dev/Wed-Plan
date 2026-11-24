@@ -118,3 +118,12 @@ export interface IUsers{
   status: string
   image : string
 }
+
+export interface ITransactions {
+  _id: string
+  bookingId: string
+  customerEmail: string
+  status: string
+  paymentStatus: string
+  price: string
+}
