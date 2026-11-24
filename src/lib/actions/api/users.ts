@@ -12,3 +12,9 @@ export const updateUsers = async(data : {})=>{
     const result = await res.json()
     return result
 }
+
+export const updateUserById = async(id : string | undefined ,data : {})=>{
+    const res = await updateApi(`/users/${id}`,data)
+    const result = await res.json()
+    return result
+}

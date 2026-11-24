@@ -2,30 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  Building2,
-  Cake,
-  Camera,
-  CalendarDays,
   ChevronUp,
   Filter,
-  Mail,
   MapPin,
-  Music,
-  Palette,
   Search,
-  Sparkles,
-  Star,
-  UtensilsCrossed,
-  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ServiceData } from "@/types/apidata";
-import { getServiceData } from "@/lib/actions/api/service";
 import ServiceCard from "./ServiceCard";
 import { useRouter } from "next/navigation";
 import { Categorys } from "@/types/othersType";
+import BrowseServicesSkeleton from "../ui/skeleton/service/browseServiceSkeleton";
 
 export const CATEGORIES: Categorys[] = [
   { label: "Photography", value: "photography", isActive: false },

@@ -41,6 +41,12 @@ export default function SignInForm() {
     }
   }
 
+  const hendleGoogleButton = async()=>{
+    const {data,error} = await authClient.signIn.social({
+      provider : 'google'
+    })
+  }
+
   const fieldClass = (invalid?: string) =>
     cn(
       "w-full rounded-xl border bg-[#fdfbfa] px-4 py-3.5 text-sm text-[#2b0713] outline-none transition placeholder:text-[#a89a9f] focus:border-[#720e32] focus:ring-2 focus:ring-[#720e32]/15 dark:bg-[#241720] dark:text-white dark:placeholder:text-[#8d7a84] dark:focus:border-[#ff9bb9] dark:focus:ring-[#ff9bb9]/15",
@@ -203,6 +209,10 @@ export default function SignInForm() {
               </p>
             )}
           </form>
+
+          <button onClick={hendleGoogleButton}>
+            Sign in on Google
+          </button>
 
           <p className="mt-6 text-center text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Don&apos;t have an account?{" "}

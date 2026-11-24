@@ -1,13 +1,15 @@
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Playfair_Display, Google_Sans } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import ThemeProvider from "@/components/ui/ThemeProvider";
 import { Toaster } from "@/components/ui/toast";
 
-const geistMono = Google_Sans({
-  variable: "--font-googlesens",
+const geistMono = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 const playfairDisplay = Playfair_Display({
@@ -26,20 +28,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en"
+    <html
+      lang="en"
       suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
         playfairDisplay.variable,
         "font-sans",
-      )}>
+      )}
+    >
       <body className={`${geistMono.className}`}>
         <ThemeProvider>
-        {children}
-        <Toaster/>
+          {children}
+          <Toaster />
         </ThemeProvider>
-        </body>
+      </body>
     </html>
   );
 }

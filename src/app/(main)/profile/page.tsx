@@ -21,6 +21,8 @@ import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { getBookings } from "@/lib/actions/api/booking";
 import { BookingsData } from "@/types/apidata";
+import EditProfile from "@/components/pofile/editProfile";
+import Image from "next/image";
 
 const ProfilePage = () => {
   const [booking, setBookings] = useState<BookingsData[]>([]);
@@ -30,16 +32,14 @@ const ProfilePage = () => {
   const user = session?.user;
   useEffect(() => {
     const getData = async () => {
-      const res : BookingsData[] = await getBookings(`role=${user?.role}&userId=${user?.id}`);
+      const res: BookingsData[] = await getBookings(
+        `role=${user?.role}&userId=${user?.id}`,
+      );
       setBookings(res);
     };
     getData();
-    setComlitedBookings(
-        booking.filter((u) => u.bookingStatus === "Upcoming"),
-      );
-      setPendingBookings(
-        booking.filter((u) => u.bookingStatus === "Completed"),
-      );
+    setComlitedBookings(booking.filter((u) => u.bookingStatus === "Upcoming"));
+    setPendingBookings(booking.filter((u) => u.bookingStatus === "Completed"));
   }, [user]);
   const bookings: BookingsData[] = !Array.isArray(booking) ? [] : booking;
   const profileStatus = [
@@ -75,14 +75,6 @@ const ProfilePage = () => {
               Manage your personal information and account settings.
             </p>
           </div>
-
-          <Link
-            href="/profile/edit"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#720e32] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#941443] dark:bg-[#e52d82] dark:hover:bg-[#c91d6b]"
-          >
-            <Pencil size={16} />
-            Edit Profile
-          </Link>
         </div>
 
         {/* Profile Cover */}
@@ -105,7 +97,12 @@ const ProfilePage = () => {
                 {/* Avatar */}
                 <div className="relative h-28 w-28 shrink-0 rounded-2xl border-4 border-white bg-[#f7e5e8] dark:border-[#1d111a] dark:bg-[#38202e] sm:h-32 sm:w-32">
                   {user?.image ? (
-                    <></>
+                    <Image
+                    src={user.image}
+                    alt="profile"
+                    height={300}
+                    width={300}
+                    className="overflow-hidden" />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center rounded-xl text-4xl font-bold text-[#720e32] dark:text-[#ff8db8]">
                       {user?.name[0]}
@@ -199,14 +196,6 @@ const ProfilePage = () => {
                   Your basic personal details
                 </p>
               </div>
-
-              <Link
-                href="/profile/edit"
-                className="rounded-lg p-2 text-[#8b2146] transition hover:bg-[#fce8ef] dark:text-[#ff8db8] dark:hover:bg-white/5"
-                aria-label="Edit personal information"
-              >
-                <Pencil size={17} />
-              </Link>
             </div>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -267,59 +256,7 @@ const ProfilePage = () => {
             </div>
 
             <div className="space-y-3">
-              <Link
-                href="/profile/edit"
-                className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-[#fce8ef] p-2 text-[#8b2146] dark:bg-[#65122f]/40 dark:text-[#ff91b7]">
-                    <UserRound size={18} />
-                  </div>
-                  <span className="text-sm font-semibold text-[#451127] dark:text-gray-200">
-                    Edit Profile
-                  </span>
-                </div>
-                <ArrowRight
-                  size={16}
-                  className="text-gray-400 transition group-hover:translate-x-1"
-                />
-              </Link>
-
-              <Link
-                href="/profile/security"
-                className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-[#fce8ef] p-2 text-[#8b2146] dark:bg-[#65122f]/40 dark:text-[#ff91b7]">
-                    <ShieldCheck size={18} />
-                  </div>
-                  <span className="text-sm font-semibold text-[#451127] dark:text-gray-200">
-                    Security
-                  </span>
-                </div>
-                <ArrowRight
-                  size={16}
-                  className="text-gray-400 transition group-hover:translate-x-1"
-                />
-              </Link>
-
-              <Link
-                href="/settings"
-                className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-[#fce8ef] p-2 text-[#8b2146] dark:bg-[#65122f]/40 dark:text-[#ff91b7]">
-                    <Settings size={18} />
-                  </div>
-                  <span className="text-sm font-semibold text-[#451127] dark:text-gray-200">
-                    Preferences
-                  </span>
-                </div>
-                <ArrowRight
-                  size={16}
-                  className="text-gray-400 transition group-hover:translate-x-1"
-                />
-              </Link>
+              <EditProfile className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5" />
             </div>
 
             {/* Account Created */}

@@ -7,6 +7,7 @@ import { Heart, ChevronDown, Sun, Moon, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import ProfileDropDwoun from "../pofile/profileDropDwoun";
+import { GiLoveMystery } from "react-icons/gi";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -33,13 +34,11 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-1 text-[#720e32] dark:text-[#ff9bb9]"
+          className="flex shrink-0 items-center justify-center gap-1 text-[#720e32] dark:text-[#ff9bb9]"
         >
-          <Heart
-          size={30}
+          <GiLoveMystery size={30}
             strokeWidth={2.5}
-            className="fill-[#720e32]/5 dark:fill-[#ff9bb9]/10"
-          />
+           />
 
           <span className="text-xl font-bold tracking-tight sm:text-3xl">
             WedPlan

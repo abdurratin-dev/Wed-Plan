@@ -57,11 +57,16 @@ export default function SignUpForm() {
       name,
       role,
     });
-    if(data){
+    if (data) {
       setSubmitted(true);
       router.push(`/dashboard/${role}`);
     }
   }
+  const hendleGoogleButton = async () => {
+    const { data, error } = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
 
   const fieldClass = (invalid?: string) =>
     cn(
@@ -301,6 +306,10 @@ export default function SignUpForm() {
               </p>
             )}
           </form>
+
+          <button onClick={hendleGoogleButton}>
+            Sign in on Google
+          </button>
 
           <p className="mt-6 text-center text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Already have an account?{" "}
