@@ -14,6 +14,7 @@ import {
   Search,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const selectClass =
@@ -151,13 +152,13 @@ export default function AdminServicesView({ services }: IProps) {
             </div>
           </div>
 
-          <button
-            type="button"
+          <Link
+          href="/dashboard/admin/services/add-service"
             className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-[#720e32] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
           >
             <Plus size={17} strokeWidth={2.5} />
             Add Service
-          </button>
+          </Link>
         </div>
       </div>
 

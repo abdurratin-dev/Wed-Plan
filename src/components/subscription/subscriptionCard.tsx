@@ -9,6 +9,7 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
     const {data : session, error} = authClient.useSession()
     const user = session?.user
     const router = useRouter()
+    console.log(user?.id);
     const hendleButton = async(price : number)=>{
         if(price === 0){
             return
@@ -105,9 +106,10 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
               ? "bg-gradient-to-r from-[#800d35] to-[#a20e43] text-white shadow-lg shadow-[#800d35]/20 hover:from-[#650a2a] hover:to-[#800d35]"
               : "border-2 border-[#920d3d] bg-white text-[#800d35] hover:bg-[#800d35] hover:text-white"
           }`}
+          disabled={user?.premium && plan.popular}
           onClick={()=>hendleButton(plan.price)}
         >
-          {plan.buttonText}
+          {user?.premium && plan.popular ? "You selected this plan" : plan.buttonText}
           <ArrowRight size={19} />
         </button>
       </div>

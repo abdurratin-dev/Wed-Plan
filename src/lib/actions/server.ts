@@ -45,3 +45,15 @@ export const updateApi = async(api:string,data : {})=>{
   });
   return res
 }
+
+export const deleteApi = async(api : string , data : {})=>{
+  // console.log(data);
+   const token = await user()
+   const res = await fetch(`${SERVER_URL}${api}?${data}`,{
+    method : "DELETE",
+    headers : {
+      authorization : `Brrer ${token}`,
+    },
+   })
+   return res
+}

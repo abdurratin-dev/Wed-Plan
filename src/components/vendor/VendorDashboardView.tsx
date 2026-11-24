@@ -113,7 +113,9 @@ const countBelow = (times: number[], end: number) => {
 };
 
 const average = (values: number[]) =>
-  values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+  values.length
+    ? values.reduce((sum, value) => sum + value, 0) / values.length
+    : 0;
 
 /** Cumulative totals over `days`, used for the card sparklines. */
 const sparkPath = (
@@ -141,11 +143,7 @@ const sparkPath = (
 };
 
 /** Min/max normalised polyline for value series (e.g. average rating). */
-const valuesPath = (
-  values: number[],
-  width = 104,
-  height = 38,
-) => {
+const valuesPath = (values: number[], width = 104, height = 38) => {
   if (values.length === 0) return "";
   const max = Math.max(...values);
   const min = Math.min(...values);
@@ -182,10 +180,14 @@ const capitalize = (value: string) =>
   value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
 
 const STATUS_STYLE: Record<string, string> = {
-  upcoming: "bg-[#fef3c7] text-[#b45309] dark:bg-[#b45309]/20 dark:text-[#fbbf24]",
-  confirmed: "bg-[#dbeafe] text-[#1d4ed8] dark:bg-[#1d4ed8]/25 dark:text-[#93c5fd]",
-  completed: "bg-[#dcfce7] text-[#15803d] dark:bg-[#15803d]/20 dark:text-[#4ade80]",
-  cancelled: "bg-[#fee2e2] text-[#d6455f] dark:bg-[#fee2e2]/10 dark:text-[#ff8fa3]",
+  upcoming:
+    "bg-[#fef3c7] text-[#b45309] dark:bg-[#b45309]/20 dark:text-[#fbbf24]",
+  confirmed:
+    "bg-[#dbeafe] text-[#1d4ed8] dark:bg-[#1d4ed8]/25 dark:text-[#93c5fd]",
+  completed:
+    "bg-[#dcfce7] text-[#15803d] dark:bg-[#15803d]/20 dark:text-[#4ade80]",
+  cancelled:
+    "bg-[#fee2e2] text-[#d6455f] dark:bg-[#fee2e2]/10 dark:text-[#ff8fa3]",
 };
 
 /* ------------------------------------------------------------------ */
@@ -257,9 +259,7 @@ function BookingsOverview({
     const points = data.map((point, index) => ({
       x:
         PAD.left +
-        (data.length === 1
-          ? plotW / 2
-          : (index / (data.length - 1)) * plotW),
+        (data.length === 1 ? plotW / 2 : (index / (data.length - 1)) * plotW),
       y: PAD.top + (1 - point.count / yMax) * plotH,
     }));
 
@@ -318,13 +318,7 @@ function BookingsOverview({
             className="block"
           >
             <defs>
-              <linearGradient
-                id="bookings-fill"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
+              <linearGradient id="bookings-fill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#a52b50" stopOpacity="0.28" />
                 <stop offset="100%" stopColor="#a52b50" stopOpacity="0.02" />
               </linearGradient>
@@ -590,7 +584,7 @@ function RecentBookingRequests({ bookings }: { bookings: BookingsData[] }) {
                   .toUpperCase();
                 return (
                   <tr
-                    key={booking._id}
+                    key={booking._id || 678}
                     className="border-b border-[#f1ecef] last:border-0 dark:border-white/10"
                   >
                     <td className="px-4 py-3.5">
@@ -795,11 +789,14 @@ export default function VendorDashboardView({
 }: Props) {
   const [windowDays, setWindowDays] = useState(30);
 
+  const bookignsData = !Array.isArray(bookings) ? [] : bookings;
+  const servicesData = !Array.isArray(services) ? [] : services;
+  const transactionsData = !Array.isArray(transactions) ? [] : transactions;
   // The API answers with an error object when the session/token is invalid.
   const loadError = !(
-    Array.isArray(bookings) &&
-    Array.isArray(services) &&
-    Array.isArray(transactions)
+    Array.isArray(bookignsData) &&
+    Array.isArray(servicesData) &&
+    Array.isArray(transactionsData)
   );
 
   const bookingsList = useMemo(
@@ -854,7 +851,8 @@ export default function VendorDashboardView({
       .filter((transaction) => isPaid(transaction))
       .map((transaction) => ({
         time:
-          bookingTimeById.get(transaction.bookingId) ?? oidTime(transaction._id),
+          bookingTimeById.get(transaction.bookingId) ??
+          oidTime(transaction._id),
         amount: priceToNumber(transaction.price),
       }))
       .filter(
@@ -892,9 +890,7 @@ export default function VendorDashboardView({
           return time !== null && time >= from && time < to;
         })
         .map((booking) => Number(booking.bookingsRating))
-        .filter(
-          (rating) => Number.isFinite(rating) && rating > 0,
-        );
+        .filter((rating) => Number.isFinite(rating) && rating > 0);
     const currentRatings = windowRatings(start, now);
     const previousRatings = windowRatings(previousStart, start);
     const ratingDelta =
@@ -956,8 +952,7 @@ export default function VendorDashboardView({
         icon: "bg-gradient-to-br from-[#fbbf24] to-[#f97316]",
         spark: "#f97316",
         Icon: Star,
-        sparkLine:
-          ratingSpark.length > 0 ? valuesPath(ratingSpark) : "",
+        sparkLine: ratingSpark.length > 0 ? valuesPath(ratingSpark) : "",
       },
       {
         label: "Total Earnings",
@@ -1035,9 +1030,7 @@ export default function VendorDashboardView({
               <select
                 aria-label="Select date range"
                 value={windowDays}
-                onChange={(event) =>
-                  setWindowDays(Number(event.target.value))
-                }
+                onChange={(event) => setWindowDays(Number(event.target.value))}
                 className="appearance-none bg-transparent pr-6 text-sm font-bold text-[#4a3a41] outline-none dark:text-[#e8dfe3]"
               >
                 {WINDOWS.map((days) => (
@@ -1059,8 +1052,7 @@ export default function VendorDashboardView({
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => {
             const Icon = stat.Icon;
-            const showTrend =
-              stat.trend !== null && stat.trend !== undefined;
+            const showTrend = stat.trend !== null && stat.trend !== undefined;
             const positive = (stat.trend ?? 0) >= 0;
             return (
               <div

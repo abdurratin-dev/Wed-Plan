@@ -16,7 +16,7 @@ export default function PaymentSuccessPage() {
         note="You can review your transactions anytime from your account."
         actions={[
           {
-            href: "/customer/bookings",
+            href: "/dashboard/customer/bookings",
             label: "Continue",
             variant: "primary",
           },

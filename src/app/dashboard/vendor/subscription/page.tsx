@@ -1,10 +1,16 @@
 
 import SubscriptionCard from "@/components/subscription/subscriptionCard";
 import { getSubscriptionService } from "@/lib/actions/api/subscriptionService";
+import { auth } from "@/lib/auth";
 import { ISubscriptionPlan } from "@/types/apidata";
-import { Check, Crown, Gift, ArrowRight, Heart, DiamondMinus, DiamondIcon, CrownIcon } from "lucide-react";
+import { Heart } from "lucide-react";
+import { headers } from "next/headers";
 
 const Subscription = async() => {
+  const session = await auth.api.getSession({
+    headers : await headers(),
+  })
+  const user = session?.user
     const plans : ISubscriptionPlan[] = await getSubscriptionService()
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#fff8f6] px-4 py-16">
@@ -14,6 +20,7 @@ const Subscription = async() => {
       <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#f8dadd]/50 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl">
+        {user?.premium && <p className="text-black">You are a Premium Vendor</p>}
 
         {/* Header */}
         <div className="mb-14 text-center">

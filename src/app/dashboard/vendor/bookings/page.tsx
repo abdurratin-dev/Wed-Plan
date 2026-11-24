@@ -4,6 +4,7 @@ import { BookingsData } from "@/types/apidata";
 import VendorBookingsCard from "@/components/vendor/VendorBookingsCard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import CustomerBookingEmpty from "@/components/bookings/customerBookingsEmpty";
 
 export const metadata = {
   title: "Booking Requests | WedPlan",
@@ -15,9 +16,10 @@ export default async function VendorBookingsPage() {
     headers: await headers(), // you need to pass the headers object.
   });
   const user = session?.user;
-  const res: BookingsData[] = await getBookings(
+  const res = await getBookings(
     `role=${user?.role}&userId=${user?.id}`,
   );
+  const bookignsData: BookingsData[] = !Array.isArray(res) ? [] : res;
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
       {/* ---------- Hero banner ---------- */}
@@ -53,7 +55,7 @@ export default async function VendorBookingsPage() {
           </p>
         </div>
       </div>
-      {res[0].status !== 401 ? <VendorBookingsCard request={res} /> : <p>Customer not book your service</p>}
+      {res.status !== 401 ? <VendorBookingsCard request={bookignsData} /> : <CustomerBookingEmpty />}
     </div>
   );
 }
