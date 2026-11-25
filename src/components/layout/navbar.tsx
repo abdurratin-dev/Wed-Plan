@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import ProfileDropDwoun from "../pofile/profileDropDwoun";
 import { GiLoveMystery } from "react-icons/gi";
+import Loading from "@/app/(main)/loading";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -27,6 +28,9 @@ export default function Navbar() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  if(!user){
+    return <Loading />
+  }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95 h-15">
       {/* Background Decoration */}
