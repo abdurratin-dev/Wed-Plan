@@ -26,13 +26,15 @@ export default async function MyServicesView() {
   const bookingsdata = await getBookings(
     `role=${user?.role}&userId=${user?.id}`,
   );
-  const services: ServiceData[] = await getServiceData(
+  const service = await getServiceData(
     `role=${user?.role}&userId=${user?.id}`,
   );
 
-  if (user?.role === "customer" || !user) {
-    redirect("/unauthorizied");
+  if (service.status) {
+    return redirect("/unauthorizied");
   }
+
+  const services :  ServiceData[] = Array.isArray(service) ? service : []
 
   const bookings: BookingsData[] = !Array.isArray(bookingsdata)
     ? []

@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import type { BookingsData } from "@/types/apidata";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Overview | WedPlan",
@@ -27,7 +28,9 @@ export default async function CustomerDashboardPage() {
 
   console.log(bookings);
   const userName = user?.name?.trim().split(/\s+/)[0] || "there";
-
+  if (!user) {
+    return redirect("/unauthorized");
+  }
   return (
     <CustomerDashboardView
       bookings={bookings}

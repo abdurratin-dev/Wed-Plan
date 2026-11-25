@@ -10,15 +10,12 @@ export const metadata = {
 };
 
 export default async function AdminServicesPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
-  if (user?.role !== "admin" || !user) {
-    return redirect("/unauthorized");
+  const services = await getServiceData();
+  if(services.status){
+    return redirect('/unauthorized')
   }
-  const services: ServiceData[] = await getServiceData();
+  const service :ServiceData[] = Array.isArray(services) ? services : []
   return (
-    <AdminServicesView services={Array.isArray(services) ? services : []} />
+    <AdminServicesView services={service} />
   );
 }

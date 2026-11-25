@@ -12,13 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminTransactionsPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
-  if (user?.role !== "admin" || !user) {
-    return redirect("/unauthorized");
+  const transactions = await getBookingTransactions();
+   if(transactions.status){
+    return redirect('/unauthorized')
   }
-  const transactions: ITransactions[] = await getBookingTransactions();
-  return <AdminTransactionsView transactions={transactions} />;
+  const transaction : ITransactions[] = Array.isArray(transactions) ? transactions : []
+  return <AdminTransactionsView transactions={transaction} />;
 }

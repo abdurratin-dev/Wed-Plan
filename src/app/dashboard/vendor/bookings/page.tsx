@@ -20,10 +20,10 @@ export default async function VendorBookingsPage() {
   const res = await getBookings(
     `role=${user?.role}&userId=${user?.id}`,
   );
-  const bookignsData: BookingsData[] = !Array.isArray(res) ? [] : res;
-  if(user?.role === 'customer' || !user){
-    redirect("/unauthorizied");
+  if(res.status){
+    return redirect("/unauthorizied");
   }
+  const bookignsData: BookingsData[] = !Array.isArray(res) ? [] : res;
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
       {/* ---------- Hero banner ---------- */}

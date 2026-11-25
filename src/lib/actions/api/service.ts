@@ -8,7 +8,7 @@ export const createService = async(data:CreateServicePayload)=>{
     return result
 }
 
-export const getServiceData = async(quary = ''):Promise<ServiceData[]>=>{
+export const getServiceData = async(quary = '')=>{
     const res = await fetch(`${SERVER_URL}/service?${quary}`);
     const data = await res.json();
     return data

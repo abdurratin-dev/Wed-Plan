@@ -12,14 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminBookingsPage() {
-  const session = await auth.api.getSession({
-    headers : await headers()
-  })
-  const user  = session?.user
-  if(user?.role !== 'admin' || !user){
+  const bookings = await getBookings();
+  if(bookings.status){
     return redirect('/unauthorized')
   }
-  const bookings = await getBookings();
   const booking : BookingsData[] = !Array.isArray(bookings) ? [] : bookings
   return <AdminBookingsView bookings={booking} />;
 }

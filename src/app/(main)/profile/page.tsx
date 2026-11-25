@@ -24,20 +24,24 @@ import { BookingsData } from "@/types/apidata";
 import EditProfile from "@/components/pofile/editProfile";
 import Image from "next/image";
 import ProfileSkeleton from "@/components/ui/skeleton/profile/profileSkeleton";
+import { useRouter } from "next/router";
 
 const ProfilePage = () => {
   const [booking, setBookings] = useState<BookingsData[]>([]);
   const [complitedBookings, setComlitedBookings] = useState<BookingsData[]>([]);
   const [pendigBookings, setPendingBookings] = useState<BookingsData[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
   useEffect(() => {
     try {
       const getData = async () => {
-        const res: BookingsData[] = await getBookings(
-          `role=${user?.role}&userId=${user?.id}`,
-        );
+        const data = await getBookings(`role=${user?.role}&userId=${user?.id}`);
+        if (data.status) {
+          return router.push("/unauthorized");
+        }
+        const res: BookingsData[] = Array.isArray(data) ? data : [];
         setBookings(res);
       };
       getData();
@@ -74,8 +78,8 @@ const ProfilePage = () => {
     },
   ];
 
-  if(loading){
-    return <ProfileSkeleton />
+  if (loading) {
+    return <ProfileSkeleton />;
   }
   return (
     <main className="min-h-screen bg-[#fff9f6] px-4 py-6 transition-colors duration-300 sm:px-6 lg:px-8 dark:bg-[#110a0e]">

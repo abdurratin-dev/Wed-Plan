@@ -56,18 +56,13 @@ export default function AddServiceForm() {
   const [imageError, setImageError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
 
-  // Release the object URL when the preview is swapped out or the page unmounts.
-  if (user?.role === "customer" || !user) {
-    router.push("/unauthorizied");
-  }
-  
   useEffect(() => {
     return () => {
       if (image) URL.revokeObjectURL(image);
@@ -154,7 +149,10 @@ export default function AddServiceForm() {
       email: user?.email,
     };
     try {
-      await createService(data);
+      const postService = await createService(data);
+      if (postService.status) {
+        return router.push("/unauthorized");
+      }
       setSubmitted(true);
       handleReset();
     } catch {

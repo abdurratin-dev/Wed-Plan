@@ -8,12 +8,5 @@ export const metadata = {
 };
 
 export default async function AddServicePage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
-  if (user?.role !== "admin" || !user) {
-    return redirect("/unauthorized");
-  }
   return <AddServiceForm />;
 }

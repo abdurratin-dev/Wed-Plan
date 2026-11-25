@@ -49,10 +49,10 @@ export default function AdminUsersPage() {
     const getData = async () => {
       try {
         const user = await getUsers();
+        if(user.status){
+          return router.push('/unauthorized')
+        }
         const us : IUsers[] = !Array.isArray(user) ? [] : user
-        // if(user.status){
-        //   router.push('/unauthorized')
-        // }
         if (!users) {
           setFilterUser(us);
         }

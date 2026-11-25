@@ -11,10 +11,11 @@ const Subscription = async () => {
     headers: await headers(),
   });
   const user = session?.user;
-  const plans: ISubscriptionPlan[] = await getSubscriptionService();
-  if (user?.role !== "vendor") {
-    redirect("/unauthorizied");
+  const plan = await getSubscriptionService();
+  if (plan.status) {
+    return redirect("/unauthorizied");
   }
+  const plans: ISubscriptionPlan[] = Array.isArray(plan) ? plan : []
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#fff8f6] px-4 py-16">
       {/* Background Decorations */}
