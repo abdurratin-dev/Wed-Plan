@@ -3,6 +3,7 @@ import {
   ArrowRight,
   CalendarDays,
   Check,
+  ChevronDown,
   Clock,
   Eye,
   MessageCircle,
@@ -55,6 +56,7 @@ export default function VendorBookingsCard({
 }) {
   const [bookingsData, setBookingsData] = useState<BookingsData[]>(request);
   const [activeTabs,setActiveTabs] = useState('All Requests');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const {data:session,error} = authClient.useSession()
   const user = session?.user
 
