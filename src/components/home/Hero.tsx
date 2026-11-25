@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import HeroImg from "@/assests/Wedding.jpeg"
+import HeroImg from "@/assests/Wedding Photography Pose Ideas That Look Natural and Beautiful.jpeg"
 
 const avatars = [
   "/avatar-44.jpg",

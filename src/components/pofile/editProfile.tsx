@@ -86,7 +86,7 @@ const EditProfile = ({
     <Dialog>
       <DialogTrigger
         render={
-          <Button variant={"ghost"} className={className}>
+          <button className={className}>
             <div className="flex items-center gap-3">
               <div className="rounded-lg bg-[#fce8ef] p-2 text-[#8b2146] dark:bg-[#65122f]/40 dark:text-[#ff91b7]">
                 <UserRound size={18} />
@@ -97,7 +97,7 @@ const EditProfile = ({
               size={16}
               className="text-gray-400 transition group-hover:translate-x-1"
             />
-          </Button>
+          </button>
         }
       />
       <form>

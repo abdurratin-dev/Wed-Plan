@@ -126,14 +126,6 @@ const ProfilePage = () => {
                       {user?.name[0]}
                     </div>
                   )}
-
-                  <button
-                    type="button"
-                    className="absolute -bottom-2 -right-2 rounded-full border-2 border-white bg-[#720e32] p-2 text-white dark:border-[#1d111a] dark:bg-[#e52d82]"
-                    aria-label="Change profile picture"
-                  >
-                    <Camera size={14} />
-                  </button>
                 </div>
 
                 <div className="pb-1">
