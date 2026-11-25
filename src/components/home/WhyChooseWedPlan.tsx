@@ -77,11 +77,11 @@ export default function WhyChooseWedPlan() {
         {/* Why Choose WedPlan */}
         <div className="text-center">
 
-          <h2 className="font-serif text-2xl font-bold text-[#590d26] dark:text-[#ffe2e9]">
+          <h2 className="font-serif text-2xl font-bold text-[#590d26] animate-fade-up dark:text-[#ffe2e9]">
             Why Choose WedPlan?
           </h2>
 
-          <div className="mx-auto mt-7 grid grid-cols-2 gap-5 md:grid-cols-4">
+          <div className="mx-auto mt-7 grid animate-stagger grid-cols-2 gap-5 md:grid-cols-4">
 
             {features.map((feature, index) => {
               const Icon = feature.icon;
@@ -118,11 +118,11 @@ export default function WhyChooseWedPlan() {
           {/* Steps */}
           <div>
 
-            <h3 className="mb-6 text-center font-serif text-xl font-bold text-[#590d26] dark:text-[#ffe2e9]">
+            <h3 className="mb-6 text-center font-serif text-xl font-bold text-[#590d26] animate-fade-up dark:text-[#ffe2e9]">
               How WedPlan Works
             </h3>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div className="grid animate-stagger grid-cols-1 gap-5 sm:grid-cols-3">
 
               {steps.map((step, index) => {
                 const Icon = step.icon;
@@ -152,7 +152,7 @@ export default function WhyChooseWedPlan() {
                     {index !== steps.length - 1 && (
                       <ArrowRight
                         size={18}
-                        className="hidden text-[#dba2a9] sm:absolute sm:-right-3 sm:block"
+                        className="hidden text-[#dba2a9] sm:absolute sm:-right-3 sm:block dark:text-white/20"
                       />
                     )}
                   </div>

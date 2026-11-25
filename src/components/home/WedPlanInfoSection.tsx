@@ -19,6 +19,7 @@ type InfoCardProps = {
   icon: LucideIcon;
   title: string;
   children: React.ReactNode;
+  delay?: number;
 };
 
 type CategoryType = {
@@ -64,9 +65,12 @@ const review: ReviewType = {
 };
 
 // Reusable Card Component
-const InfoCard = ({ icon: Icon, title, children }: InfoCardProps) => {
+const InfoCard = ({ icon: Icon, title, children, delay }: InfoCardProps) => {
   return (
-    <div className="group flex h-full flex-col rounded-[26px] border border-[#efdedd] bg-white/80 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#dba2a9] hover:shadow-xl hover:shadow-[#800d35]/5 dark:border-white/10 dark:bg-[#21141a] dark:hover:border-[#a3234e] sm:p-7">
+    <div
+      className="group flex h-full flex-col animate-fade-up rounded-[26px] border border-[#efdedd] bg-white/80 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#dba2a9] hover:shadow-xl hover:shadow-[#800d35]/5 dark:border-white/10 dark:bg-[#21141a] dark:hover:border-[#a3234e] sm:p-7"
+      style={delay !== undefined ? { animationDelay: `${delay}ms` } : undefined}
+    >
       <Icon
         size={27}
         strokeWidth={1.8}
@@ -92,12 +96,13 @@ export default function WedPlanInfoSection() {
 
       <div className="pointer-events-none absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-[#f8dadd]/30 blur-3xl dark:bg-[#800d35]/10" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="relative mx-auto grid max-w-7xl animate-stagger grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
         {/* Card 1: Booking Process */}
         <InfoCard
           icon={CalendarCheck}
           title="How Booking Works"
+          delay={0}
         >
           <div className="flex-1 space-y-3 text-sm text-[#725b62] dark:text-[#c5aeb6]">
             {bookingSteps.map((step) => (
@@ -123,6 +128,7 @@ export default function WedPlanInfoSection() {
         <InfoCard
           icon={Trophy}
           title="Top Categories"
+          delay={70}
         >
           <div className="grid flex-1 grid-cols-3 gap-x-3 gap-y-5 pt-1 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-5">
             {categories.map((category) => {
@@ -161,6 +167,7 @@ export default function WedPlanInfoSection() {
         <InfoCard
           icon={Quote}
           title="Customer Reviews"
+          delay={140}
         >
           <div className="flex-1">
             <p className="text-sm leading-7 text-[#725b62] dark:text-[#c5aeb6]">
