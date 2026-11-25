@@ -179,7 +179,7 @@ export default function AdminServicesView({ services }: IProps) {
                     <Icon className="size-5" />
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-[13px] font-medium text-[#6b7280] dark:text-[#c8b3bd]">
+                    <p className="truncate text-[13px] font-medium text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]">
                       {stat.label}
                     </p>
                     <p className="mt-0.5 text-2xl font-extrabold tracking-tight text-[#111827] dark:text-[#ffeaf1]">
@@ -195,7 +195,7 @@ export default function AdminServicesView({ services }: IProps) {
         {/* ---------- Toolbar ---------- */}
         <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#9ca3af]" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#9ca3af] dark:text-[#9b8792]" />
             <Input
               type="search"
               value={search}
@@ -204,7 +204,7 @@ export default function AdminServicesView({ services }: IProps) {
                 if (e.key === "Enter") applyFilters();
               }}
               placeholder="Search services by name or category..."
-              className="h-11 w-full rounded-xl border-[#e8e2e5] bg-white pr-4 pl-10 text-sm shadow-none placeholder:text-[#9ca3af] focus-visible:border-[#8e2249] focus-visible:ring-[#8e2249]/20 dark:border-white/10 dark:bg-white/5 dark:focus-visible:border-[#ff9bb9]"
+              className="h-11 w-full rounded-xl border-[#e8e2e5] bg-white pr-4 pl-10 text-sm shadow-none placeholder:text-[#9ca3af] dark:text-[#9b8792] focus-visible:border-[#8e2249] focus-visible:ring-[#8e2249]/20 dark:border-white/10 dark:bg-white/5 dark:focus-visible:border-[#ff9bb9]"
             />
           </div>
 
@@ -222,7 +222,7 @@ export default function AdminServicesView({ services }: IProps) {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280]" />
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
           </div>
 
           <div className="relative">
@@ -237,7 +237,7 @@ export default function AdminServicesView({ services }: IProps) {
               <option value="Pending">Pending</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280]" />
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
           </div>
 
           <button
@@ -260,7 +260,7 @@ export default function AdminServicesView({ services }: IProps) {
             <h2 className="text-base font-bold text-[#111827] dark:text-[#ffeaf1]">
               All Services
             </h2>
-            <p className="text-xs font-medium text-[#9ca3af]">
+            <p className="text-xs font-medium text-[#9ca3af] dark:text-[#9b8792]">
               Showing {filtered.length} of {services.length} services
             </p>
           </div>
@@ -272,7 +272,7 @@ export default function AdminServicesView({ services }: IProps) {
                   {tableHeads.map((head, i) => (
                     <th
                       key={head}
-                      className={`bg-[#faf8f9] px-4 py-3.5 text-sm font-semibold text-[#6b7280] dark:bg-white/5 dark:text-[#a998a1] ${
+                      className={`bg-[#faf8f9] px-4 py-3.5 text-sm font-semibold text-[#6b7280] dark:text-[#b3a3ab] dark:bg-white/5 dark:text-[#a998a1] ${
                         i === 0 ? "rounded-l-lg" : ""
                       } ${i === tableHeads.length - 1 ? "rounded-r-lg" : ""}`}
                     >
@@ -294,7 +294,7 @@ export default function AdminServicesView({ services }: IProps) {
                   <tr>
                     <td
                       colSpan={tableHeads.length}
-                      className="px-4 py-14 text-center text-sm font-medium text-[#9ca3af]"
+                      className="px-4 py-14 text-center text-sm font-medium text-[#9ca3af] dark:text-[#9b8792]"
                     >
                       No services match your filters.
                     </td>

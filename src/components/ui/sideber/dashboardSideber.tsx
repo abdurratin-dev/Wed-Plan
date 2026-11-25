@@ -116,33 +116,13 @@ export function DashboardSidebar() {
   return (
     <Sidebar
       data-sidebar-theme={isAdmin ? "blush" : "wine"}
-      className={cn(
-        "border-r",
-        isAdmin
-          ? "border-[#8e2249]/15 bg-[#fbe9ef]"
-          : "border-white/10 bg-[#5c0f28]",
-      )}
-      style={
-        isAdmin
-          ? ({
-              "--sidebar": "#fbe9ef",
-              "--sidebar-foreground": "#8e2249",
-              "--sidebar-accent": "#7d1436",
-              "--sidebar-accent-foreground": "#ffffff",
-              "--sidebar-border": "rgb(142 34 73 / 15%)",
-              "--sidebar-ring": "rgb(142 34 73 / 35%)",
-            } as React.CSSProperties)
-          : undefined
-      }
+      className={cn("border-r border-sidebar-border")}
     >
       {/* Brand */}
       <SidebarHeader className="px-3 pt-5 pb-3">
         <Link
           href="/"
-          className={cn(
-            "flex items-center gap-1.5 transition-opacity hover:opacity-90",
-            isAdmin ? "text-[#7d1436]" : "text-white",
-          )}
+          className="flex items-center gap-1.5 text-sidebar-foreground transition-opacity hover:opacity-90"
         >
           <GiLoveMystery size={45} strokeWidth={2.5} />
           <div className="flex flex-col justify-center">
@@ -168,27 +148,15 @@ export function DashboardSidebar() {
                       isActive={active}
                       className={cn(
                         "h-11 gap-3 rounded-xl px-2.5 py-2 text-[0.95rem] font-medium",
-                        isAdmin
-                          ? [
-                              "text-[#8e2249]",
-                              "hover:bg-[#7d1436] hover:text-white",
-                              "data-active:bg-[#7d1436] data-active:text-white",
-                            ]
-                          : [
-                              "text-white/85",
-                              "hover:bg-[#8e2249] hover:text-white",
-                              "data-active:bg-[#8e2249] data-active:text-white",
-                            ],
+                        "text-sidebar-foreground/85",
+                        "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                        "data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
                       )}
                     >
                       <span
                         className={cn(
-                          "flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors",
-                          active
-                            ? "border-white/50 bg-white/10"
-                            : isAdmin
-                              ? "border-transparent"
-                              : "border-white/25",
+                          "flex size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border transition-colors",
+                          active && "bg-white/10",
                         )}
                       >
                         <Icon className="size-4" />

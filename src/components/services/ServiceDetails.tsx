@@ -32,9 +32,9 @@ const FALLBACK_DESCRIPTION =
   "No description has been added for this service yet. Reach out to the vendor to learn more about what is included.";
 
 const Units = [
-  { label: "Par day", value: "parday" },
-  { label: "Par week", value: "parweek" },
-  { label: "Par Month", value: "parmonth" },
+  { label: "Per day", value: "parday" },
+  { label: "Per week", value: "parweek" },
+  { label: "Per Month", value: "parmonth" },
 ];
 
 const Durations = [{ label: "1 Hr" }, { label: "5 Hr" }, { label: "10 Hr" }];
@@ -643,7 +643,7 @@ export default function ServiceDetails({
               <Sparkles
                 aria-hidden="true"
                 size={22}
-                className="relative mx-auto text-[#d6455f] dark:text-[#ff9bb9]"
+                className="relative mx-auto text-[#d6455f] dark:text-[#ff8fa3] dark:text-[#ff9bb9]"
               />
               <h2 className="font-heading relative mt-2 text-2xl leading-tight font-semibold text-[#720e32] dark:text-[#ff9bb9]">
                 Make Your Day Unforgettable

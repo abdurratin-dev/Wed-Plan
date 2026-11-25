@@ -144,7 +144,7 @@ export default function SignInForm() {
                 className={fieldClass(errors.email)}
               />
               {errors.email && (
-                <p className="mt-1.5 text-xs font-medium text-[#d6455f]">
+                <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
                   {errors.email}
                 </p>
               )}
@@ -188,7 +188,7 @@ export default function SignInForm() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1.5 text-xs font-medium text-[#d6455f]">
+                <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
                   {errors.password}
                 </p>
               )}

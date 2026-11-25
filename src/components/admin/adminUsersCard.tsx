@@ -61,24 +61,18 @@ const roleBadges: IRoleBadges = {
 };
 
 const detailRowClass =
-  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#c8b3bd]";
+  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]";
 const detailLabelClass = "font-medium text-[#9ca3af] dark:text-[#9b8792]";
 const detailValueClass =
   "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 export default function AdminUsersCard({ u }: { u: IUsers }) {
   const [updateStatus, setStatus] = useState(u.status);
   const [viewOpen,setViewOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
   const role = roleBadges[u.role as RoleKey];
   const RoleIcon = role.Icon;
 
-  const handleBanButton = async (data: string) => {
-    const res = await updateUsers({ id: u._id, status: data });
-    if (res.modifiedCount > 0) {
-      setStatus(data);
-    }
-  };
-
-  const handleUnbanButton = async (data: string) => {
+  const handleStatusChange = async (data: string) => {
     const res = await updateUsers({ id: u._id, status: data });
     if (res.modifiedCount > 0) {
       setStatus(data);
@@ -94,7 +88,7 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
             className="ring-1 ring-[#f1ecef] dark:ring-white/10"
           >
             <AvatarImage src={u.image} alt={u.name} />
-            <AvatarFallback className="bg-[#fce7f3] text-xs font-bold text-[#8e2249]">
+            <AvatarFallback className="bg-[#fce7f3] text-xs font-bold text-[#8e2249] dark:bg-[#fce7f3]/10 dark:text-[#ff9bb9]">
               {initials(u.name)}
             </AvatarFallback>
           </Avatar>
@@ -144,18 +138,23 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
       {/* Actions */}
       <td className="px-4 py-4">
         <div className="flex items-center gap-1">
+          <ManegUserDropdwoun
+            userName={u.name}
+            status={updateStatus}
+            open={menuOpen}
+            onOpenChange={setMenuOpen}
+            onView={() => {
+              setMenuOpen(false);
+              setViewOpen(true);
+            }}
+            onBlock={() => {
+              setMenuOpen(false);
+              void handleStatusChange(
+                updateStatus === "Active" ? "Blocked" : "Active",
+              );
+            }}
+          />
           <Popover open={viewOpen} onOpenChange={setViewOpen}>
-            <PopoverTrigger
-              render={
-                <button
-                  type="button"
-                  aria-label={`View details for ${u.name}`}
-                  className="rounded-lg p-2.5 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:text-[#c8b3bd] dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/30"
-                >
-                  <Eye className="size-4" />
-                </button>
-              }
-            />
             <PopoverContent align="end" className="w-64 gap-3 p-3.5">
               <div className="border-b border-[#f1ecef] pb-2 dark:border-white/10">
                 <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
@@ -198,25 +197,6 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
               </dl>
             </PopoverContent>
           </Popover>
-          {updateStatus === "Active" ? (
-            <button
-              type="button"
-              aria-label={`Block ${u.name}`}
-              className="rounded-lg p-2.5 text-[#dc2626] transition-colors hover:bg-[#fdecec] focus-visible:ring-2 focus-visible:ring-[#dc2626]/30 focus-visible:outline-none dark:hover:bg-[#dc2626]/10 dark:focus-visible:ring-[#f87171]/30"
-              onClick={() => handleBanButton("Blocked")}
-            >
-              <Ban className="size-4" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              aria-label={`Block ${u.name}`}
-              className="rounded-lg p-2.5 text-[#16a34a] transition-colors hover:bg-[#f3fdec] focus-visible:ring-2 focus-visible:ring-[#16a34a]/30 focus-visible:outline-none dark:hover:bg-[#26dc3b]/10 dark:focus-visible:ring-[#4ade80]/30"
-              onClick={() => handleUnbanButton("Active")}
-            >
-              <ShieldCheck className="size-4" />
-            </button>
-          )}
         </div>
       </td>
     </tr>

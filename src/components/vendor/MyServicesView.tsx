@@ -3,11 +3,11 @@ import Link from "next/link";
 import {
   CalendarDays,
   Camera,
+  Check,
   ChevronRight,
   Home,
   Plus,
   Star,
-  TrendingUp,
 } from "lucide-react";
 import { BookingsData, ServiceData } from "@/types/apidata";
 import { getServiceData } from "@/lib/actions/api/service";
@@ -31,7 +31,7 @@ export default async function MyServicesView() {
   );
 
   if (service.status) {
-    return redirect("/unauthorizied");
+    return redirect("/unauthorized");
   }
 
   const services :  ServiceData[] = Array.isArray(service) ? service : []
@@ -39,6 +39,22 @@ export default async function MyServicesView() {
   const bookings: BookingsData[] = !Array.isArray(bookingsdata)
     ? []
     : bookingsdata;
+
+  // Real derivations — no fabricated numbers.
+  const ratedServices = services.filter(
+    (item) => typeof item.rating === "number" && item.rating > 0,
+  );
+  const averageRating =
+    ratedServices.length > 0
+      ? (
+          ratedServices.reduce((sum, item) => sum + item.rating, 0) /
+          ratedServices.length
+        ).toFixed(1)
+      : "—";
+  const completedBookings = bookings.filter(
+    (item) => item.bookingStatus === "Completed",
+  ).length;
+
   const stats = [
     { label: "Total Services", value: services.length, icon: Camera },
     {
@@ -46,8 +62,12 @@ export default async function MyServicesView() {
       value: bookings.length,
       icon: CalendarDays,
     },
-    { label: "Average Rating", value: "4.8", icon: Star },
-    { label: "Growth This Month", value: "+12%", icon: TrendingUp },
+    { label: "Average Rating", value: averageRating, icon: Star },
+    {
+      label: "Completed Bookings",
+      value: completedBookings,
+      icon: Check,
+    },
   ] as const;
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">

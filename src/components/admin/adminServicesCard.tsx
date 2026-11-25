@@ -91,8 +91,8 @@ const statusDots: Record<string, string> = {
 };
 
 const detailRowClass =
-  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#c8b3bd]";
-const detailLabelClass = "font-medium text-[#9ca3af]";
+  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]";
+const detailLabelClass = "font-medium text-[#9ca3af] dark:text-[#9b8792]";
 const detailValueClass =
   "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 
@@ -130,7 +130,7 @@ export default function AdminServicesCard({
   return (
     <tr className="border-b border-[#f1ecef] last:border-0 dark:border-white/10">
       {/* Index */}
-      <td className="px-4 py-4 text-sm font-semibold text-[#9ca3af] tabular-nums">
+      <td className="px-4 py-4 text-sm font-semibold text-[#9ca3af] dark:text-[#9b8792] tabular-nums">
         {index}
       </td>
 
@@ -150,7 +150,7 @@ export default function AdminServicesCard({
             <p className="truncate text-sm font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
               {service.name}
             </p>
-            <p className="truncate text-xs text-[#9ca3af]">
+            <p className="truncate text-xs text-[#9ca3af] dark:text-[#9b8792]">
               {service.description || service.vendorName}
             </p>
           </div>
@@ -205,7 +205,7 @@ export default function AdminServicesCard({
                 <button
                   type="button"
                   aria-label={`View ${service.name}`}
-                  className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
+                  className="rounded-lg p-2 text-[#6b7280] dark:text-[#b3a3ab] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
                 >
                   <Eye className="size-4" />
                 </button>
@@ -216,7 +216,7 @@ export default function AdminServicesCard({
                 <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
                   {service.name}
                 </p>
-                <p className="mt-0.5 text-xs text-[#9ca3af]">
+                <p className="mt-0.5 text-xs text-[#9ca3af] dark:text-[#9b8792]">
                   {prettyCategory(service.category)} · {service.location}
                 </p>
               </div>
@@ -238,7 +238,7 @@ export default function AdminServicesCard({
                   <dd className="inline-flex items-center gap-1 font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
                     <Star className="size-3.5 fill-[#f59e0b] text-[#f59e0b]" />
                     {service.rating ?? 0}
-                    <span className="font-normal text-[#9ca3af]">
+                    <span className="font-normal text-[#9ca3af] dark:text-[#9b8792]">
                       ({service.reviews?.length ?? 0})
                     </span>
                   </dd>
@@ -268,7 +268,7 @@ export default function AdminServicesCard({
             aria-label={`Edit ${service.name}`}
             title="Edit service"
             onClick={() => setEditOpen(true)}
-            className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
+            className="rounded-lg p-2 text-[#6b7280] dark:text-[#b3a3ab] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
           >
             <Pencil className="size-4" />
           </button>
@@ -280,7 +280,7 @@ export default function AdminServicesCard({
                 <button
                   type="button"
                   aria-label={`More actions for ${service.name}`}
-                  className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
+                  className="rounded-lg p-2 text-[#6b7280] dark:text-[#b3a3ab] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
                 >
                   <EllipsisVertical className="size-4" />
                 </button>

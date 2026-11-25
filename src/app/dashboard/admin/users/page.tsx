@@ -65,7 +65,6 @@ export default function AdminUsersPage() {
     getData();
   }, []);
   if (loading === true) {
-    console.log("loading");
     return <WedPlanSkeleton />;
   }
   const hendleRoleChang = (data: string) => {
@@ -133,7 +132,7 @@ export default function AdminUsersPage() {
             <h1 className="text-3xl font-extrabold tracking-tight text-[#111827] sm:text-4xl dark:text-[#ffeaf1]">
               All Users
             </h1>
-            <p className="mt-2 text-sm text-[#6b7280] sm:text-[0.95rem] dark:text-[#c8b3bd]">
+            <p className="mt-2 text-sm text-[#6b7280] dark:text-[#b3a3ab] sm:text-[0.95rem] dark:text-[#c8b3bd]">
               Manage and monitor all registered platform users.
             </p>
           </div>
@@ -145,7 +144,7 @@ export default function AdminUsersPage() {
           >
             <House className="size-4 text-[#8e2249] dark:text-[#ff9bb9]" />
             <span>Admin</span>
-            <span className="text-[#9ca3af]" aria-hidden="true">
+            <span className="text-[#9ca3af] dark:text-[#9b8792]" aria-hidden="true">
               ›
             </span>
             <span className="text-[#111827] dark:text-[#ffeaf1]">Users</span>
@@ -188,7 +187,7 @@ export default function AdminUsersPage() {
               <h2 className="text-xl font-bold text-[#111827] dark:text-[#ffeaf1]">
                 User Directory
               </h2>
-              <p className="mt-1 text-sm text-[#6b7280] dark:text-[#c8b3bd]">
+              <p className="mt-1 text-sm text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]">
                 View and manage all platform accounts.
               </p>
             </div>
@@ -196,11 +195,11 @@ export default function AdminUsersPage() {
             {/* Toolbar */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative w-full sm:w-72">
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#9ca3af]" />
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#9ca3af] dark:text-[#9b8792]" />
                 <Input
                   type="search"
                   placeholder="Search by name or email..."
-                  className="h-10 w-full rounded-lg border-[#e5e0e2] bg-white pr-4 pl-9 text-sm shadow-none placeholder:text-[#9ca3af] focus-visible:border-[#8e2249] focus-visible:ring-[#8e2249]/20 dark:border-white/10 dark:bg-white/5 dark:focus-visible:border-[#ff9bb9]"
+                  className="h-10 w-full rounded-lg border-[#e5e0e2] bg-white pr-4 pl-9 text-sm shadow-none placeholder:text-[#9ca3af] dark:text-[#9b8792] focus-visible:border-[#8e2249] focus-visible:ring-[#8e2249]/20 dark:border-white/10 dark:bg-white/5 dark:focus-visible:border-[#ff9bb9]"
                 />
               </div>
 
@@ -216,7 +215,7 @@ export default function AdminUsersPage() {
                   <option value="vendor">Vendor</option>
                   <option value="customer">Customer</option>
                 </select>
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280]" />
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
               </div>
 
               <div className="relative">
@@ -230,7 +229,7 @@ export default function AdminUsersPage() {
                   <option value="Active">Active</option>
                   <option value="Blocked">Blocked</option>
                 </select>
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280]" />
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
               </div>
             </div>
           </div>
@@ -243,7 +242,7 @@ export default function AdminUsersPage() {
                   {tableHeads.map((head, i) => (
                     <th
                       key={head}
-                      className={`bg-[#faf8f9] px-4 py-3.5 text-sm font-semibold text-[#6b7280] dark:bg-white/5 dark:text-[#a998a1] ${
+                      className={`bg-[#faf8f9] px-4 py-3.5 text-sm font-semibold text-[#6b7280] dark:text-[#b3a3ab] dark:bg-white/5 dark:text-[#a998a1] ${
                         i === 0 ? "rounded-l-lg" : ""
                       } ${i === tableHeads.length - 1 ? "rounded-r-lg" : ""}`}
                     >

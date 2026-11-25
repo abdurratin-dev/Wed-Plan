@@ -26,7 +26,6 @@ export default async function CustomerDashboardPage() {
     getServiceData(),
   ]);
 
-  console.log(bookings);
   const userName = user?.name?.trim().split(/\s+/)[0] || "there";
   if (!user) {
     return redirect("/unauthorized");

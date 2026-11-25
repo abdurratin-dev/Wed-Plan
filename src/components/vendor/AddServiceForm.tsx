@@ -162,7 +162,7 @@ export default function AddServiceForm() {
 
   const errorText = (message?: string) =>
     message ? (
-      <p className="mt-1.5 text-xs font-medium text-[#d6455f]">{message}</p>
+      <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">{message}</p>
     ) : null;
 
   return (
@@ -275,7 +275,7 @@ export default function AddServiceForm() {
                 />
                 <div className="mt-1.5 flex items-start justify-between gap-3">
                   {errors.description ? (
-                    <p className="text-xs font-medium text-[#d6455f]">
+                    <p className="text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
                       {errors.description}
                     </p>
                   ) : (
@@ -285,7 +285,7 @@ export default function AddServiceForm() {
                     className={cn(
                       "shrink-0 text-xs tabular-nums",
                       description.length >= MAX_DESCRIPTION
-                        ? "font-semibold text-[#d6455f]"
+                        ? "font-semibold text-[#d6455f] dark:text-[#ff8fa3]"
                         : "text-[#a89a9f] dark:text-[#8d7a84]",
                     )}
                   >
@@ -466,7 +466,7 @@ export default function AddServiceForm() {
               )}
 
               {imageError && (
-                <p className="mt-2 text-xs font-medium text-[#d6455f]">
+                <p className="mt-2 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
                   {imageError}
                 </p>
               )}

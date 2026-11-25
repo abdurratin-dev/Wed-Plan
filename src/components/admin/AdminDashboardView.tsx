@@ -833,7 +833,7 @@ export default function AdminDashboardView({
                         <th
                           key={head}
                           className={cn(
-                            "bg-[#faf8f9] px-4 py-3 text-sm font-semibold text-[#6b7280] dark:bg-white/5 dark:text-[#a998a1]",
+                            "bg-[#faf8f9] px-4 py-3 text-sm font-semibold text-[#6b7280] dark:text-[#b3a3ab] dark:bg-white/5 dark:text-[#a998a1]",
                             index === 0 && "rounded-l-lg",
                             index === 4 && "rounded-r-lg",
                           )}

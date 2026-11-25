@@ -147,7 +147,7 @@ function EditServiceForm({
 
   const errorText = (message?: string) =>
     message ? (
-      <p className="mt-1.5 text-xs font-medium text-[#d6455f]">{message}</p>
+      <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">{message}</p>
     ) : null;
 
   const categoryOptions = CATEGORIES.some((item) => item.value === category)
@@ -188,7 +188,7 @@ function EditServiceForm({
                 <div>
                   <label htmlFor="edit-service-name" className={labelClass}>
                     Service Name{" "}
-                    <span className="text-[#d6455f]">*</span>
+                    <span className="text-[#d6455f] dark:text-[#ff8fa3]">*</span>
                   </label>
                   <div className="relative mt-1.5">
                     <Briefcase className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-[#a52b50] dark:text-[#ff9bb9]" />
@@ -214,7 +214,7 @@ function EditServiceForm({
                 {/* Category */}
                 <div>
                   <label htmlFor="edit-service-category" className={labelClass}>
-                    Category <span className="text-[#d6455f]">*</span>
+                    Category <span className="text-[#d6455f] dark:text-[#ff8fa3]">*</span>
                   </label>
                   <div className="relative mt-1.5">
                     <LayoutGrid className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-[#a52b50] dark:text-[#ff9bb9]" />
@@ -239,7 +239,7 @@ function EditServiceForm({
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-[#6b7280]" />
+                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
                   </div>
                   {errorText(errors.category)}
                 </div>
@@ -247,7 +247,7 @@ function EditServiceForm({
                 {/* Price */}
                 <div>
                   <label htmlFor="edit-service-price" className={labelClass}>
-                    Price <span className="text-[#d6455f]">*</span>
+                    Price <span className="text-[#d6455f] dark:text-[#ff8fa3]">*</span>
                   </label>
                   <div className="relative mt-1.5">
                     <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-sm font-bold text-[#a52b50] dark:text-[#ff9bb9]">
@@ -277,7 +277,7 @@ function EditServiceForm({
                 {/* Location */}
                 <div>
                   <label htmlFor="edit-service-location" className={labelClass}>
-                    Location <span className="text-[#d6455f]">*</span>
+                    Location <span className="text-[#d6455f] dark:text-[#ff8fa3]">*</span>
                   </label>
                   <div className="relative mt-1.5">
                     <MapPin className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-[#a52b50] dark:text-[#ff9bb9]" />
@@ -302,7 +302,7 @@ function EditServiceForm({
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-[#6b7280]" />
+                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-[#6b7280] dark:text-[#b3a3ab]" />
                   </div>
                   {errorText(errors.location)}
                 </div>
@@ -430,7 +430,7 @@ function EditServiceForm({
                 </div>
                 {errorText(errors.image)}
                 {imageError && (
-                  <p className="mt-1.5 text-xs font-medium text-[#d6455f]">
+                  <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
                     {imageError}
                   </p>
                 )}

@@ -184,6 +184,24 @@
   background-image: none;
 }
 
+/* Admin sidebar — blush panel (light) that deepens in dark mode */
+[data-sidebar-theme="blush"] {
+  --sidebar: #fbe9ef;
+  --sidebar-foreground: #8e2249;
+  --sidebar-accent: #7d1436;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(142 34 73 / 15%);
+  --sidebar-ring: rgb(142 34 73 / 35%);
+}
+.dark [data-sidebar-theme="blush"] {
+  --sidebar: #2a1520;
+  --sidebar-foreground: #ffb3cd;
+  --sidebar-accent: #8e2249;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 10%);
+  --sidebar-ring: rgb(255 155 185 / 40%);
+}
+
 /* ---------------------------------------------------------------- */
 /*  Base polish                                                      */
 /* ---------------------------------------------------------------- */

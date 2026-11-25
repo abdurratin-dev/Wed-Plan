@@ -158,7 +158,6 @@ export default function AdminBookingsView({
           src="/services-banner.jpg"
           alt=""
           fill
-          preload
           sizes="100vw"
           className="-z-10 object-cover object-center"
         />

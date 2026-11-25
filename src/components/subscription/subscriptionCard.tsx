@@ -9,7 +9,6 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
     const {data : session, error} = authClient.useSession()
     const user = session?.user
     const router = useRouter()
-    console.log(user?.id);
     const hendleButton = async(price : number)=>{
         if(price === 0){
             return
@@ -26,9 +25,11 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
             const chackout = await creatChakout(data)
             redirectUrl = chackout.data.redirectUrl
         } catch {
-            console.log('fatch faild');
+            // Checkout request failed — stay on the page instead of pushing an undefined URL.
         } finally {
-            router.push(redirectUrl)
+            if (redirectUrl) {
+                router.push(redirectUrl)
+            }
         }
         
     }
