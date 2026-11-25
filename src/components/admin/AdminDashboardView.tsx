@@ -395,7 +395,7 @@ function PlatformAnalytics({
                   textAnchor="end"
                   dominantBaseline="middle"
                   fontSize="11"
-                  fill="#a89a9f"
+                  className="fill-[#a89a9f] dark:fill-[#9b8792]"
                 >
                   {formatAxis(tick)}
                 </text>
@@ -411,7 +411,7 @@ function PlatformAnalytics({
               y={CHART_HEIGHT - 8}
               textAnchor="middle"
               fontSize="11"
-              fill="#a89a9f"
+              className="fill-[#a89a9f] dark:fill-[#9b8792]"
             >
               {point.label}
             </text>
