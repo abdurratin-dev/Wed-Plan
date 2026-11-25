@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Heart, Search } from "lucide-react";
+import Link from "next/link";
+import { Heart } from "lucide-react";
 import HeroImg from "@/assests/Wedding.jpeg"
 
 const avatars = [
@@ -39,7 +40,7 @@ export default function Hero() {
       <div className="relative mx-auto flex max-w-[1600px] flex-col gap-10 px-4 pb-16 pt-14 sm:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-10 lg:pb-24 lg:pt-20">
         {/* Copy */}
         <div className="flex flex-col items-start gap-5 sm:gap-6">
-          <p className="flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.32em] text-[#720e32] sm:text-xs dark:text-[#ff9bb9]">
+          <p className="flex animate-fade-up items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.32em] text-[#720e32] sm:text-xs dark:text-[#ff9bb9]">
             {eyebrow.map((word, i) => (
               <span key={word} className="flex items-center gap-2">
                 {word}
@@ -50,23 +51,33 @@ export default function Hero() {
             ))}
           </p>
 
-          <h1 className="font-heading text-[2.35rem] font-semibold leading-[1.06] tracking-tight text-[#2b0713] sm:text-5xl md:text-6xl lg:text-[3.9rem] dark:text-[#ffeaf1]">
+          <h1
+            className="font-heading text-[2.35rem] font-semibold leading-[1.06] tracking-tight text-[#2b0713] animate-fade-up sm:text-5xl md:text-6xl lg:text-[3.9rem] dark:text-[#ffeaf1]"
+            style={{ animationDelay: "80ms" }}
+          >
             Your Dream Wedding <br className="hidden sm:block" />
             Starts Here
           </h1>
 
-          <p className="max-w-xl text-base leading-relaxed text-[#5f4b53] sm:text-lg dark:text-[#c8b3bd]">
+          <p
+            className="max-w-xl text-base leading-relaxed text-[#5f4b53] animate-fade-up sm:text-lg dark:text-[#c8b3bd]"
+            style={{ animationDelay: "160ms" }}
+          >
             Discover the best wedding services and book trusted vendors for your
             special day.
           </p>
-          <button
-            type="submit"
-            className="rounded-2xl bg-[#720e32] px-8 py-3.5 text-base font-bold text-white transition hover:bg-[#570a26] sm:rounded-full dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+          <Link
+            href="/services"
+            className="inline-flex animate-fade-up items-center justify-center rounded-2xl bg-[#720e32] px-8 py-3.5 text-base font-bold text-white transition hover:bg-[#570a26] sm:rounded-full dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+            style={{ animationDelay: "240ms" }}
           >
             Explore Wedding Services
-          </button>
+          </Link>
           {/* Social proof */}
-          <div className="flex flex-wrap items-center gap-4 pt-1">
+          <div
+            className="flex animate-fade-up flex-wrap items-center gap-4 pt-1"
+            style={{ animationDelay: "320ms" }}
+          >
             <div className="flex -space-x-3">
               {avatars.map((src) => (
                 <Image
@@ -76,7 +87,7 @@ export default function Hero() {
                   aria-hidden="true"
                   width={44}
                   height={44}
-                  className="h-10 w-10 rounded-full object-cover ring-2 ring-white sm:h-11 sm:w-11 dark:ring-[#1b1118]"
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-[#fffaf7] sm:h-11 sm:w-11 dark:ring-[#1b1118]"
                 />
               ))}
             </div>
@@ -96,7 +107,7 @@ export default function Hero() {
           </div>
 
           {/* Couple photo — tablet / mobile: card below the copy */}
-          <div className="relative mt-2 h-[300px] w-full overflow-hidden rounded-3xl sm:h-[380px] lg:hidden">
+          <div className="relative mt-2 h-[300px] w-full overflow-hidden rounded-3xl border border-[#efe2dd] sm:h-[380px] lg:hidden dark:border-white/10">
             <Image
               src={HeroImg}
               alt="Bride and groom sharing a quiet moment on their wedding day"

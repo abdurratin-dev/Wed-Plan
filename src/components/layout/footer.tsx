@@ -128,7 +128,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#e8c5c8] text-[#800d35] transition-all duration-300 hover:-translate-y-1 hover:border-[#800d35] hover:bg-[#800d35] hover:text-white dark:border-white/15 dark:text-[#f08ba8] dark:hover:border-[#800d35] dark:hover:bg-[#800d35] dark:hover:text-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#e8c5c8] text-[#800d35] transition-all duration-300 hover:-translate-y-1 hover:border-[#800d35] hover:bg-[#800d35] hover:text-white focus-visible:ring-2 focus-visible:ring-[#720e32]/40 active:scale-95 dark:border-white/15 dark:text-[#f08ba8] dark:hover:border-[#800d35] dark:hover:bg-[#800d35] dark:hover:text-white dark:focus-visible:ring-[#ff9bb9]/40"
                   >
                     <Icon size={17} />
                   </a>

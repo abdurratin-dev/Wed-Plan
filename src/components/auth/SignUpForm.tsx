@@ -36,7 +36,6 @@ export default function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -64,7 +63,7 @@ export default function SignUpForm() {
     if (data) {
       toast.add({
         type: "success",
-        description: `${data.user.name} wellcome to WedPlan`,
+        description: `Welcome to WedPlan, ${data.user.name}`,
       });
       return router.push(`/dashboard/${role}`);
     }
@@ -74,7 +73,7 @@ export default function SignUpForm() {
     });
   }
   const hendleGoogleButton = async () => {
-    const { data, error } = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: "google",
     });
   };
@@ -305,7 +304,8 @@ export default function SignUpForm() {
             {loading ? (
               <button
                 type="submit"
-                className="w-full flex items-center justify-center rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+                disabled
+                className="flex w-full items-center justify-center rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] disabled:opacity-70 disabled:cursor-wait dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
               >
                 <Spinner className="size-6" />
               </button>
@@ -314,19 +314,48 @@ export default function SignUpForm() {
                 type="submit"
                 className="w-full rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
               >
-                Sign In
+                Create Account
               </button>
-            )}
-
-            {submitted && (
-              <p className="rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-center text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]">
-                Looks good — authentication isn&apos;t connected yet, so no
-                account was created.
-              </p>
             )}
           </form>
 
-          <button onClick={hendleGoogleButton}>Sign in on Google</button>
+          {/* Or divider */}
+          <div className="mt-6 flex items-center gap-3 text-xs text-muted-foreground dark:text-[#c8b3bd]">
+            <span className="h-px flex-1 bg-[#efe2dd] dark:bg-white/10" />
+            <span className="font-semibold uppercase tracking-wider">or</span>
+            <span className="h-px flex-1 bg-[#efe2dd] dark:bg-white/10" />
+          </div>
+
+          {/* Google sign-in */}
+          <button
+            type="button"
+            onClick={hendleGoogleButton}
+            className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border border-[#eee2dd] bg-white px-4 py-3.5 text-sm font-semibold text-[#2b0713] shadow-sm transition hover:border-[#e0cdc6] hover:bg-[#fdfbfa] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#720e32] dark:border-white/10 dark:bg-[#241720] dark:text-[#ffeaf1] dark:hover:border-white/20 dark:hover:bg-[#2a1b24] dark:focus-visible:outline-[#ff9bb9]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="size-5 shrink-0"
+            >
+              <path
+                fill="#4285F4"
+                d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29A11.99 11.99 0 0 0 0 12c0 1.94.46 3.77 1.29 5.38l3.98-3.09z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"
+              />
+            </svg>
+            Continue with Google
+          </button>
 
           <p className="mt-6 text-center text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Already have an account?{" "}

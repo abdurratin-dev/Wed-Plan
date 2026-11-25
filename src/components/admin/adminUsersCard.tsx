@@ -62,7 +62,7 @@ const roleBadges: IRoleBadges = {
 
 const detailRowClass =
   "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#c8b3bd]";
-const detailLabelClass = "font-medium text-[#9ca3af]";
+const detailLabelClass = "font-medium text-[#9ca3af] dark:text-[#9b8792]";
 const detailValueClass =
   "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 export default function AdminUsersCard({ u }: { u: IUsers }) {
@@ -102,7 +102,9 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
             <p className="truncate text-sm font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
               {u.name}
             </p>
-            <p className="truncate text-xs text-[#9ca3af]">{u.email}</p>
+            <p className="truncate text-xs text-[#9ca3af] dark:text-[#9b8792]">
+              {u.email}
+            </p>
           </div>
         </div>
       </td>
@@ -147,7 +149,8 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
               render={
                 <button
                   type="button"
-                  className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
+                  aria-label={`View details for ${u.name}`}
+                  className="rounded-lg p-2.5 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:text-[#c8b3bd] dark:hover:bg-white/10 dark:hover:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/30"
                 >
                   <Eye className="size-4" />
                 </button>
@@ -158,7 +161,7 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
                 <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
                   {u.name}
                 </p>
-                <p className="mt-0.5 text-xs text-[#9ca3af]">
+                <p className="mt-0.5 text-xs text-[#9ca3af] dark:text-[#9b8792]">
                   {u.email}
                 </p>
               </div>

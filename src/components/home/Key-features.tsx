@@ -77,7 +77,7 @@ export default function WedPlanFeatures() {
       <div className="relative mx-auto max-w-7xl">
 
         {/* Section Header */}
-        <div className="mx-auto mb-16 max-w-2xl text-center">
+        <div className="mx-auto mb-16 max-w-2xl animate-fade-up text-center">
 
           <div className="mb-4 flex items-center justify-center gap-3">
             <span className="h-px w-10 bg-[#dba2a9]" />
@@ -106,7 +106,7 @@ export default function WedPlanFeatures() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-14">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 animate-stagger sm:gap-y-12 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-14">
 
           {features.map((feature, index) => {
             const Icon = feature.icon;
