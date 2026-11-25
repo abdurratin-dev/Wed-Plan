@@ -4,18 +4,13 @@ import Link from "next/link";
 import {
   UserRound,
   Mail,
-  Phone,
-  MapPin,
   CalendarDays,
-  ShieldCheck,
   Camera,
-  Pencil,
   Heart,
   BriefcaseBusiness,
   Clock,
   BadgeCheck,
   ArrowRight,
-  Settings,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
@@ -32,7 +27,7 @@ const ProfilePage = () => {
   const [pendigBookings, setPendingBookings] = useState<BookingsData[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter()
-  const { data: session, error } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const user = session?.user;
   useEffect(() => {
     try {

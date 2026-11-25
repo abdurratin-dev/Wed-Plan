@@ -6,7 +6,6 @@ import {
   CalendarDays,
   CirclePlus,
   CreditCard,
-  Heart,
   LayoutDashboard,
   LayoutList,
   Package,

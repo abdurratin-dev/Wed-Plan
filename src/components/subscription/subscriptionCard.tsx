@@ -6,7 +6,7 @@ import { ArrowRight, Check, CrownIcon, DiamondIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
-    const {data : session, error} = authClient.useSession()
+    const {data : session} = authClient.useSession()
     const user = session?.user
     const router = useRouter()
     const hendleButton = async(price : number)=>{

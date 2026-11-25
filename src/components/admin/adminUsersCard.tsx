@@ -1,10 +1,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
-  Ban,
   Crown,
-  Eye,
-  ShieldCheck,
   Store,
   User,
   Users,
@@ -13,7 +10,7 @@ import { IUsers } from "@/types/apidata";
 import { updateUsers } from "@/lib/actions/api/users";
 import { useState } from "react";
 import ManegUserDropdwoun from "./manegUserDropdwoun";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Popover, PopoverContent } from "../ui/popover";
 
 export type Role = "admin" | "vendor" | "customer";
 

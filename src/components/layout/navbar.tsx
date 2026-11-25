@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { Heart, ChevronDown, Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import ProfileDropDwoun from "../pofile/profileDropDwoun";
@@ -16,7 +16,7 @@ export default function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   const pathname = usePathname();
-  const { data: session, error } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const user = session?.user;
 
   useEffect(() => {
