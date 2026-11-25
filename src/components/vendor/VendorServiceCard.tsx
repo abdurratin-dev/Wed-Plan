@@ -26,7 +26,7 @@ export default function VendorServiceCard({
     if(res.deletedCount > 0){
       toast.add({
         type: "success",
-        description : `${service.name} deleted successfull`
+        description : `${service.name} deleted successfully`
       })
       router.refresh()
     }
@@ -89,7 +89,9 @@ export default function VendorServiceCard({
             <span className="inline-flex items-center gap-1.5">
               <Star size={13} className="fill-[#f5b301] text-[#f5b301]" />
               <span className="font-bold text-[#2b0713] dark:text-[#ffeaf1]">
-                {/* {service.rating.toFixed(1)} */}
+                {typeof service.rating === "number" && service.rating > 0
+                  ? service.rating.toFixed(1)
+                  : null}
               </span>{" "}
               <span className="text-[#8a7a80] dark:text-[#9b8792]">
                 (
@@ -139,7 +141,13 @@ export default function VendorServiceCard({
                   }
                 />
                 <PopoverContent align="start">
-                  <p>Are tou sure <span className="text-red-500 font-bold">Delete</span> thsi service</p>
+                  <p>
+                    Are you sure you want to{" "}
+                    <span className="font-bold text-red-500 dark:text-[#f87171]">
+                      delete
+                    </span>{" "}
+                    this service?
+                  </p>
                   <button
                     type="button"
                     onClick={hendleDelete}

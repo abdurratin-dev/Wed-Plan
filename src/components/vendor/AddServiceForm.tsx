@@ -88,11 +88,11 @@ export default function AddServiceForm() {
     formData.append("image", file);
     const imageBB = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API}`;
 
-    const uploadImge = await fetch(imageBB, {
+    const uploadImage = await fetch(imageBB, {
       method: "POST",
       body: formData,
     });
-    const result = await uploadImge.json();
+    const result = await uploadImage.json();
 
     setImageUrl(result.data.url);
   }
@@ -371,7 +371,7 @@ export default function AddServiceForm() {
 
                 {submitted && (
                   <p className="mt-4 rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]">
-                    Looks good — Your service assed.
+                    Looks good — your service has been added.
                   </p>
                 )}
               </div>

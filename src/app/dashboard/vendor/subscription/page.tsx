@@ -17,7 +17,7 @@ const Subscription = async () => {
   }
   const plans: ISubscriptionPlan[] = Array.isArray(plan) ? plan : []
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#fdfbfa] px-4 py-16 dark:bg-[#160e13]">
+    <section className="relative min-h-screen overflow-hidden bg-[#fdfbfa] px-4 py-16 dark:bg-[#160e13]">
       {/* Background Decorations */}
       <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-[#f8dadd]/50 blur-3xl dark:bg-[#a52b50]/20" />
       <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#f8dadd]/50 blur-3xl dark:bg-[#a52b50]/20" />
@@ -66,7 +66,7 @@ const Subscription = async () => {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 

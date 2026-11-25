@@ -1,14 +1,12 @@
 import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
-import { Toaster } from "@/components/ui/toast";
-
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
-      <main className="min-h-full flex flex-col">
-          <Navbar />
-          {children}
-          <Footer />
-      </main>
+    <div className="flex min-h-full flex-col">
+      <Navbar />
+      <div className="flex-1">{children}</div>
+      <Footer />
+    </div>
   );
 }

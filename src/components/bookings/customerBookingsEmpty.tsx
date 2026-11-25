@@ -181,11 +181,11 @@ const CustomerBookingEmpty = () => {
 
         {/* Action Button */}
         <Link
-          href="/dashboard/vendor/services/new"
+          href="/services"
           className="mt-6 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#ed2781] to-[#d92379] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-pink-500/30 active:scale-95"
         >
           <Search size={19} />
-          Add a Service
+          Browse Services
           <ArrowRight size={18} />
         </Link>
 
