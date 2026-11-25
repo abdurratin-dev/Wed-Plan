@@ -15,6 +15,8 @@ import VendorServiceCard from "./VendorServiceCard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { getBookings } from "@/lib/actions/api/booking";
+import VendorServiceEmpty from "../services/vendorServiceEmpty";
+import { redirect } from "next/navigation";
 
 export default async function MyServicesView() {
   const session = await auth.api.getSession({
@@ -27,6 +29,11 @@ export default async function MyServicesView() {
   const services: ServiceData[] = await getServiceData(
     `role=${user?.role}&userId=${user?.id}`,
   );
+
+  if (user?.role === "customer" || !user) {
+    redirect("/unauthorizied");
+  }
+
   const bookings: BookingsData[] = !Array.isArray(bookingsdata)
     ? []
     : bookingsdata;
@@ -140,17 +147,22 @@ export default async function MyServicesView() {
       </div>
 
       {/* ---------- Service grid ---------- */}
-      <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {services.map((service) => (
-            <VendorServiceCard
-              key={service._id}
-              service={service}
-              isActive={service.status === "Active"}
-            />
-          ))}
+
+      {services.length === 0 ? (
+        <VendorServiceEmpty />
+      ) : (
+        <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {services.map((service) => (
+              <VendorServiceCard
+                key={service._id}
+                service={service}
+                isActive={service.status === "Active"}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

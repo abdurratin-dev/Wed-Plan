@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import BrowseServices from "@/components/services/BrowseServices";
 import { getServiceData } from "@/lib/actions/api/service";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Browse Services | WedPlan",
@@ -16,7 +18,7 @@ interface ParamsType {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<Record<string,string>>;
+  searchParams: Promise<Record<string, string>>;
 }) {
   const params = await searchParams;
   const url = new URLSearchParams(params);

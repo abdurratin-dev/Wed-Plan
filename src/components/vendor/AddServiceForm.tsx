@@ -8,6 +8,7 @@ import { CreateServicePayload } from "@/types/apidata";
 import { CATEGORIES, LOCATIONS } from "../services/BrowseServices";
 import { authClient } from "@/lib/auth-client";
 import { email } from "better-auth";
+import { useRouter } from "next/navigation";
 
 const MAX_DESCRIPTION = 500;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -55,12 +56,18 @@ export default function AddServiceForm() {
   const [imageError, setImageError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
+  const router = useRouter()
+
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
 
   // Release the object URL when the preview is swapped out or the page unmounts.
+  if (user?.role === "customer" || !user) {
+    router.push("/unauthorizied");
+  }
+  
   useEffect(() => {
     return () => {
       if (image) URL.revokeObjectURL(image);
@@ -142,9 +149,9 @@ export default function AddServiceForm() {
       location,
       imageUrl,
       status: "Active",
-      vendorId : user?.id,
-      vendorName : user?.name,
-      email: user?.email
+      vendorId: user?.id,
+      vendorName: user?.name,
+      email: user?.email,
     };
     try {
       await createService(data);

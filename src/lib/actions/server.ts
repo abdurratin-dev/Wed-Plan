@@ -4,10 +4,10 @@ import { CreatBookingsPayload, CreatChackoutPayload, CreateServicePayload } from
 
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 const user = async () => {
-  const session = await auth.api.getSession({
+  const session = await auth.api.getToken({
     headers: await headers(), // you need to pass the headers object.
   });
-  return session?.session.token;
+  return session?.token;
 };
 
 export const creatApi = async (api: string, data: CreateServicePayload | CreatBookingsPayload | CreatChackoutPayload) => {
@@ -16,7 +16,7 @@ export const creatApi = async (api: string, data: CreateServicePayload | CreatBo
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Brrer ${token}`,
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -27,7 +27,7 @@ export const getApi = async(api:string)=>{
   const token = await user();
   const res = await fetch(`${SERVER_URL}${api}`,{
     headers :{
-      authorization: `Brrer ${token}`,
+      authorization: `Bearer ${token}`,
     }
   })
   return res
@@ -39,7 +39,7 @@ export const updateApi = async(api:string,data : {})=>{
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Brrer ${token}`,
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -52,7 +52,7 @@ export const deleteApi = async(api : string , data : {})=>{
    const res = await fetch(`${SERVER_URL}${api}?${data}`,{
     method : "DELETE",
     headers : {
-      authorization : `Brrer ${token}`,
+      authorization : `Bearer ${token}`,
     },
    })
    return res

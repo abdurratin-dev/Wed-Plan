@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Heart, Search } from "lucide-react";
+import HeroImg from "@/assests/Wedding.jpeg"
 
 const avatars = [
   "/avatar-44.jpg",
@@ -23,7 +24,7 @@ export default function Hero() {
       {/* Couple photo — desktop: full-bleed on the right */}
       <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
         <Image
-          src="/hero.jpg"
+          src={HeroImg}
           alt="Bride and groom sharing a quiet moment on their wedding day"
           fill
           priority
@@ -97,7 +98,7 @@ export default function Hero() {
           {/* Couple photo — tablet / mobile: card below the copy */}
           <div className="relative mt-2 h-[300px] w-full overflow-hidden rounded-3xl sm:h-[380px] lg:hidden">
             <Image
-              src="/hero.jpg"
+              src={HeroImg}
               alt="Bride and groom sharing a quiet moment on their wedding day"
               fill
               priority

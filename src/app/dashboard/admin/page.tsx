@@ -1,14 +1,12 @@
 import AdminDashboardView from "@/components/admin/AdminDashboardView";
-import {
-  getBookingTransactions,
-  getBookings,
-} from "@/lib/actions/api/booking";
+import { getBookingTransactions, getBookings } from "@/lib/actions/api/booking";
 import { getServiceData } from "@/lib/actions/api/service";
 import { getUsers } from "@/lib/actions/api/users";
 import { auth } from "@/lib/auth";
 import type { BookingsData, ITransactions, IUsers } from "@/types/apidata";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Overview | WedPlan",
@@ -28,6 +26,11 @@ export default async function AdminDashboardPage() {
     headers: await headers(), // you need to pass the headers object.
   });
   const userName = session?.user?.name?.trim().split(/\s+/)[0] || "Admin";
+
+  const user = session?.user;
+  if (user?.role !== "admin" || !user) {
+    return redirect("/unauthorized");
+  }
 
   return (
     <AdminDashboardView

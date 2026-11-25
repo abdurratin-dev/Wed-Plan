@@ -36,9 +36,7 @@ export default function Navbar() {
           href="/"
           className="flex shrink-0 items-center justify-center gap-1 text-[#720e32] dark:text-[#ff9bb9]"
         >
-          <GiLoveMystery size={30}
-            strokeWidth={2.5}
-           />
+          <GiLoveMystery size={30} strokeWidth={2.5} />
 
           <span className="text-xl font-bold tracking-tight sm:text-3xl">
             WedPlan
@@ -54,13 +52,12 @@ export default function Navbar() {
             Home
           </Link>
 
-          
-            <Link
+          <Link
             href="/services"
-              className={`flex items-center gap-1 py-2 text-base font-semibold ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
-            >
-              Browse Services
-            </Link>
+            className={`flex items-center gap-1 py-2 text-base font-semibold ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
+          >
+            Browse Services
+          </Link>
 
           <Link
             href="/about"
@@ -171,19 +168,28 @@ export default function Navbar() {
             </Link>
 
             <div className="flex gap-3 border-t border-gray-200 pt-4 dark:border-white/10">
-              <Link
-                href="/sign-in"
-                className="flex-1 rounded-lg border border-[#720e32] py-2.5 text-center font-semibold text-[#720e32] dark:border-[#ff9bb9] dark:text-[#ff9bb9]"
-              >
-                Sign In
-              </Link>
+              {user ? (
+                <>
+                  <ProfileDropDwoun />
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/sign-in"
+                    className="rounded-xl border border-[#720e32]/40 bg-white px-5 py-1 text-base font-bold text-[#720e32] transition hover:bg-[#720e32] hover:text-white dark:border-[#ff9bb9]/40 dark:bg-transparent dark:text-[#ffb0c5] dark:hover:bg-[#720e32]"
+                  >
+                    Sign In
+                  </Link>
 
-              <Link
-                href="/sign-up"
-                className="flex-1 rounded-lg bg-[#720e32] py-2.5 text-center font-semibold text-white dark:bg-[#a52b50]"
-              >
-                Sign Up
-              </Link>
+                  {/* Sign Up */}
+                  <Link
+                    href="/sign-up"
+                    className="rounded-xl bg-[#720e32] px-5 py-1 text-base font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

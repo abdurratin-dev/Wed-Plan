@@ -118,14 +118,14 @@ export default function ServiceDetails({
       return;
     }
     if (units === "parday") {
-        if (!duration) {
-          toast.add({
-            type: "error",
-            description: "Pick a duration to your slot first.",
-          });
-          return
-        }
+      if (!duration) {
+        toast.add({
+          type: "error",
+          description: "Pick a duration to your slot first.",
+        });
+        return;
       }
+    }
     const submitdate = new Date(date).getTime();
     const newDate = new Date().getTime();
     const bookingsData: CreatBookingsPayload = {
@@ -145,7 +145,7 @@ export default function ServiceDetails({
       customerEmail: user?.email,
       customerImg: user?.image,
       customerId: user?.id,
-      paymentStatus : 'unpaid'
+      paymentStatus: "unpaid",
     };
     if (submitdate < newDate) {
       if (date === new Date().toISOString().slice(0, 10)) {
@@ -167,14 +167,14 @@ export default function ServiceDetails({
     }
     const res = await creatBookings(bookingsData as CreatBookingsPayload);
     console.log(res);
-    if(res.massage){
+    if (res.massage) {
       toast.add({
         type: "error",
         description: res.massage,
       });
-      return
+      return;
     }
-    window.location.href = res.data.redirectUrl
+    window.location.href = res.data.redirectUrl;
     return;
   };
 
@@ -567,14 +567,25 @@ export default function ServiceDetails({
                     ))}
                   </select>
                 </div>
-                <button
-                  type="button"
-                  onClick={confirmBooking}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#720e32] px-4 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
-                >
-                  <BadgeCheck size={16} />
-                  Confirm Booking
-                </button>
+                {!user ? (
+                  <>
+                  <Link
+                  href="/sign-in" className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#720e32] px-4 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40">
+                    Sign In
+                  </Link>
+                  <p>Please Sign In First</p>
+                  </>
+                  
+                ) : (
+                  <button
+                    type="button"
+                    onClick={confirmBooking}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#720e32] px-4 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
+                  >
+                    <BadgeCheck size={16} />
+                    Confirm Booking
+                  </button>
+                )}
 
                 <p
                   role="status"

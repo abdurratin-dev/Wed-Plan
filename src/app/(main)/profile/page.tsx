@@ -23,23 +23,34 @@ import { getBookings } from "@/lib/actions/api/booking";
 import { BookingsData } from "@/types/apidata";
 import EditProfile from "@/components/pofile/editProfile";
 import Image from "next/image";
+import ProfileSkeleton from "@/components/ui/skeleton/profile/profileSkeleton";
 
 const ProfilePage = () => {
   const [booking, setBookings] = useState<BookingsData[]>([]);
   const [complitedBookings, setComlitedBookings] = useState<BookingsData[]>([]);
   const [pendigBookings, setPendingBookings] = useState<BookingsData[]>([]);
+  const [loading, setLoading] = useState(true);
   const { data: session, error } = authClient.useSession();
   const user = session?.user;
   useEffect(() => {
-    const getData = async () => {
-      const res: BookingsData[] = await getBookings(
-        `role=${user?.role}&userId=${user?.id}`,
+    try {
+      const getData = async () => {
+        const res: BookingsData[] = await getBookings(
+          `role=${user?.role}&userId=${user?.id}`,
+        );
+        setBookings(res);
+      };
+      getData();
+      setComlitedBookings(
+        booking.filter((u) => u.bookingStatus === "Upcoming"),
       );
-      setBookings(res);
-    };
-    getData();
-    setComlitedBookings(booking.filter((u) => u.bookingStatus === "Upcoming"));
-    setPendingBookings(booking.filter((u) => u.bookingStatus === "Completed"));
+      setPendingBookings(
+        booking.filter((u) => u.bookingStatus === "Completed"),
+      );
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   }, [user]);
   const bookings: BookingsData[] = !Array.isArray(booking) ? [] : booking;
   const profileStatus = [
@@ -62,6 +73,10 @@ const ProfilePage = () => {
       color: "bg-amber-50 text-amber-600",
     },
   ];
+
+  if(loading){
+    return <ProfileSkeleton />
+  }
   return (
     <main className="min-h-screen bg-[#fff9f6] px-4 py-6 transition-colors duration-300 sm:px-6 lg:px-8 dark:bg-[#110a0e]">
       <div className="mx-auto max-w-6xl">
@@ -98,11 +113,12 @@ const ProfilePage = () => {
                 <div className="relative h-28 w-28 shrink-0 rounded-2xl border-4 border-white bg-[#f7e5e8] dark:border-[#1d111a] dark:bg-[#38202e] sm:h-32 sm:w-32">
                   {user?.image ? (
                     <Image
-                    src={user.image}
-                    alt="profile"
-                    height={300}
-                    width={300}
-                    className="overflow-hidden" />
+                      src={user.image}
+                      alt="profile"
+                      height={300}
+                      width={300}
+                      className="overflow-hidden"
+                    />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center rounded-xl text-4xl font-bold text-[#720e32] dark:text-[#ff8db8]">
                       {user?.name[0]}

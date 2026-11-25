@@ -5,6 +5,7 @@ import VendorBookingsCard from "@/components/vendor/VendorBookingsCard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import CustomerBookingEmpty from "@/components/bookings/customerBookingsEmpty";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Booking Requests | WedPlan",
@@ -20,6 +21,9 @@ export default async function VendorBookingsPage() {
     `role=${user?.role}&userId=${user?.id}`,
   );
   const bookignsData: BookingsData[] = !Array.isArray(res) ? [] : res;
+  if(user?.role === 'customer' || !user){
+    redirect("/unauthorizied");
+  }
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#fdfbfa] pb-16 dark:bg-[#160e13]">
       {/* ---------- Hero banner ---------- */}

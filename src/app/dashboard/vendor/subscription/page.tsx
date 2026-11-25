@@ -1,26 +1,30 @@
-
 import SubscriptionCard from "@/components/subscription/subscriptionCard";
 import { getSubscriptionService } from "@/lib/actions/api/subscriptionService";
 import { auth } from "@/lib/auth";
 import { ISubscriptionPlan } from "@/types/apidata";
 import { Heart } from "lucide-react";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const Subscription = async() => {
+const Subscription = async () => {
   const session = await auth.api.getSession({
-    headers : await headers(),
-  })
-  const user = session?.user
-    const plans : ISubscriptionPlan[] = await getSubscriptionService()
+    headers: await headers(),
+  });
+  const user = session?.user;
+  const plans: ISubscriptionPlan[] = await getSubscriptionService();
+  if (user?.role !== "vendor") {
+    redirect("/unauthorizied");
+  }
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#fff8f6] px-4 py-16">
-
       {/* Background Decorations */}
       <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-[#f8dadd]/50 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#f8dadd]/50 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl">
-        {user?.premium && <p className="text-black">You are a Premium Vendor</p>}
+        {user?.premium && (
+          <p className="text-black">You are a Premium Vendor</p>
+        )}
 
         {/* Header */}
         <div className="mb-14 text-center">
@@ -39,20 +43,16 @@ const Subscription = async() => {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#725b62] sm:text-base">
-            Upgrade your account and unlock more features to grow
-            your business on WedPlan.
+            Upgrade your account and unlock more features to grow your business
+            on WedPlan.
           </p>
         </div>
 
         {/* Pricing Cards */}
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-2">
-
           {plans.map((plan) => {
-            return (
-             <SubscriptionCard key={plan._id} plan={plan}/>
-            );
+            return <SubscriptionCard key={plan._id} plan={plan} />;
           })}
-
         </div>
 
         {/* Bottom Note */}
@@ -62,7 +62,6 @@ const Subscription = async() => {
             Make your wedding business more successful with WedPlan.
           </div>
         </div>
-
       </div>
     </main>
   );

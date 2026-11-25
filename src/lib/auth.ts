@@ -1,8 +1,9 @@
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
+import { jwt } from "better-auth/plugins";
 const client = new MongoClient(process.env.MONGODB_URI as string);
-const db = client.db('WedPlan');
+const db = client.db("WedPlan");
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
@@ -27,12 +28,20 @@ export const auth = betterAuth({
         input: false,
         defaultValue: false,
       },
-      status : {
-        type : ["Active" , "Blocked"],
-        input : false,
-        defaultValue : "Active"
-      }
+      status: {
+        type: ["Active", "Blocked"],
+        input: false,
+        defaultValue: "Active",
+      },
     },
+  },
+  plugins: [jwt()],
+  session:{
+    cookieCache:{
+      enabled: true,
+      strategy : 'jwt',
+      maxAge : 60 * 60 * 24 * 7
+    }
   },
   database: mongodbAdapter(db, {
     client,

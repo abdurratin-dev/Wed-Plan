@@ -1,13 +1,11 @@
 import VendorDashboardView from "@/components/vendor/VendorDashboardView";
-import {
-  getBookings,
-  getBookingTransactions,
-} from "@/lib/actions/api/booking";
+import { getBookings, getBookingTransactions } from "@/lib/actions/api/booking";
 import { getServiceData } from "@/lib/actions/api/service";
 import { auth } from "@/lib/auth";
 import type { BookingsData, ITransactions } from "@/types/apidata";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Overview | WedPlan",
@@ -30,6 +28,10 @@ export default async function VendorDashboardPage() {
   ]);
 
   const userName = user?.name?.trim().split(/\s+/)[0] || "Vendor";
+
+  if (user?.role === "customer" || !user) {
+    redirect("/unauthorizied");
+  }
 
   return (
     <VendorDashboardView

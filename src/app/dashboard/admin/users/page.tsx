@@ -21,6 +21,8 @@ import { getUsers } from "@/lib/actions/api/users";
 import { IUsers } from "@/types/apidata";
 import { useEffect, useState } from "react";
 import AdminUsersCard from "@/components/admin/adminUsersCard";
+import WedPlanSkeleton from "@/components/ui/skeleton/customer/CoustomarDashboardskeleton";
+import { useRouter } from "next/navigation";
 
 export type Status = "Active" | "Blocked";
 
@@ -39,18 +41,33 @@ const selectClass =
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<IUsers[]>();
   const [cRole, setRole] = useState("All Roles");
-  const [cStatus,setStatus] = useState('Active')
+  const [cStatus, setStatus] = useState("Active");
+  const [loading, setLoading] = useState(true);
   const [filterUser, setFilterUser] = useState<IUsers[] | undefined>(users);
+  const router = useRouter()
   useEffect(() => {
     const getData = async () => {
-      const user: IUsers[] = await getUsers();
-      if(!users){
-        setFilterUser(user)
+      try {
+        const user = await getUsers();
+        const us : IUsers[] = !Array.isArray(user) ? [] : user
+        // if(user.status){
+        //   router.push('/unauthorized')
+        // }
+        if (!users) {
+          setFilterUser(us);
+        }
+        setUsers(us);
+      } catch {
+      } finally {
+        setLoading(false);
       }
-      setUsers(user);
     };
     getData();
   }, []);
+  if (loading === true) {
+    console.log("loading");
+    return <WedPlanSkeleton />;
+  }
   const hendleRoleChang = (data: string) => {
     setRole(data);
     if (data === "All Roles") {
@@ -61,15 +78,15 @@ export default function AdminUsersPage() {
     }
   };
 
-  const hendleStatusChang = (data : string)=>{
+  const hendleStatusChang = (data: string) => {
     setStatus(data);
     if (data === "All Status") {
-      setFilterUser(users)
+      setFilterUser(users);
     } else {
       const statusBaseUser = users?.filter((user) => user.status === data);
       setFilterUser(statusBaseUser);
     }
-  }
+  };
   const vendors = users?.filter((user) => user.role === "vendor");
   const customers = users?.filter((user) => user.role === "vendor");
   const blokedUsers = users?.filter((user) => user.status === "Blocked");
@@ -203,8 +220,12 @@ export default function AdminUsersPage() {
               </div>
 
               <div className="relative">
-                <select aria-label="Filter by status" className={selectClass} value={cStatus}
-                  onChange={(e) => hendleStatusChang(e.target.value)}>
+                <select
+                  aria-label="Filter by status"
+                  className={selectClass}
+                  value={cStatus}
+                  onChange={(e) => hendleStatusChang(e.target.value)}
+                >
                   <option value="All Status">All Status</option>
                   <option value="Active">Active</option>
                   <option value="Blocked">Blocked</option>
@@ -233,9 +254,7 @@ export default function AdminUsersPage() {
               </thead>
               <tbody>
                 {filterUser?.map((u) => {
-                  return (
-                    <AdminUsersCard key={u._id} u={u} />
-                  );
+                  return <AdminUsersCard key={u._id} u={u} />;
                 })}
               </tbody>
             </table>
