@@ -30,12 +30,12 @@ function SubscriptionSkeleton() {
           {[1, 2].map((item) => (
             <div
               key={item}
-              className={`relative rounded-3xl border border-[#f0d5d2] bg-white p-7 shadow-xl sm:p-9 ${
+              className={`relative rounded-3xl border border-[#f0d5d2] bg-white p-7 shadow-xl sm:p-9 dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none ${
                 item === 2 ? "md:scale-105" : ""
               }`}
             >
               {/* Badge */}
-              <div className="mb-6 h-7 w-28 animate-pulse rounded-full bg-[#f5e3e2]" />
+              <div className="mb-6 h-7 w-28 animate-pulse rounded-full bg-[#f5e3e2] dark:bg-white/10" />
 
               {/* Plan Name */}
               <div className="mb-3 h-7 w-40 animate-pulse rounded-lg bg-[#ead5d5] dark:bg-[#2f1e28]" />
@@ -68,7 +68,7 @@ function SubscriptionSkeleton() {
                     key={feature}
                     className="flex items-center gap-3"
                   >
-                    <div className="h-5 w-5 shrink-0 animate-pulse rounded-full bg-[#f0d5d2]" />
+                    <div className="h-5 w-5 shrink-0 animate-pulse rounded-full bg-[#f0d5d2] dark:bg-[#a52b50]/30" />
                     <div
                       className={`h-3 animate-pulse rounded-full bg-[#f0e6e5] dark:bg-white/10 ${
                         feature % 2 === 0 ? "w-2/3" : "w-4/5"
@@ -83,8 +83,8 @@ function SubscriptionSkeleton() {
 
         {/* Bottom Note Skeleton */}
         <div className="mt-12 flex justify-center">
-          <div className="flex items-center gap-3 rounded-full border border-[#f0d5d2] bg-white/70 px-5 py-3 shadow-sm">
-            <div className="h-4 w-4 animate-pulse rounded-full bg-[#e8c6ca]" />
+          <div className="flex items-center gap-3 rounded-full border border-[#f0d5d2] bg-white/70 px-5 py-3 shadow-sm dark:border-white/10 dark:bg-[#1e131a]/70 dark:shadow-none">
+            <div className="h-4 w-4 animate-pulse rounded-full bg-[#e8c6ca] dark:bg-white/15" />
             <div className="h-3 w-56 animate-pulse rounded-full bg-[#eadfdf] dark:bg-white/10" />
           </div>
         </div>

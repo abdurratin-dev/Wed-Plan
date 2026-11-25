@@ -247,10 +247,25 @@ export default function VendorBookingsCard({
 
                     <button
                       type="button"
+                      aria-expanded={expandedId === reques._id}
+                      aria-controls={`booking-details-${reques._id}`}
+                      onClick={() =>
+                        setExpandedId((prev) =>
+                          prev === reques._id ? null : reques._id,
+                        )
+                      }
                       className="inline-flex items-center gap-1.5 rounded-lg bg-[#720e32] px-3.5 py-2 text-[0.72rem] font-bold text-white shadow-sm transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
                     >
                       <Eye size={13} />
-                      View Details
+                      {expandedId === reques._id ? "Hide Details" : "View Details"}
+                      <ChevronDown
+                        size={13}
+                        aria-hidden="true"
+                        className={cn(
+                          "transition-transform duration-200",
+                          expandedId === reques._id && "rotate-180",
+                        )}
+                      />
                     </button>
 
                     
