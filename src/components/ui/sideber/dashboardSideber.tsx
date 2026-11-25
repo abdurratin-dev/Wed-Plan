@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import { GiLoveMystery } from "react-icons/gi";
 
 type NavItem = {
   label: string;
@@ -142,14 +143,11 @@ export function DashboardSidebar() {
             isAdmin ? "text-[#7d1436]" : "text-white",
           )}
         >
-          <Heart
-            size={30}
-            strokeWidth={2.5}
-            className={
-              isAdmin ? "fill-[#7d1436]/10 text-[#7d1436]" : "fill-white/10 text-white"
-            }
-          />
+          <GiLoveMystery size={45} strokeWidth={2.5} />
+          <div className="flex flex-col justify-center">
           <span className="text-xl font-extrabold tracking-tight">WedPlan</span>
+          <span className="text-sm">Dashboard</span>
+          </div>
         </Link>
       </SidebarHeader>
 

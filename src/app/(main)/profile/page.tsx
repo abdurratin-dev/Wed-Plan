@@ -24,7 +24,7 @@ import { BookingsData } from "@/types/apidata";
 import EditProfile from "@/components/pofile/editProfile";
 import Image from "next/image";
 import ProfileSkeleton from "@/components/ui/skeleton/profile/profileSkeleton";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const [booking, setBookings] = useState<BookingsData[]>([]);

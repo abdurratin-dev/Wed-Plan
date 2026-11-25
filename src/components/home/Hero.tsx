@@ -13,7 +13,7 @@ const eyebrow = ["Plan", "Book", "Celebrate"];
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br h-170 from-[#fff8f4] via-[#fdf1eb] to-[#fae7de] dark:from-[#1b1118] dark:via-[#160e13] dark:to-[#22141c]">
+    <section className="relative overflow-hidden bg-gradient-to-br min-h-[560px] h-auto lg:h-170 from-[#fff8f4] via-[#fdf1eb] to-[#fae7de] dark:from-[#1b1118] dark:via-[#160e13] dark:to-[#22141c]">
       {/* Soft background blobs */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -left-24 top-8 h-72 w-72 rounded-full bg-rose-200/50 blur-3xl dark:bg-rose-950/40" />

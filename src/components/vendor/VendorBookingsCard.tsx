@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { getBookings, updateBookingsAction } from "@/lib/actions/api/booking";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "../ui/toast";
 
 const STATUS = [
   {
@@ -85,10 +86,14 @@ export default function VendorBookingsCard({
     const tabs = request.filter((filter) => filter.bookingStatus === action);
     setBookingsData(tabs);
   };
-  const hendleActionButton = async(data : {},bookingsId : string) =>{
+  const hendleActionButton = async(data : {name : string | undefined , bookingStatus : string | undefined, id : string | undefined},bookingsId : string) =>{
     // setStatusBar(data)
     const res = await updateBookingsAction(data)
     if(res.modifiedCount > 0){
+      toast.add({
+        type : "success",
+        description : `${data.name}'s booking has been confirmed.${data.bookingStatus}`
+      })
       const res: BookingsData[] = await getBookings(`role=${user?.role}&bookingsId=${bookingsId}&userId=${user?.id}`);
       setBookingsData(res)
     }
@@ -251,6 +256,7 @@ export default function VendorBookingsCard({
                         
                           <select className={ACTION_STYLE} value={reques.bookingStatus} onChange={(e)=> {hendleActionButton({
                             id : reques._id,
+                            name : reques.customerName,
                             bookingStatus : e.target.value},reques.bookingsId)}}>
                             <option value="">Select Action</option>
                             <option value="Confirmed">Confirm</option>

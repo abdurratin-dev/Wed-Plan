@@ -7,9 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
   --font-heading: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,35 +49,117 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Brand palette — WedPlan wine & blush */
+  --color-wine: #720e32;
+  --color-wine-dark: #570a26;
+  --color-wine-light: #a52b50;
+  --color-wine-deep: #4d0c22;
+  --color-blush: #fce7f3;
+  --color-blush-soft: #fdf1eb;
+  --color-rose-hot: #ff9bb9;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes float-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
 }
 
+/* ---------------------------------------------------------------- */
+/*  Design tokens                                                    */
+/* ---------------------------------------------------------------- */
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  color-scheme: light;
+
+  --background: #fffaf8;
+  --foreground: #2b0713;
+  --card: #ffffff;
+  --card-foreground: #2b0713;
+  --popover: #ffffff;
+  --popover-foreground: #2b0713;
+  --primary: #720e32;
+  --primary-foreground: #fff7fa;
+  --secondary: #fdf1eb;
+  --secondary-foreground: #5f4b53;
+  --muted: #f7f0ed;
+  --muted-foreground: #6b5a61;
+  --accent: #fce7f3;
+  --accent-foreground: #720e32;
+  --destructive: #d6455f;
+  --border: #efe2dd;
+  --input: #e8d8d2;
+  --ring: #a52b50;
+  --chart-1: #720e32;
+  --chart-2: #ec4899;
+  --chart-3: #a855f7;
+  --chart-4: #f59e0b;
+  --chart-5: #22c55e;
+  --radius: 0.75rem;
+
   /* WedPlan dashboard sidebar — wine theme (matches the dashboard design) */
   --sidebar: #5c0f28;
+  --sidebar-foreground: #fff7fa;
+  --sidebar-primary: #ff9bb9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #8e2249;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 12%);
+  --sidebar-ring: rgb(255 255 255 / 35%);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #160e13;
+  --foreground: #ffeaf1;
+  --card: #1e131a;
+  --card-foreground: #ffeaf1;
+  --popover: #241720;
+  --popover-foreground: #ffeaf1;
+  --primary: #a52b50;
+  --primary-foreground: #fff7fa;
+  --secondary: #241720;
+  --secondary-foreground: #e8dfe3;
+  --muted: #241720;
+  --muted-foreground: #c8b3bd;
+  --accent: #2f1e28;
+  --accent-foreground: #ff9bb9;
+  --destructive: #ff8fa3;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 15%);
+  --ring: #ff9bb9;
+  --chart-1: #ff9bb9;
+  --chart-2: #ec4899;
+  --chart-3: #a855f7;
+  --chart-4: #fbbf24;
+  --chart-5: #4ade80;
+  --sidebar: #4d0c22;
   --sidebar-foreground: #fff7fa;
   --sidebar-primary: #ff9bb9;
   --sidebar-primary-foreground: #ffffff;
@@ -94,48 +179,113 @@
   );
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: #4d0c22;
-  --sidebar-foreground: #fff7fa;
-  --sidebar-primary: #ff9bb9;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #8e2249;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgb(255 255 255 / 12%);
-  --sidebar-ring: rgb(255 255 255 / 35%);
-}
+/* ---------------------------------------------------------------- */
+/*  Base polish                                                      */
+/* ---------------------------------------------------------------- */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Respect users who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--primary) 22%, transparent);
+    color: var(--foreground);
+  }
+
+  /* Thin, brand-tinted scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--primary) 35%, transparent)
+      transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--primary) 35%, transparent);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklch, var(--primary) 60%, transparent);
+  }
+
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid color-mix(in oklch, var(--ring) 70%, transparent);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/*  Shared animation utilities                                       */
+/* ---------------------------------------------------------------- */
+
+@utility animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.5s ease both;
+}
+
+@utility animate-float-soft {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+/* Stagger children of an animated container:
+   <div class="animate-stagger">…</div> */
+@layer utilities {
+  .animate-stagger > * {
+    animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-stagger > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .animate-stagger > *:nth-child(2) {
+    animation-delay: 70ms;
+  }
+  .animate-stagger > *:nth-child(3) {
+    animation-delay: 140ms;
+  }
+  .animate-stagger > *:nth-child(4) {
+    animation-delay: 210ms;
+  }
+  .animate-stagger > *:nth-child(5) {
+    animation-delay: 280ms;
+  }
+  .animate-stagger > *:nth-child(6) {
+    animation-delay: 350ms;
+  }
+  .animate-stagger > *:nth-child(n + 7) {
+    animation-delay: 420ms;
   }
 }

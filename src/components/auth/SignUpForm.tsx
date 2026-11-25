@@ -7,6 +7,8 @@ import { Eye, EyeOff, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { toast } from "../ui/toast";
+import { Spinner } from "../ui/spinner";
 
 const roles = [
   {
@@ -35,11 +37,13 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true)
 
     const next: Errors = {};
     if (name.trim().length < 2) next.name = "Please enter your full name";
@@ -58,9 +62,16 @@ export default function SignUpForm() {
       role,
     });
     if (data) {
-      setSubmitted(true);
-      router.push(`/dashboard/${role}`);
+      toast.add({
+        type: "success",
+        description: `${data.user.name} wellcome to WedPlan`,
+      });
+      return router.push(`/dashboard/${role}`);
     }
+    toast.add({
+      type: "error",
+      description: error.message,
+    });
   }
   const hendleGoogleButton = async () => {
     const { data, error } = await authClient.signIn.social({
@@ -291,13 +302,21 @@ export default function SignUpForm() {
 
             <input type="hidden" name="role" value={role} />
 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
-            >
-              Sign Up
-            </button>
+            {loading ? (
+              <button
+                type="submit"
+                className="w-full flex items-center justify-center rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                <Spinner className="size-6" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                Sign In
+              </button>
+            )}
 
             {submitted && (
               <p className="rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-center text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]">
@@ -307,9 +326,7 @@ export default function SignUpForm() {
             )}
           </form>
 
-          <button onClick={hendleGoogleButton}>
-            Sign in on Google
-          </button>
+          <button onClick={hendleGoogleButton}>Sign in on Google</button>
 
           <p className="mt-6 text-center text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Already have an account?{" "}

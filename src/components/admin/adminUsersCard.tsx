@@ -1,9 +1,8 @@
-import { Status } from "@/app/dashboard/admin/users/page";
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Ban,
   Crown,
-  EllipsisVertical,
   Eye,
   ShieldCheck,
   Store,
@@ -13,8 +12,8 @@ import {
 import { IUsers } from "@/types/apidata";
 import { updateUsers } from "@/lib/actions/api/users";
 import { useState } from "react";
-import MangUserDropdwoun from "./manegUserDropdwoun";
 import ManegUserDropdwoun from "./manegUserDropdwoun";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 export type Role = "admin" | "vendor" | "customer";
 
@@ -61,8 +60,14 @@ const roleBadges: IRoleBadges = {
   },
 };
 
+const detailRowClass =
+  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#c8b3bd]";
+const detailLabelClass = "font-medium text-[#9ca3af]";
+const detailValueClass =
+  "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 export default function AdminUsersCard({ u }: { u: IUsers }) {
   const [updateStatus, setStatus] = useState(u.status);
+  const [viewOpen,setViewOpen] = useState(false)
   const role = roleBadges[u.role as RoleKey];
   const RoleIcon = role.Icon;
 
@@ -73,12 +78,12 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
     }
   };
 
-  const handleUnbanButton = async(data: string)=>{
+  const handleUnbanButton = async (data: string) => {
     const res = await updateUsers({ id: u._id, status: data });
     if (res.modifiedCount > 0) {
       setStatus(data);
     }
-  }
+  };
   return (
     <tr className="border-b border-[#f1ecef] last:border-0 dark:border-white/10">
       {/* User */}
@@ -137,13 +142,49 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
       {/* Actions */}
       <td className="px-4 py-4">
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            aria-label={`View ${u.name}`}
-            className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
-          >
-            <Eye className="size-4" />
-          </button>
+          <Popover open={viewOpen} onOpenChange={setViewOpen}>
+            <PopoverTrigger
+              render={
+                <button
+                  type="button"
+                  className="rounded-lg p-2 text-[#6b7280] transition-colors hover:bg-[#f3f1f2] hover:text-[#8e2249] dark:hover:bg-white/10"
+                >
+                  <Eye className="size-4" />
+                </button>
+              }
+            />
+            <PopoverContent align="end" className="w-64 gap-3 p-3.5">
+              <div className="border-b border-[#f1ecef] pb-2 dark:border-white/10">
+                <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
+                  {u.name}
+                </p>
+                <p className="mt-0.5 text-xs text-[#9ca3af]">
+                  {u.email}
+                </p>
+              </div>
+              <dl className="flex flex-col gap-1.5 text-xs">
+                <div className={detailRowClass}>
+                  <dt className={detailLabelClass}>Role</dt>
+                  <dd className={detailValueClass}>{u.role}</dd>
+                </div>
+                <div className={detailRowClass}>
+                  <dt className={detailLabelClass}>Premium user</dt>
+                  <dd className={detailValueClass}>{u.premium ? "Premium" : "Non Premium"}</dd>
+                </div>
+                <div className={detailRowClass}>
+                  <dt className={detailLabelClass}>Status</dt>
+                  <dd>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold`}
+                    >
+                      <span className={`size-1.5 rounded-full`} />
+                      {u.status}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </PopoverContent>
+          </Popover>
           {updateStatus === "Active" ? (
             <button
               type="button"
@@ -163,7 +204,6 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
               <ShieldCheck className="size-4" />
             </button>
           )}
-            <ManegUserDropdwoun />
         </div>
       </td>
     </tr>

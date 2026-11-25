@@ -10,6 +10,7 @@ import { CalendarDays, Pencil, Star, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { deleteService } from "@/lib/actions/api/service";
+import { toast } from "../ui/toast";
 
 export default function VendorServiceCard({
   service,
@@ -23,6 +24,10 @@ export default function VendorServiceCard({
   const hendleDelete = async() => {
     const res = await deleteService(`id=${service._id}`)
     if(res.deletedCount > 0){
+      toast.add({
+        type: "success",
+        description : `${service.name} deleted successfull`
+      })
       router.refresh()
     }
   };

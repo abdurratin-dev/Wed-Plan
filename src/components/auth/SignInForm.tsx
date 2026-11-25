@@ -3,10 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Eye, EyeOff, Heart } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { GiLoveMystery } from "react-icons/gi";
+import { toast } from "../ui/toast";
+import { Spinner } from "../ui/spinner";
 
 type Errors = Partial<Record<"email" | "password", string>>;
 
@@ -18,34 +21,41 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
+    setLoading(true);
     const next: Errors = {};
     if (!emailPattern.test(email.trim()))
       next.email = "Please enter a valid email address";
     if (!password) next.password = "Please enter your password";
 
     setErrors(next);
-    const {data,error} = await authClient.signIn.email({
+    const { data, error } = await authClient.signIn.email({
       email,
-      password
-    })
+      password,
+    });
 
-    if(data){
-      setSubmitted(true);
-      router.push(`/dashboard/${data.user.role}`);
+    if (data) {
+      toast.add({
+        type: "success",
+        description: `Welcome back ${data.user.name}`,
+      });
+      return router.push(`/dashboard/${data.user.role}`);
     }
+    toast.add({
+      type: "error",
+      description: error.message,
+    });
   }
 
-  const hendleGoogleButton = async()=>{
-    const {data,error} = await authClient.signIn.social({
-      provider : 'google'
-    })
-  }
+  const hendleGoogleButton = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
 
   const fieldClass = (invalid?: string) =>
     cn(
@@ -98,11 +108,7 @@ export default function SignInForm() {
             href="/"
             className="mb-7 flex items-center justify-center gap-1 text-[#720e32] dark:text-[#ff9bb9]"
           >
-            <Heart
-              size={30}
-              strokeWidth={2.5}
-              className="fill-[#720e32]/5 dark:fill-[#ff9bb9]/10"
-            />
+            <GiLoveMystery size={30} strokeWidth={2.5} />
             <span className="text-2xl font-extrabold tracking-tight">
               WedPlan
             </span>
@@ -175,16 +181,10 @@ export default function SignInForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  aria-label={
-                    showPassword ? "Hide password" : "Show password"
-                  }
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
                 >
-                  {showPassword ? (
-                    <EyeOff size={18} />
-                  ) : (
-                    <Eye size={18} />
-                  )}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {errors.password && (
@@ -195,12 +195,21 @@ export default function SignInForm() {
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
-            >
-              Sign In
-            </button>
+            {loading ? (
+              <button
+                type="submit"
+                className="w-full flex items-center justify-center rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                <Spinner className="size-6" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-[#720e32] py-3.5 text-[0.95rem] font-bold text-white shadow-md transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
+              >
+                Sign In
+              </button>
+            )}
 
             {submitted && (
               <p className="rounded-xl border border-[#e3c3bd] bg-[#fdf1eb] px-4 py-3 text-center text-xs font-medium leading-relaxed text-[#720e32] dark:border-[#a52b50]/40 dark:bg-[#2f1e28] dark:text-[#ffb0c5]">
@@ -210,9 +219,7 @@ export default function SignInForm() {
             )}
           </form>
 
-          <button onClick={hendleGoogleButton}>
-            Sign in on Google
-          </button>
+          <button onClick={hendleGoogleButton}>Sign in on Google</button>
 
           <p className="mt-6 text-center text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Don&apos;t have an account?{" "}
