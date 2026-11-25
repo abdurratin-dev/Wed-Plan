@@ -54,7 +54,7 @@ export default function Navbar() {
 
           <Link
             href="/services"
-            className={`flex items-center gap-1 rounded-lg py-2 text-base font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:focus-visible:ring-[#ff9bb9]/40 ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
+            className={`relative rounded-lg py-2 text-base font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:focus-visible:ring-[#ff9bb9]/40 ${pathname === "/services" || pathname === "/services/venues" || pathname === "/services/photography" ? "text-[#720e32] after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-[#720e32] dark:text-[#ff9bb9] dark:after:bg-[#ff9bb9]" : "text-gray-700 dark:text-gray-200"}`}
           >
             Browse Services
           </Link>

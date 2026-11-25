@@ -78,10 +78,6 @@ export default function BrowseServices({results}:{results:ServiceData[]}) {
     }
     router.push(`?${params.toString()}`);
   };
-  const resetFilters = ()=>{
-    setPicked('')
-    setLocation('All Locations')
-  }
   const AllresetFilters = ()=>{
     router.push(`/services`)
   }
@@ -190,13 +186,6 @@ export default function BrowseServices({results}:{results:ServiceData[]}) {
                   />
                   Filter By
                 </h2>
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="text-[0.7rem] font-bold tracking-wide text-[#a52b50] uppercase transition hover:text-[#720e32] dark:text-[#ff9bb9] dark:hover:text-[#ffb0c5]"
-                >
-                  Reset
-                </button>
               </div>
 
               {/* Category */}
