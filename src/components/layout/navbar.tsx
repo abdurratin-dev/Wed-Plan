@@ -30,7 +30,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95 h-15">
       {/* Background Decoration */}
-      <nav className="mx-auto flex items-center justify-between gap-5 px-4 py-2 sm:px-8 lg:px-10">
+      <nav className="mx-auto max-w-[1600px] flex items-center justify-between gap-5 px-4 py-2 sm:px-8 lg:px-10">
         {/* Logo */}
         <Link
           href="/"

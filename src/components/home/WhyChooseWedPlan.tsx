@@ -108,61 +108,6 @@ export default function WhyChooseWedPlan() {
 
           </div>
         </div>
-
-        {/* Divider */}
-        <div className="my-8 h-px bg-gradient-to-r from-transparent via-[#dba2a9]/60 to-transparent dark:via-white/10" />
-
-        {/* How WedPlan Works */}
-        <div className="grid grid-cols-1 items-center gap-6">
-
-          {/* Steps */}
-          <div>
-
-            <h3 className="mb-6 text-center font-serif text-xl font-bold text-[#590d26] animate-fade-up dark:text-[#ffe2e9]">
-              How WedPlan Works
-            </h3>
-
-            <div className="grid animate-stagger grid-cols-1 gap-5 sm:grid-cols-3">
-
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-
-                return (
-                  <div
-                    key={step.title}
-                    className="relative flex items-center justify-center gap-3 sm:justify-start"
-                  >
-                    {/* Icon */}
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f8dadd] text-[#800d35] dark:bg-[#800d35]/20 dark:text-[#f08ba8]">
-                      <Icon size={19} strokeWidth={1.8} />
-                    </div>
-
-                    {/* Text */}
-                    <div>
-                      <h4 className="text-xs font-bold text-[#590d26] dark:text-[#ffe2e9]">
-                        {step.title}
-                      </h4>
-
-                      <p className="mt-1 text-[10px] text-[#987b83] dark:text-[#aa929b] sm:text-xs">
-                        {step.description}
-                      </p>
-                    </div>
-
-                    {/* Arrow */}
-                    {index !== steps.length - 1 && (
-                      <ArrowRight
-                        size={18}
-                        className="hidden text-[#dba2a9] sm:absolute sm:-right-3 sm:block dark:text-white/20"
-                      />
-                    )}
-                  </div>
-                );
-              })}
-
-            </div>
-          </div>
-
-        </div>
       </div>
     </section>
   );
