@@ -48,11 +48,11 @@ const bookingSteps: BookingStep[] = [
 ];
 
 const categories: CategoryType[] = [
-  { icon: Camera, name: "Photography", href: "/browse-services" },
-  { icon: Palette, name: "Decoration", href: "/browse-services" },
-  { icon: Utensils, name: "Catering", href: "/browse-services" },
-  { icon: Sparkles, name: "Makeup", href: "/browse-services" },
-  { icon: Building2, name: "Venues", href: "/browse-services" },
+  { icon: Camera, name: "Photography", href: "/services" },
+  { icon: Palette, name: "Decoration", href: "/services" },
+  { icon: Utensils, name: "Catering", href: "/services" },
+  { icon: Sparkles, name: "Makeup", href: "/services" },
+  { icon: Building2, name: "Venues", href: "/services" },
 ];
 
 const review: ReviewType = {
@@ -111,7 +111,7 @@ export default function WedPlanInfoSection() {
           </div>
 
           <Link
-            href="/how-it-works"
+            href="/services"
             className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800d35] transition-all hover:gap-3 dark:text-[#f08ba8]"
           >
             Learn More
@@ -149,7 +149,7 @@ export default function WedPlanInfoSection() {
           </div>
 
           <Link
-            href="/browse-services"
+            href="/services"
             className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800d35] transition-all hover:gap-3 dark:text-[#f08ba8]"
           >
             Browse Services
@@ -197,7 +197,7 @@ export default function WedPlanInfoSection() {
           </div>
 
           <Link
-            href="/reviews"
+            href="/about"
             className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800d35] transition-all hover:gap-3 dark:text-[#f08ba8]"
           >
             Read Reviews

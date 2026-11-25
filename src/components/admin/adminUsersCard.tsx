@@ -178,9 +178,19 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
                   <dt className={detailLabelClass}>Status</dt>
                   <dd>
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold`}
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold ${
+                        u.status === "Active"
+                          ? "bg-[#16a34a]/15 text-[#15803d] dark:bg-[#16a34a]/20 dark:text-[#4ade80]"
+                          : "bg-[#dc2626]/15 text-[#dc2626] dark:bg-[#dc2626]/20 dark:text-[#f87171]"
+                      }`}
                     >
-                      <span className={`size-1.5 rounded-full`} />
+                      <span
+                        className={`size-1.5 rounded-full ${
+                          u.status === "Active"
+                            ? "bg-[#16a34a] dark:bg-[#4ade80]"
+                            : "bg-[#dc2626] dark:bg-[#f87171]"
+                        }`}
+                      />
                       {u.status}
                     </span>
                   </dd>
@@ -192,7 +202,7 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
             <button
               type="button"
               aria-label={`Block ${u.name}`}
-              className="rounded-lg p-2 text-[#dc2626] transition-colors hover:bg-[#fdecec] dark:hover:bg-[#dc2626]/10"
+              className="rounded-lg p-2.5 text-[#dc2626] transition-colors hover:bg-[#fdecec] focus-visible:ring-2 focus-visible:ring-[#dc2626]/30 focus-visible:outline-none dark:hover:bg-[#dc2626]/10 dark:focus-visible:ring-[#f87171]/30"
               onClick={() => handleBanButton("Blocked")}
             >
               <Ban className="size-4" />
@@ -201,7 +211,7 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
             <button
               type="button"
               aria-label={`Block ${u.name}`}
-              className="rounded-lg p-2 text-[#16a34a] transition-colors hover:bg-[#f3fdec] dark:hover:bg-[#26dc3b]/10"
+              className="rounded-lg p-2.5 text-[#16a34a] transition-colors hover:bg-[#f3fdec] focus-visible:ring-2 focus-visible:ring-[#16a34a]/30 focus-visible:outline-none dark:hover:bg-[#26dc3b]/10 dark:focus-visible:ring-[#4ade80]/30"
               onClick={() => handleUnbanButton("Active")}
             >
               <ShieldCheck className="size-4" />

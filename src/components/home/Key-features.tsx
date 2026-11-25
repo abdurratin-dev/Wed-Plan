@@ -80,14 +80,14 @@ export default function WedPlanFeatures() {
         <div className="mx-auto mb-16 max-w-2xl animate-fade-up text-center">
 
           <div className="mb-4 flex items-center justify-center gap-3">
-            <span className="h-px w-10 bg-[#dba2a9]" />
+            <span className="h-px w-10 bg-[#dba2a9] dark:bg-white/20" />
 
             <Heart
               size={18}
               className="text-[#800d35] dark:text-[#f08ba8]"
             />
 
-            <span className="h-px w-10 bg-[#dba2a9]" />
+            <span className="h-px w-10 bg-[#dba2a9] dark:bg-white/20" />
           </div>
 
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#800d35] dark:text-[#f08ba8]">
