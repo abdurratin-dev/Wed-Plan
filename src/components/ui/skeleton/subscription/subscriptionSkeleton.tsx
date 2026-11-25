@@ -1,18 +1,18 @@
 
 function SubscriptionSkeleton() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#fff8f6] px-4 py-16">
+    <main className="relative min-h-screen overflow-hidden bg-[#fff8f6] px-4 py-16 dark:bg-[#160e13]">
       {/* Background Decorations */}
-      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-[#f8dadd]/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#f8dadd]/50 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-[#f8dadd]/50 blur-3xl dark:bg-[#a52b50]/15" />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#f8dadd]/50 blur-3xl dark:bg-[#a52b50]/15" />
 
       <div className="relative mx-auto max-w-6xl">
         {/* Header Skeleton */}
         <div className="mb-14 text-center">
           <div className="mb-5 flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-[#dba2a9]" />
-            <div className="h-7 w-7 animate-pulse rounded-full bg-[#e8c6ca]" />
-            <div className="h-px w-16 bg-[#dba2a9]" />
+            <div className="h-px w-16 bg-[#dba2a9] dark:bg-white/15" />
+            <div className="h-7 w-7 animate-pulse rounded-full bg-[#e8c6ca] dark:bg-white/15" />
+            <div className="h-px w-16 bg-[#dba2a9] dark:bg-white/15" />
           </div>
 
           <div className="mx-auto mb-4 h-3 w-40 animate-pulse rounded-full bg-[#ead5d5]" />

@@ -169,7 +169,9 @@
   --sidebar-ring: rgb(255 255 255 / 35%);
 }
 
-/* Subtle top-to-bottom sheen on the desktop sidebar panel */
+/* Subtle top-to-bottom sheen on the desktop sidebar panel.
+   Scoped to the wine (vendor/customer) sidebar only — the admin sidebar
+   uses a light blush panel and must keep its flat background. */
 [data-slot="sidebar-inner"] {
   background-image: linear-gradient(
     to bottom,
@@ -177,6 +179,9 @@
     #5c0f28 45%,
     #45091c 100%
   );
+}
+[data-sidebar-theme="blush"] [data-slot="sidebar-inner"] {
+  background-image: none;
 }
 
 /* ---------------------------------------------------------------- */

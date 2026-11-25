@@ -115,6 +115,7 @@ export function DashboardSidebar() {
 
   return (
     <Sidebar
+      data-sidebar-theme={isAdmin ? "blush" : "wine"}
       className={cn(
         "border-r",
         isAdmin
