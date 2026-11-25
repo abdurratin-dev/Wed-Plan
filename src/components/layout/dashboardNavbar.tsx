@@ -124,7 +124,7 @@ export default function DashboardNavbar() {
       <div className="flex h-16 items-center gap-2 px-3 sm:gap-3 sm:px-5 lg:px-6">
         {/* Sidebar toggle — shared state with the sidebar/sheet */}
         <SidebarTrigger
-          className="size-9 shrink-0 rounded-lg text-[#5b4b52] transition-colors hover:bg-[#f4e9ee] hover:text-[#720e32] dark:text-[#d6cbd1] dark:hover:bg-white/10 dark:hover:text-[#ff9bb9]"
+          className="size-10 shrink-0 rounded-lg text-[#5b4b52] transition-colors hover:bg-[#f4e9ee] hover:text-[#720e32] dark:text-[#d6cbd1] dark:hover:bg-white/10 dark:hover:text-[#ff9bb9]"
           aria-label="Toggle sidebar"
         />
 
@@ -185,7 +185,7 @@ export default function DashboardNavbar() {
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="flex size-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] hover:text-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9] dark:hover:text-[#ff9bb9]"
+            className="flex size-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:border-[#720e32] hover:text-[#720e32] dark:border-white/10 dark:bg-[#281b24] dark:text-white dark:hover:border-[#ff9bb9] dark:hover:text-[#ff9bb9]"
           >
             {/* Both icons render always; CSS swaps them on the `dark` class
                 so server and client markup stay identical (no hydration

@@ -62,19 +62,22 @@ const ProfilePage = () => {
       title: "Total Bookings",
       value: bookings.length,
       icon: BriefcaseBusiness,
-      color: "bg-[#fce7ef] text-[#9b1748]",
+      color:
+        "bg-[#fce7ef] text-[#9b1748] dark:bg-[#8e2249]/20 dark:text-[#ff9bb9]",
     },
     {
       title: "Completed",
       value: complitedBookings?.length,
       icon: BadgeCheck,
-      color: "bg-emerald-50 text-emerald-600",
+      color:
+        "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400",
     },
     {
       title: "Pending",
       value: pendigBookings?.length,
       icon: Clock,
-      color: "bg-amber-50 text-amber-600",
+      color:
+        "bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
     },
   ];
 
@@ -83,11 +86,11 @@ const ProfilePage = () => {
   }
   return (
     <main className="min-h-screen bg-[#fff9f6] px-4 py-6 transition-colors duration-300 sm:px-6 lg:px-8 dark:bg-[#110a0e]">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl animate-fade-up">
         {/* Page Heading */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-[#4c1028] dark:text-white">
+            <h1 className="text-2xl font-bold text-[#4c1028] dark:text-white sm:text-3xl">
               My Profile
             </h1>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -121,7 +124,7 @@ const ProfilePage = () => {
                       alt="profile"
                       height={300}
                       width={300}
-                      className="overflow-hidden"
+                      className="h-full w-full overflow-hidden rounded-xl object-cover"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center rounded-xl text-4xl font-bold text-[#720e32] dark:text-[#ff8db8]">
@@ -169,7 +172,7 @@ const ProfilePage = () => {
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 sm:pb-2">
-                <CalendarDays size={16} className="text-[#a32b56]" />
+                <CalendarDays size={16} className="text-[#a32b56] dark:text-[#ff9bb9]" />
                 Joined {user?.createdAt.toDateString()}
               </div>
             </div>

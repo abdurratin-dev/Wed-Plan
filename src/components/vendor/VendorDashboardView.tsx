@@ -345,7 +345,7 @@ function BookingsOverview({
                     textAnchor="end"
                     dominantBaseline="middle"
                     fontSize="11"
-                    fill="#a89a9f"
+                    className="fill-[#a89a9f] dark:fill-[#9b8792]"
                   >
                     {tick}
                   </text>
@@ -361,7 +361,7 @@ function BookingsOverview({
                 y={CHART_HEIGHT - 8}
                 textAnchor="middle"
                 fontSize="11"
-                fill="#a89a9f"
+                className="fill-[#a89a9f] dark:fill-[#9b8792]"
               >
                 {point.label}
               </text>
@@ -453,7 +453,7 @@ function MyServices({ services }: { services: ServiceData[] }) {
               <Link
                 key={service._id}
                 href="/dashboard/vendor/services"
-                className="flex items-center gap-3 rounded-xl border border-transparent p-2 transition hover:border-[#f6e3ea] hover:bg-[#fef8fa] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:hover:border-white/10 dark:hover:bg-white/5 dark:focus-visible:ring-[#ff9bb9]/30"
+                className="flex items-center gap-3 rounded-xl border border-transparent p-2.5 transition hover:border-[#f6e3ea] hover:bg-[#fef8fa] focus-visible:ring-2 focus-visible:ring-[#720e32]/30 focus-visible:outline-none dark:hover:border-white/10 dark:hover:bg-white/5 dark:focus-visible:ring-[#ff9bb9]/30"
               >
                 <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded-lg bg-[#f6ece8] sm:w-[70px] dark:bg-[#241720]">
                   {service.imageUrl ? (

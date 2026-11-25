@@ -274,7 +274,7 @@ export default function AdminBookingsView({
                 type="button"
                 onClick={() => setQuery("")}
                 aria-label="Clear search"
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
+                className="absolute top-1/2 right-2 -translate-y-1/2 p-2.5 text-[#a89a9f] transition hover:text-[#720e32] dark:text-[#8d7a84] dark:hover:text-[#ff9bb9]"
               >
                 <X size={15} />
               </button>

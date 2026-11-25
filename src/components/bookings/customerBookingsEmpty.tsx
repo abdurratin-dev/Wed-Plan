@@ -166,24 +166,26 @@ const CustomerBookingEmpty = () => {
 
         {/* Heading */}
         <h2 className="text-2xl font-bold tracking-tight text-[#261522] sm:text-3xl md:text-[34px] dark:text-white">
-          Customer not{" "}
-          <span className="text-[#e52d82]">book</span>{" "}
-          your service
+          No bookings yet{" "}
+          <span className="text-[#e52d82]">
+            — customers will appear here
+          </span>{" "}
+          once they book your service
         </h2>
 
         {/* Description */}
         <p className="mt-3 max-w-[490px] text-sm leading-6 text-gray-600 sm:text-base dark:text-[#c4b4c8]">
-          You haven't made any bookings yet. Start exploring
-          our services and book your first service today!
+          When a customer books one of your services, their request will show
+          up here so you can review and manage it.
         </p>
 
         {/* Action Button */}
         <Link
-          href="/services"
+          href="/dashboard/vendor/services/new"
           className="mt-6 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#ed2781] to-[#d92379] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-pink-500/30 active:scale-95"
         >
           <Search size={19} />
-          Browse Services
+          Add a Service
           <ArrowRight size={18} />
         </Link>
 

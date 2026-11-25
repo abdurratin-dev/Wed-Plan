@@ -90,7 +90,7 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/browse-services"
+            href="/services"
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#e8c5c8] bg-white px-7 py-3.5 text-sm font-bold text-[#800d35] transition-all duration-300 hover:-translate-y-1 hover:border-[#800d35] hover:bg-[#fdf0f0] dark:border-white/15 dark:bg-[#25151c] dark:text-[#f5a2b7] dark:hover:border-[#f08ba8] dark:hover:bg-[#351d27] sm:w-auto"
           >
             <Search size={17} />

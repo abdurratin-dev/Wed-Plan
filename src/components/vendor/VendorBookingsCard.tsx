@@ -284,6 +284,99 @@ export default function VendorBookingsCard({
                       </div>
                   </div>
                 </div>
+
+                {/* ---------- Expanded details ---------- */}
+                {expandedId === reques._id && (
+                  <div
+                    id={`booking-details-${reques._id}`}
+                    className="mt-4 border-t border-[#f1ecef] pt-4 dark:border-white/10"
+                  >
+                    <h3 className="text-xs font-bold tracking-wide text-[#8e2249] uppercase dark:text-[#ff9bb9]">
+                      Booking Details
+                    </h3>
+                    <dl className="mt-2.5 grid grid-cols-1 gap-x-6 gap-y-2 text-xs sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Customer email
+                        </dt>
+                        <dd className="truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.customerEmail || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Date
+                        </dt>
+                        <dd className="font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsDate || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Time
+                        </dt>
+                        <dd className="font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsTime || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Category
+                        </dt>
+                        <dd className="font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsCategory || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Location
+                        </dt>
+                        <dd className="truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsLocation || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Duration
+                        </dt>
+                        <dd className="font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsDuration || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Unit
+                        </dt>
+                        <dd className="font-semibold text-[#1f2937] dark:text-[#ffeaf1]">
+                          {reques.bookingsUnit || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Price
+                        </dt>
+                        <dd className="font-semibold text-[#720e32] dark:text-[#ff9bb9]">
+                          ৳ {reques.bookingsPrice || "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 sm:justify-start">
+                        <dt className="font-medium text-[#9ca3af] dark:text-[#9b8792]">
+                          Payment
+                        </dt>
+                        <dd
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold",
+                            reques.paymentStatus === "Paid"
+                              ? "bg-[#16a34a]/15 text-[#15803d] dark:bg-[#16a34a]/20 dark:text-[#4ade80]"
+                              : "bg-[#dc2626]/15 text-[#dc2626] dark:bg-[#dc2626]/20 dark:text-[#f87171]",
+                          )}
+                        >
+                          {reques.paymentStatus || "Unpaid"}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                )}
               </article>
             );
           })
