@@ -27,6 +27,7 @@ import ServiceCard from "./ServiceCard";
 import { creatBookings } from "@/lib/actions/api/booking";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "../ui/toast";
+import { Spinner } from "../ui/spinner";
 
 const FALLBACK_DESCRIPTION =
   "No description has been added for this service yet. Reach out to the vendor to learn more about what is included.";
@@ -69,6 +70,7 @@ export default function ServiceDetails({
   const [units, setUnits] = useState("");
   const [duration, setDuration] = useState("");
   const [note, setNote] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
@@ -96,11 +98,13 @@ export default function ServiceDetails({
   const filledStars = rating ? Math.round(rating) : 0;
 
   const confirmBooking = async () => {
+    setLoading(true);
     if (!date || !time) {
       toast.add({
         type: "error",
         description: "Pick a date and a time to reserve your slot first.",
       });
+      setLoading(false);
       return;
     }
 
@@ -109,6 +113,7 @@ export default function ServiceDetails({
         type: "error",
         description: "Pick a unit to your slot first.",
       });
+      setLoading(false);
       return;
     }
 
@@ -117,6 +122,7 @@ export default function ServiceDetails({
         type: "error",
         description: "Pick a duration to your slot first.",
       });
+      setLoading(false);
       return;
     }
 
@@ -162,7 +168,7 @@ export default function ServiceDetails({
         type: "error",
         description: "Your date to old please pick new date",
       });
-
+      setLoading(false);
       return;
     }
 
@@ -587,6 +593,19 @@ export default function ServiceDetails({
                     <p className="text-center text-xs text-[#8a7a80] dark:text-[#9b8792]">
                       Please Sign In First
                     </p>
+                  </>
+                ) : loading ? (
+                  <>
+                    {" "}
+                    <button
+                      type="button"
+                      onClick={confirmBooking}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#720e32] px-4 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
+                    >
+                      <Spinner className="size-6" />
+                      <BadgeCheck size={16} />
+                      Confirm Booking
+                    </button>
                   </>
                 ) : (
                   <button

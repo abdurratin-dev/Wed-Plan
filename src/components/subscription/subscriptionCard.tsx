@@ -1,38 +1,54 @@
-'use client'
+"use client";
 import { creatChakout } from "@/lib/actions/api/subscriptionService";
 import { authClient } from "@/lib/auth-client";
 import { ISubscriptionPlan } from "@/types/apidata";
 import { ArrowRight, Check, CrownIcon, DiamondIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "../ui/toast";
+import { Spinner } from "../ui/spinner";
 
-export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
-    const {data : session} = authClient.useSession()
-    const user = session?.user
-    const router = useRouter()
-    const hendleButton = async(price : number)=>{
-        if(price === 0){
-            return
-        }
-        let redirectUrl;
-        try{
-
-            const data = {
-                serviceID : plan._id,
-                email : user?.email,
-                name : user?.name,
-                userId : user?.id,
-            }
-            const chackout = await creatChakout(data)
-            redirectUrl = chackout.data.redirectUrl
-        } catch {
-            // Checkout request failed — stay on the page instead of pushing an undefined URL.
-        } finally {
-            if (redirectUrl) {
-                router.push(redirectUrl)
-            }
-        }
-        
+export default function SubscriptionCard({
+  plan,
+}: {
+  plan: ISubscriptionPlan;
+}) {
+  const [loading, setLoading] = useState(false);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const router = useRouter();
+  const hendleButton = async (price: number) => {
+    if (price === 0) {
+      if (user?.premium) {
+        toast.add({
+          description: "You already Premium vendor",
+        });
+        return;
+      }
+      toast.add({
+        description: "Subscribe to free",
+      });
+      return;
     }
+    setLoading(true);
+    let redirectUrl;
+    try {
+      const data = {
+        serviceID: plan._id,
+        email: user?.email,
+        name: user?.name,
+        userId: user?.id,
+      };
+      const chackout = await creatChakout(data);
+      redirectUrl = chackout.data.redirectUrl;
+    } catch {
+      // Checkout request failed — stay on the page instead of pushing an undefined URL.
+    } finally {
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      }
+    }
+  };
   return (
     <div
       key={plan.name}
@@ -72,7 +88,9 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
 
         <p
           className={`mt-2 text-sm ${
-            plan.popular ? "text-white/85" : "text-[#725b62] dark:text-[#c8b3bd]"
+            plan.popular
+              ? "text-white/85"
+              : "text-[#725b62] dark:text-[#c8b3bd]"
           }`}
         >
           {plan.description}
@@ -101,18 +119,38 @@ export default function SubscriptionCard({plan} : {plan : ISubscriptionPlan}) {
         </div>
 
         {/* Button */}
-        <button
-          className={`mt-12 flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-4 text-sm font-bold transition duration-300 focus-visible:ring-2 focus-visible:ring-[#920d3d] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-[#ff9bb9] dark:focus-visible:ring-offset-[#1e131a] ${
-            plan.popular
-              ? "bg-gradient-to-r from-[#800d35] to-[#a20e43] text-white shadow-lg shadow-[#800d35]/20 hover:from-[#650a2a] hover:to-[#800d35]"
-              : "border-2 border-[#920d3d] bg-white text-[#800d35] hover:bg-[#800d35] hover:text-white dark:border-[#a52b50] dark:bg-transparent dark:text-[#ff9bb9] dark:hover:bg-[#a52b50] dark:hover:text-white"
-          }`}
-          disabled={user?.premium && plan.popular}
-          onClick={()=>hendleButton(plan.price)}
-        >
-          {user?.premium && plan.popular ? "You selected this plan" : plan.buttonText}
-          <ArrowRight size={19} />
-        </button>
+        {loading ? (
+          <button
+            className={`mt-12 flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-4 text-sm font-bold transition duration-300 focus-visible:ring-2 focus-visible:ring-[#920d3d] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-[#ff9bb9] dark:focus-visible:ring-offset-[#1e131a] ${
+              plan.popular
+                ? "bg-gradient-to-r from-[#800d35] to-[#a20e43] text-white shadow-lg shadow-[#800d35]/20 hover:from-[#650a2a] hover:to-[#800d35]"
+                : "border-2 border-[#920d3d] bg-white text-[#800d35] hover:bg-[#800d35] hover:text-white dark:border-[#a52b50] dark:bg-transparent dark:text-[#ff9bb9] dark:hover:bg-[#a52b50] dark:hover:text-white"
+            }`}
+            disabled={user?.premium && plan.popular}
+            onClick={() => hendleButton(plan.price)}
+          >
+            <Spinner className="size-6" />
+            {user?.premium && plan.popular
+              ? "You selected this plan"
+              : plan.buttonText}
+            <ArrowRight size={19} />
+          </button>
+        ) : (
+          <button
+            className={`mt-12 flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-4 text-sm font-bold transition duration-300 focus-visible:ring-2 focus-visible:ring-[#920d3d] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-[#ff9bb9] dark:focus-visible:ring-offset-[#1e131a] ${
+              plan.popular
+                ? "bg-gradient-to-r from-[#800d35] to-[#a20e43] text-white shadow-lg shadow-[#800d35]/20 hover:from-[#650a2a] hover:to-[#800d35]"
+                : "border-2 border-[#920d3d] bg-white text-[#800d35] hover:bg-[#800d35] hover:text-white dark:border-[#a52b50] dark:bg-transparent dark:text-[#ff9bb9] dark:hover:bg-[#a52b50] dark:hover:text-white"
+            }`}
+            disabled={user?.premium && plan.popular}
+            onClick={() => hendleButton(plan.price)}
+          >
+            {user?.premium && plan.popular
+              ? "You selected this plan"
+              : plan.buttonText}
+            <ArrowRight size={19} />
+          </button>
+        )}
       </div>
     </div>
   );
