@@ -115,7 +115,7 @@ const ProfilePage = () => {
                 <div className="relative h-28 w-28 shrink-0 rounded-2xl border-4 border-white bg-[#f7e5e8] dark:border-[#1d111a] dark:bg-[#38202e] sm:h-32 sm:w-32">
                   {user?.image ? (
                     <Image
-                      src={user.image}
+                      src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
                       alt="profile"
                       height={300}
                       width={300}
