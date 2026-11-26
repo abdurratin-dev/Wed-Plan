@@ -136,6 +136,7 @@ export default function AddServiceForm() {
     setErrors(next);
     if (Object.keys(next).length > 0) {
       setSubmitted(false);
+      setLoading(false);
       return;
     }
 
@@ -169,7 +170,7 @@ export default function AddServiceForm() {
       setLoading(false);
       toast.add({
         type : "secces",
-        description : "Youer service added"
+        description : "Your service added"
       })
     }
   }
