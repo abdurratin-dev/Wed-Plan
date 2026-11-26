@@ -637,13 +637,6 @@ export default function AdminDashboardView({
           <p className="mt-2 text-sm text-[#6b5a61] dark:text-[#c8b3bd]">
             Please sign in again and refresh the page.
           </p>
-          <Link
-            href="/sign-in"
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#720e32] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#570a26] dark:bg-[#a52b50] dark:hover:bg-[#c13b64]"
-          >
-            Sign In
-            <ArrowRight size={15} />
-          </Link>
         </div>
       </div>
     );
