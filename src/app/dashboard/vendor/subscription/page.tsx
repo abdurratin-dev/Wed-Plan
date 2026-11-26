@@ -1,5 +1,6 @@
 import SubscriptionCard from "@/components/subscription/subscriptionCard";
 import { getSubscriptionService } from "@/lib/actions/api/subscriptionService";
+import { getUsersById } from "@/lib/actions/api/users";
 import { auth } from "@/lib/auth";
 import { ISubscriptionPlan } from "@/types/apidata";
 import { Heart } from "lucide-react";
@@ -8,10 +9,10 @@ import { redirect } from "next/navigation";
 
 const Subscription = async () => {
   const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
+    headers : await headers()
+  })
   const plan = await getSubscriptionService();
+  const user = await getUsersById(session?.user.id)
   if (plan.status) {
     return redirect("/unauthorizied");
   }
@@ -54,7 +55,7 @@ const Subscription = async () => {
         {/* Pricing Cards */}
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-2">
           {plans.map((plan) => {
-            return <SubscriptionCard key={plan._id} plan={plan} />;
+            return <SubscriptionCard key={plan._id} plan={plan} user={user}/>;
           })}
         </div>
 

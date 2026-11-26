@@ -1,7 +1,7 @@
 "use client";
 import { creatChakout } from "@/lib/actions/api/subscriptionService";
 import { authClient } from "@/lib/auth-client";
-import { ISubscriptionPlan } from "@/types/apidata";
+import { ISubscriptionPlan, IUsers } from "@/types/apidata";
 import { ArrowRight, Check, CrownIcon, DiamondIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,13 +10,13 @@ import { Spinner } from "../ui/spinner";
 
 export default function SubscriptionCard({
   plan,
+  user
 }: {
   plan: ISubscriptionPlan;
+  user : IUsers
 }) {
   const [loading, setLoading] = useState(false);
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
-  const router = useRouter();
+  const router = useRouter()
   const hendleButton = async (price: number) => {
     if (price === 0) {
       if (user?.premium) {
@@ -37,7 +37,7 @@ export default function SubscriptionCard({
         serviceID: plan._id,
         email: user?.email,
         name: user?.name,
-        userId: user?.id,
+        userId: user?._id,
       };
       const chackout = await creatChakout(data);
       redirectUrl = chackout.data.redirectUrl;

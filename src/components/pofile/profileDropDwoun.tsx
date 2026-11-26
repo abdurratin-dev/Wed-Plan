@@ -1,14 +1,31 @@
+"use client";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Link from "next/link";
-import { ArrowUpRight, ChevronDown, Crown, LayoutDashboard, LogOut, User } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronDown,
+  Crown,
+  LayoutDashboard,
+  LogOut,
+  User,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { getUsersById } from "@/lib/actions/api/users";
+import { IUsers } from "@/types/apidata";
 
 export default function ProfileDropDwoun() {
+  const [user, setUser] = useState<IUsers>();
   const { data: session, error } = authClient.useSession();
-  const user = session?.user;
-
+  useEffect(() => {
+    const getData = async () => {
+      const user = await getUsersById(session?.user.id);
+      setUser(user);
+    };
+    getData();
+  }, [session]);
   const handleLogout = async () => {
     const { error } = await authClient.signOut();
     if (error) {
@@ -21,10 +38,7 @@ export default function ProfileDropDwoun() {
     <Popover>
       <PopoverTrigger
         render={
-          <Button
-            variant="ghost"
-            className={"h-fit w-fit"}
-          >
+          <Button variant="ghost" className={"h-fit w-fit"}>
             <div className="relative shrink-0">
               <Avatar className="h-9 w-9 border border-[#ead9dc] bg-white shadow-sm transition dark:border-white/10 dark:bg-[#281b24] sm:h-10 sm:w-10">
                 <AvatarImage
