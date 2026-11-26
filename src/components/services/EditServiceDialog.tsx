@@ -12,6 +12,7 @@ import {
 import { Briefcase, ChevronDown, CloudUpload, LayoutGrid, MapPin, Pencil, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES, LOCATIONS } from "./BrowseServices";
+import { toast } from "../ui/toast";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -141,6 +142,10 @@ function EditServiceForm({
     } catch {
       setSaveError("Could not save your changes. Please try again.");
     } finally {
+      toast.add({
+        type: "success",
+        description : `${name} service updated`
+      })
       setSaving(false);
     }
   }

@@ -14,6 +14,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { updateUserById } from "@/lib/actions/api/users";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "../ui/toast";
 
 interface EditProfileProps {
   initialName?: string;
@@ -31,6 +32,7 @@ const EditProfile = ({
   const [name, setName] = useState(initialName);
   const [image, setImage] = useState(initialImage);
   const [imageFile, setImageFile] = useState<File | string>("");
+  const [open,setOpen] = useState(false)
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
@@ -81,21 +83,29 @@ const EditProfile = ({
 
     const result = await uploadImge.json();
 
-    const data = {
-      name,
-      image: result.data.url,
-    };
-
-    const updateUser = await updateUserById(user?.id, data);
-
-    console.log(updateUser);
+    const datas = await authClient.updateUser({
+      image : result.data.url,
+      name
+    }) 
+    if(datas.data?.status){
+      toast.add({
+        type: "seccess",
+        description : "Your profile updated"
+      })
+      setOpen(false)
+      return
+    }
+    toast.add({
+      type:"error",
+      description : datas.error?.message
+    })
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <button className={className}>
+          <button onClick={()=>setOpen(true)} className={className}>
             <div className="flex min-w-0 items-center gap-3">
               <div className="shrink-0 rounded-lg bg-[#fce8ef] p-2 text-[#8b2146] dark:bg-[#65122f]/40 dark:text-[#ff91b7]">
                 <UserRound size={18} />

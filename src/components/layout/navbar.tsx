@@ -137,36 +137,40 @@ export default function Navbar() {
       {mobileMenu && (
         <div className="animate-fade-in origin-top border-t border-gray-200 bg-[#fffaf7] px-5 py-5 dark:border-white/10 dark:bg-[#160e13] sm:hidden">
           <div className="flex flex-col gap-4">
-            <Link
-              href="/"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-lg py-2 font-semibold text-[#720e32] transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/40"
-            >
-              Home
+            <Link href="/">
+              <button
+                onClick={() => setMobileMenu(false)}
+                className="rounded-lg py-2 font-semibold text-[#720e32] transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-[#ff9bb9] dark:focus-visible:ring-[#ff9bb9]/40"
+              >
+                Home
+              </button>
             </Link>
 
-            <Link
-              href="/services"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
-            >
-              Browse Services
+            <Link href="/services">
+              <button
+                onClick={() => setMobileMenu(false)}
+                className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
+              >
+                Browse Services
+              </button>
             </Link>
 
-            <Link
-              href="/about"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
-            >
-              About
+            <Link href="/about">
+              <button
+                onClick={() => setMobileMenu(false)}
+                className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
+              >
+                About
+              </button>
             </Link>
 
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
-            >
-              Contact
+            <Link href="/contact">
+              <button
+                onClick={() => setMobileMenu(false)}
+                className="rounded-lg py-2 font-medium text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#720e32]/40 dark:text-gray-200 dark:focus-visible:ring-[#ff9bb9]/40"
+              >
+                Contact
+              </button>
             </Link>
 
             <div className="flex gap-3 border-t border-gray-200 pt-4 dark:border-white/10">

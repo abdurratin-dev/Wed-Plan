@@ -143,7 +143,7 @@ export default function AdminServicesView({ services }: IProps) {
               <Briefcase className="size-7" />
             </span>
             <div>
-              <h1 className="text-3xl font-extrabold tracking-tight text-[#2b0713] sm:text-4xl dark:text-[#ffeaf1]">
+              <h1 className="font-heading text-3xl font-extrabold tracking-tight text-[#2b0713] sm:text-4xl dark:text-[#ffeaf1]">
                 Services
               </h1>
               <p className="mt-1.5 text-sm text-[#6b5a61] sm:text-[0.95rem] dark:text-[#c8b3bd]">

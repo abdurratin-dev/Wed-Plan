@@ -266,7 +266,7 @@ const ProfilePage = () => {
             </div>
 
             <div className="space-y-3">
-              <EditProfile className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5" />
+              <EditProfile initialName={user?.name} className="group flex items-center justify-between rounded-xl border border-[#f1e3e3] p-3 transition hover:border-[#b52a5c] hover:bg-[#fff6f8] dark:border-white/10 dark:hover:border-[#e52d82] dark:hover:bg-white/5" />
             </div>
 
             {/* Account Created */}

@@ -129,7 +129,7 @@ export default function AdminUsersPage() {
         {/* ---------- Page header ---------- */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-[#111827] sm:text-4xl dark:text-[#ffeaf1]">
+            <h1 className="font-heading text-3xl font-extrabold tracking-tight text-[#111827] sm:text-4xl dark:text-[#ffeaf1]">
               All Users
             </h1>
             <p className="mt-2 text-sm text-[#6b7280] dark:text-[#b3a3ab] sm:text-[0.95rem] dark:text-[#c8b3bd]">
