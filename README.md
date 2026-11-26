@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WedPlan – Your Dream Wedding Starts Here
 
-## Getting Started
+WedPlan is a modern wedding planning and service booking platform designed to make every couple's special day unforgettable. Discover trusted wedding vendors, explore a wide range of services, compare options, and book the perfect professionals for your dream celebration—all in one place.
 
-First, run the development server:
+From wedding photography and stunning decorations to catering, bridal makeup, and beautiful venues, WedPlan connects couples with the right service providers through a simple and convenient booking experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Whether you are planning an intimate ceremony or a grand celebration, WedPlan helps you organize every detail with confidence.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Plan • Book • Celebrate – Make Your Wedding Truly Special with WedPlan.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Main Features
+- User Authentication – Secure account registration and login.
+- Service Marketplace – Explore and discover wedding services.
+- Vendor Dashboard – Manage services, bookings, and business activities.
+- Booking Management – Create and manage wedding service bookings.
+- Online Payments – Secure payment integration with Stripe.
+- Favorites – Save preferred wedding services.
+- Reviews & Ratings – Share customer experiences.
+- Admin Dashboard – Manage platform activities and users.
+- Responsive Design – Optimized for desktop, tablet, and mobile.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Frontend: Next.js, React, TypeScript
+- Styling: Tailwind CSS, shadcn/ui
+- Authentication: Better Auth
+- Database: MongoDB
+- Icons: Lucide React
+- Payment Gateway: Stripe
+- Deployment: Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub Repository: https://github.com/abdurratin-dev/Wed-Plan
+Live Website: https://wed-plan-omega.vercel.app/
