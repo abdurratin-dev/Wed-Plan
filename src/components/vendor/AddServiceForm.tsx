@@ -9,6 +9,8 @@ import { CATEGORIES, LOCATIONS } from "../services/BrowseServices";
 import { authClient } from "@/lib/auth-client";
 import { email } from "better-auth";
 import { useRouter } from "next/navigation";
+import { Spinner } from "../ui/spinner";
+import { toast } from "../ui/toast";
 
 const MAX_DESCRIPTION = 500;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -55,6 +57,7 @@ export default function AddServiceForm() {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageError, setImageError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -118,6 +121,7 @@ export default function AddServiceForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true);
 
     const next: Errors = {};
     if (name.trim().length < 3) next.name = "Please enter a service name";
@@ -157,12 +161,24 @@ export default function AddServiceForm() {
       handleReset();
     } catch {
       setSubmitted(false);
+      toast.add({
+        type : "error",
+        description : "Your service not added Try Again"
+      })
+    } finally {
+      setLoading(false);
+      toast.add({
+        type : "secces",
+        description : "Youer service added"
+      })
     }
   }
 
   const errorText = (message?: string) =>
     message ? (
-      <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">{message}</p>
+      <p className="mt-1.5 text-xs font-medium text-[#d6455f] dark:text-[#ff8fa3]">
+        {message}
+      </p>
     ) : null;
 
   return (
@@ -361,12 +377,23 @@ export default function AddServiceForm() {
               {/* Actions */}
               <div className="pt-2">
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#720e32] px-8 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
-                  >
-                    Add Service
-                  </button>
+                  {loading ? (
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-xl bg-[#720e32] px-8 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
+                    >
+                       <Spinner className="size-6" /> <span className="px-2">
+                        Add Service
+                        </span>
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-xl bg-[#720e32] px-8 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#570a26] focus-visible:ring-2 focus-visible:ring-[#720e32]/40 focus-visible:outline-none dark:bg-[#a52b50] dark:hover:bg-[#c13b64] dark:focus-visible:ring-[#ff9bb9]/40"
+                    >
+                      Add Service
+                    </button>
+                  )}
                 </div>
 
                 {submitted && (

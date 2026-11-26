@@ -3,6 +3,8 @@
 import { Ban, EllipsisVertical, Eye, ShieldCheck, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useState } from "react";
+import { IUsers } from "@/types/apidata";
 
 interface ManegUserDropdwounProps {
   /** Open the user detail view. */
@@ -18,23 +20,31 @@ interface ManegUserDropdwounProps {
   onOpenChange?: (open: boolean) => void;
   /** User name for the trigger's accessible label. */
   userName?: string;
+  u: IUsers;
 }
 
+const detailRowClass =
+  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]";
+const detailLabelClass = "font-medium text-[#9ca3af] dark:text-[#9b8792]";
+const detailValueClass =
+  "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 const itemClass =
   "flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none";
 
-const baseItem = "text-[#2b0713] hover:bg-[#f3f1f2] active:bg-[#eae2e5] dark:text-[#ffeaf1] dark:hover:bg-white/10 dark:active:bg-white/15";
+const baseItem =
+  "text-[#2b0713] hover:bg-[#f3f1f2] active:bg-[#eae2e5] dark:text-[#ffeaf1] dark:hover:bg-white/10 dark:active:bg-white/15";
 
 export default function ManegUserDropdwoun({
-  onView,
   onBlock,
   onRemove,
   status = "Active",
   open,
   onOpenChange,
   userName,
-}: ManegUserDropdwounProps = {}) {
+  u,
+}: ManegUserDropdwounProps) {
   const isBlocked = status !== "Active";
+  const [viewOpen, setViewOpen] = useState(false);
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -51,14 +61,63 @@ export default function ManegUserDropdwoun({
         }
       />
       <PopoverContent align="end" className="w-56 gap-1 p-1.5">
-        <button
-          type="button"
-          onClick={onView}
-          className={`${itemClass} ${baseItem} focus-visible:ring-[#720e32]/30 dark:focus-visible:ring-[#ff9bb9]/30`}
-        >
-          <Eye className="size-4 text-[#8e2249] dark:text-[#ff9bb9]" />
-          View details
-        </button>
+        <Popover open={viewOpen} onOpenChange={setViewOpen}>
+          <PopoverTrigger
+            render={
+              <button
+                type="button"
+                onClick={() => setViewOpen(true)}
+                className={`${itemClass} ${baseItem} focus-visible:ring-[#720e32]/30 dark:focus-visible:ring-[#ff9bb9]/30`}
+              >
+                <Eye className="size-4 text-[#8e2249] dark:text-[#ff9bb9]" />
+                View details
+              </button>
+            }
+          />
+          <PopoverContent align="end" className="w-64 gap-3 p-3.5">
+            <div className="border-b border-[#f1ecef] pb-2 dark:border-white/10">
+              <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
+                {u.name}
+              </p>
+              <p className="mt-0.5 text-xs text-[#9ca3af] dark:text-[#9b8792]">
+                {u.email}
+              </p>
+            </div>
+            <dl className="flex flex-col gap-1.5 text-xs">
+              <div className={detailRowClass}>
+                <dt className={detailLabelClass}>Role</dt>
+                <dd className={detailValueClass}>{u.role}</dd>
+              </div>
+              <div className={detailRowClass}>
+                <dt className={detailLabelClass}>Premium user</dt>
+                <dd className={detailValueClass}>
+                  {u.premium ? "Premium" : "Non Premium"}
+                </dd>
+              </div>
+              <div className={detailRowClass}>
+                <dt className={detailLabelClass}>Status</dt>
+                <dd>
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold ${
+                      u.status === "Active"
+                        ? "bg-[#16a34a]/15 text-[#15803d] dark:bg-[#16a34a]/20 dark:text-[#4ade80]"
+                        : "bg-[#dc2626]/15 text-[#dc2626] dark:bg-[#dc2626]/20 dark:text-[#f87171]"
+                    }`}
+                  >
+                    <span
+                      className={`size-1.5 rounded-full ${
+                        u.status === "Active"
+                          ? "bg-[#16a34a] dark:bg-[#4ade80]"
+                          : "bg-[#dc2626] dark:bg-[#f87171]"
+                      }`}
+                    />
+                    {u.status}
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </PopoverContent>
+        </Popover>
 
         <div
           role="separator"

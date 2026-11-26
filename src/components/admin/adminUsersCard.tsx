@@ -1,16 +1,10 @@
-
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import {
-  Crown,
-  Store,
-  User,
-  Users,
-} from "lucide-react";
+import { Crown, Store, User, Users } from "lucide-react";
 import { IUsers } from "@/types/apidata";
 import { updateUsers } from "@/lib/actions/api/users";
 import { useState } from "react";
 import ManegUserDropdwoun from "./manegUserDropdwoun";
-import { Popover, PopoverContent } from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 export type Role = "admin" | "vendor" | "customer";
 
@@ -57,14 +51,9 @@ const roleBadges: IRoleBadges = {
   },
 };
 
-const detailRowClass =
-  "flex items-center justify-between gap-3 text-[#6b7280] dark:text-[#b3a3ab] dark:text-[#c8b3bd]";
-const detailLabelClass = "font-medium text-[#9ca3af] dark:text-[#9b8792]";
-const detailValueClass =
-  "truncate font-semibold text-[#1f2937] dark:text-[#ffeaf1]";
 export default function AdminUsersCard({ u }: { u: IUsers }) {
   const [updateStatus, setStatus] = useState(u.status);
-  const [viewOpen,setViewOpen] = useState(false)
+  const [viewOpen, setViewOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const role = roleBadges[u.role as RoleKey];
   const RoleIcon = role.Icon;
@@ -150,50 +139,8 @@ export default function AdminUsersCard({ u }: { u: IUsers }) {
                 updateStatus === "Active" ? "Blocked" : "Active",
               );
             }}
+            u={u}
           />
-          <Popover open={viewOpen} onOpenChange={setViewOpen}>
-            <PopoverContent align="end" className="w-64 gap-3 p-3.5">
-              <div className="border-b border-[#f1ecef] pb-2 dark:border-white/10">
-                <p className="truncate text-sm font-bold text-[#1f2937] dark:text-[#ffeaf1]">
-                  {u.name}
-                </p>
-                <p className="mt-0.5 text-xs text-[#9ca3af] dark:text-[#9b8792]">
-                  {u.email}
-                </p>
-              </div>
-              <dl className="flex flex-col gap-1.5 text-xs">
-                <div className={detailRowClass}>
-                  <dt className={detailLabelClass}>Role</dt>
-                  <dd className={detailValueClass}>{u.role}</dd>
-                </div>
-                <div className={detailRowClass}>
-                  <dt className={detailLabelClass}>Premium user</dt>
-                  <dd className={detailValueClass}>{u.premium ? "Premium" : "Non Premium"}</dd>
-                </div>
-                <div className={detailRowClass}>
-                  <dt className={detailLabelClass}>Status</dt>
-                  <dd>
-                    <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold ${
-                        u.status === "Active"
-                          ? "bg-[#16a34a]/15 text-[#15803d] dark:bg-[#16a34a]/20 dark:text-[#4ade80]"
-                          : "bg-[#dc2626]/15 text-[#dc2626] dark:bg-[#dc2626]/20 dark:text-[#f87171]"
-                      }`}
-                    >
-                      <span
-                        className={`size-1.5 rounded-full ${
-                          u.status === "Active"
-                            ? "bg-[#16a34a] dark:bg-[#4ade80]"
-                            : "bg-[#dc2626] dark:bg-[#f87171]"
-                        }`}
-                      />
-                      {u.status}
-                    </span>
-                  </dd>
-                </div>
-              </dl>
-            </PopoverContent>
-          </Popover>
         </div>
       </td>
     </tr>
