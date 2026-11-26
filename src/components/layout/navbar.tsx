@@ -28,9 +28,6 @@ export default function Navbar() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  if(!user){
-    return <Loading />
-  }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#eadbd8] bg-[#fffaf7]/95 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-[#160e13]/95 h-15">
       {/* Background Decoration */}

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -38,11 +37,7 @@ const Units = [
   { label: "Per Month", value: "parmonth" },
 ];
 
-const Durations = [
-  { label: "1 Hr" },
-  { label: "5 Hr" },
-  { label: "10 Hr" },
-];
+const Durations = [{ label: "1 Hr" }, { label: "5 Hr" }, { label: "10 Hr" }];
 
 type TabKey = "about" | "reviews" | "location";
 
@@ -186,14 +181,13 @@ export default function ServiceDetails({
 
   const contactVendor = () => {
     setNote(
-      "Vendor contact details will appear here once vendor profiles are connected."
+      "Vendor contact details will appear here once vendor profiles are connected.",
     );
   };
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#fdfbfa] pb-12 sm:pb-16 lg:pb-20 dark:bg-[#160e13]">
       <div className="mx-auto w-full max-w-[1500px] px-3 pt-5 sm:px-5 sm:pt-7 md:px-7 lg:px-10">
-
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
@@ -227,15 +221,11 @@ export default function ServiceDetails({
 
         {/* Main Layout */}
         <div className="mt-4 grid min-w-0 grid-cols-1 items-start gap-5 sm:mt-6 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
-
           {/* Left Column */}
           <div className="min-w-0 space-y-5 sm:space-y-6">
-
             {/* Gallery + Summary */}
             <section className="min-w-0 rounded-2xl border border-[#f1ded7] bg-white p-3 shadow-[0_24px_50px_-40px_rgba(114,14,50,0.6)] sm:p-4 md:p-5 dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none">
-
               <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
-
                 {/* Image */}
                 <div className="relative aspect-[4/3] w-full min-w-0 overflow-hidden rounded-xl bg-[#f6ece8] sm:aspect-[4/5] lg:aspect-[4/3] dark:bg-[#241720]">
                   <Image
@@ -254,14 +244,13 @@ export default function ServiceDetails({
 
                 {/* Summary */}
                 <div className="flex min-w-0 flex-col">
-
                   {status && (
                     <span
                       className={cn(
                         "inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.7rem] font-bold",
                         isActive
                           ? "bg-[#dcfce7] text-[#15803d] dark:bg-[#15803d]/20 dark:text-[#4ade80]"
-                          : "bg-[#fee2e2] text-[#d6455f] dark:bg-[#d6455f]/20 dark:text-[#ff8fa3]"
+                          : "bg-[#fee2e2] text-[#d6455f] dark:bg-[#d6455f]/20 dark:text-[#ff8fa3]",
                       )}
                     >
                       <span
@@ -269,7 +258,7 @@ export default function ServiceDetails({
                           "size-1.5 rounded-full",
                           isActive
                             ? "bg-[#22c55e] dark:bg-[#4ade80]"
-                            : "bg-[#ef4444] dark:bg-[#ff6b81]"
+                            : "bg-[#ef4444] dark:bg-[#ff6b81]",
                         )}
                       />
                       {status}
@@ -289,7 +278,6 @@ export default function ServiceDetails({
                   </p>
 
                   <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#6b5a61] dark:text-[#c8b3bd]">
-
                     {rating !== null ? (
                       <span className="inline-flex items-center gap-1.5">
                         <Star
@@ -302,14 +290,20 @@ export default function ServiceDetails({
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 text-[#8a7a80] dark:text-[#9b8792]">
-                        <Star size={14} className="text-[#d8c8cd] dark:text-[#6f5c66]" />
+                        <Star
+                          size={14}
+                          className="text-[#d8c8cd] dark:text-[#6f5c66]"
+                        />
                         No ratings yet
                       </span>
                     )}
 
                     {bookings > 0 && (
                       <span className="inline-flex items-center gap-1.5">
-                        <Users size={14} className="text-[#a52b50] dark:text-[#ff9bb9]" />
+                        <Users
+                          size={14}
+                          className="text-[#a52b50] dark:text-[#ff9bb9]"
+                        />
                         {bookings} bookings
                       </span>
                     )}
@@ -335,7 +329,7 @@ export default function ServiceDetails({
                     </span>
                   </p>
 
-                  <p className="mt-3 text-sm leading-relaxed text-[#6b5a61] dark:text-[#c8b3bd]">
+                  <p className="mt-3 text-sm leading-relaxed text-[#6b5a61] dark:text-[#c8b3bd] line-clamp-3 sm:line-clamp-4 lg:line-clamp-5">
                     {description}
                   </p>
 
@@ -350,14 +344,12 @@ export default function ServiceDetails({
                       </li>
                     ))}
                   </ul>
-
                 </div>
               </div>
             </section>
 
             {/* Tabs */}
             <section className="min-w-0 rounded-2xl border border-[#f1ded7] bg-white p-4 shadow-[0_24px_50px_-40px_rgba(114,14,50,0.6)] sm:p-5 dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none">
-
               <div
                 role="tablist"
                 aria-label="Service information"
@@ -377,7 +369,7 @@ export default function ServiceDetails({
                         "inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition focus-visible:ring-2 focus-visible:outline-none sm:px-4 sm:text-[0.78rem]",
                         active
                           ? "bg-[#720e32] text-white shadow-sm focus-visible:ring-[#720e32]/40 dark:bg-[#a52b50] dark:focus-visible:ring-[#ff9bb9]/40"
-                          : "bg-[#fdf1eb] text-[#720e32] hover:bg-[#fde3d9] focus-visible:ring-[#720e32]/30 dark:bg-white/5 dark:text-[#ff9bb9] dark:hover:bg-white/10 dark:focus-visible:ring-[#ff9bb9]/30"
+                          : "bg-[#fdf1eb] text-[#720e32] hover:bg-[#fde3d9] focus-visible:ring-[#720e32]/30 dark:bg-white/5 dark:text-[#ff9bb9] dark:hover:bg-white/10 dark:focus-visible:ring-[#ff9bb9]/30",
                       )}
                     >
                       <Icon size={13} />
@@ -388,7 +380,6 @@ export default function ServiceDetails({
               </div>
 
               <div className="pt-4">
-
                 {activeTab === "about" && (
                   <div role="tabpanel">
                     <h2 className="font-heading text-lg font-semibold text-[#2b0713] sm:text-xl dark:text-[#ffeaf1]">
@@ -403,9 +394,7 @@ export default function ServiceDetails({
 
                 {activeTab === "reviews" && (
                   <div role="tabpanel">
-
                     <div className="flex flex-wrap items-center gap-4 sm:gap-5">
-
                       <div className="flex items-baseline gap-2">
                         <span className="font-heading text-3xl font-semibold text-[#2b0713] sm:text-4xl dark:text-[#ffeaf1]">
                           {rating !== null ? rating.toFixed(1) : "—"}
@@ -425,13 +414,12 @@ export default function ServiceDetails({
                               className={cn(
                                 star <= filledStars
                                   ? "fill-[#f5b301] text-[#f5b301]"
-                                  : "text-[#d8c8cd] dark:text-[#6f5c66]"
+                                  : "text-[#d8c8cd] dark:text-[#6f5c66]",
                               )}
                             />
                           ))}
                         </div>
                       </div>
-
                     </div>
 
                     <div className="mt-4 rounded-xl border border-dashed border-[#e3c3bd] px-4 py-7 text-center sm:px-5 sm:py-8 dark:border-white/15">
@@ -445,19 +433,16 @@ export default function ServiceDetails({
                         they are connected.
                       </p>
                     </div>
-
                   </div>
                 )}
 
                 {activeTab === "location" && (
                   <div role="tabpanel">
-
                     <h2 className="font-heading text-lg font-semibold text-[#2b0713] sm:text-xl dark:text-[#ffeaf1]">
                       Service Location
                     </h2>
 
                     <div className="mt-3 flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#e3c3bd] bg-[#fdfbfa] px-4 py-8 text-center sm:px-5 sm:py-10 dark:border-white/15 dark:bg-[#241720]">
-
                       <span className="flex size-11 items-center justify-center rounded-full bg-[#fdeef2] dark:bg-[#a52b50]/15">
                         <MapPin
                           size={20}
@@ -473,24 +458,23 @@ export default function ServiceDetails({
                         An interactive map will appear here once map integration
                         is added.
                       </p>
-
                     </div>
                   </div>
                 )}
-
               </div>
             </section>
           </div>
 
           {/* Right Column */}
           <aside className="min-w-0 space-y-5 sm:space-y-6 lg:sticky lg:top-24">
-
             {/* Booking Card */}
             <section className="min-w-0 rounded-2xl border border-[#f1ded7] bg-white p-4 shadow-[0_24px_50px_-40px_rgba(114,14,50,0.6)] sm:p-5 dark:border-white/10 dark:bg-[#1e131a] dark:shadow-none">
-
               <h2 className="flex items-center gap-2 text-base font-bold text-[#2b0713] dark:text-[#ffeaf1]">
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#fdeef2] dark:bg-[#a52b50]/15">
-                  <CalendarDays size={16} className="text-[#a52b50] dark:text-[#ff9bb9]" />
+                  <CalendarDays
+                    size={16}
+                    className="text-[#a52b50] dark:text-[#ff9bb9]"
+                  />
                 </span>
                 Book This Service
               </h2>
@@ -500,7 +484,6 @@ export default function ServiceDetails({
               </p>
 
               <div className="mt-4 space-y-3">
-
                 {/* Date */}
                 <div className="relative">
                   <CalendarDays
@@ -623,7 +606,7 @@ export default function ServiceDetails({
                     "text-center text-[0.72rem] leading-relaxed",
                     note
                       ? "text-[#a52b50] dark:text-[#ff9bb9]"
-                      : "text-transparent"
+                      : "text-transparent",
                   )}
                 >
                   {note ?? "\u00A0"}
@@ -649,7 +632,6 @@ export default function ServiceDetails({
                   <MessageSquare size={16} />
                   Contact Vendor
                 </a>
-
               </div>
 
               {/* Security */}
@@ -667,12 +649,10 @@ export default function ServiceDetails({
                   Your payment info is safe with us
                 </span>
               </div>
-
             </section>
 
             {/* Promo Banner */}
             <section className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-[#ffe4ec] via-[#fff4f7] to-[#ffd9e6] p-5 text-center sm:p-6 dark:from-[#2a1620] dark:via-[#241720] dark:to-[#2f1a25]">
-
               <Heart
                 size={90}
                 className="absolute -top-5 -right-5 rotate-12 text-white/50 dark:text-white/5"
@@ -698,14 +678,12 @@ export default function ServiceDetails({
                 Browse Services
                 <ArrowRight size={13} />
               </Link>
-
             </section>
           </aside>
         </div>
 
         {/* Related Services */}
         <section className="mt-9 sm:mt-12">
-
           <div className="flex items-center gap-3 sm:gap-4">
             <span className="h-px min-w-0 flex-1 bg-[#f1ded7] dark:bg-white/10" />
 
@@ -729,7 +707,6 @@ export default function ServiceDetails({
               No other services to show yet.
             </p>
           )}
-
         </section>
       </div>
     </div>
