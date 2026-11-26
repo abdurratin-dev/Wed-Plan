@@ -11,7 +11,9 @@ import { ServiceData } from "@/types/apidata";
 import { getServiceData } from "@/lib/actions/api/service";
 
 export default async function NewServices() {
-  const services: ServiceData[] = await getServiceData();
+  const servic = await getServiceData();
+
+  const services : ServiceData[] = Array.isArray(servic) ? servic : []
 
   const activeServices = services.filter(
     (service) => service.status === "Active",
